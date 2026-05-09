@@ -190,6 +190,17 @@
     </div>
   </section>
 
+  <!-- Comments -->
+  <section class="comment-section" id="comments">
+    <h2 class="comment-title">💬 댓글</h2>
+    <form class="comment-form" onsubmit="submitComment(event)">
+      <input class="comment-input" id="commentName" type="text" placeholder="닉네임" maxlength="20" required />
+      <textarea class="comment-textarea" id="commentText" placeholder="댓글을 남겨주세요..." maxlength="300" required></textarea>
+      <button class="comment-submit btn" type="submit">등록</button>
+    </form>
+    <div class="comment-list" id="commentList"></div>
+  </section>
+
   <!-- Footer -->
   <footer class="site-footer">
     <nav class="footer-nav">
@@ -201,6 +212,68 @@
   </footer>
 
   <script src="main.js"></script>
+  <script>
+    const COMMENT_KEY = 'ailottoo_comments';
+
+    function loadComments() {
+      try { return JSON.parse(localStorage.getItem(COMMENT_KEY)) || []; }
+      catch { return []; }
+    }
+
+    function saveComments(list) {
+      localStorage.setItem(COMMENT_KEY, JSON.stringify(list));
+    }
+
+    function formatDate(ts) {
+      const d = new Date(ts);
+      const pad = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function renderComments() {
+      const list = loadComments();
+      const el = document.getElementById('commentList');
+      if (list.length === 0) {
+        el.innerHTML = '<p class="comment-empty">첫 번째 댓글을 남겨보세요!</p>';
+        return;
+      }
+      el.innerHTML = list.slice().reverse().map((c, i) => `
+        <div class="comment-item">
+          <div class="comment-meta">
+            <span class="comment-name">${escapeHtml(c.name)}</span>
+            <span class="comment-date">${formatDate(c.ts)}</span>
+            <button class="comment-delete" onclick="deleteComment(${list.length - 1 - i})" title="삭제">✕</button>
+          </div>
+          <p class="comment-body">${escapeHtml(c.text).replace(/\n/g, '<br>')}</p>
+        </div>`).join('');
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function submitComment(e) {
+      e.preventDefault();
+      const name = document.getElementById('commentName').value.trim();
+      const text = document.getElementById('commentText').value.trim();
+      if (!name || !text) return;
+      const list = loadComments();
+      list.push({ name, text, ts: Date.now() });
+      saveComments(list);
+      document.getElementById('commentName').value = '';
+      document.getElementById('commentText').value = '';
+      renderComments();
+    }
+
+    function deleteComment(idx) {
+      const list = loadComments();
+      list.splice(idx, 1);
+      saveComments(list);
+      renderComments();
+    }
+
+    renderComments();
+  </script>
   <script>
     function toggleFaq(btn) {
       const item = btn.closest('.faq-item');
