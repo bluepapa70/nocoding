@@ -317,31 +317,29 @@
       const count = document.getElementById('likeCount');
       const sub   = document.getElementById('likeSub');
 
-      let liked = localStorage.getItem(LS) === '1';
-
-      function applyLiked(n) {
-        heart.textContent = liked ? '♥' : '♡';
-        btn.classList.toggle('liked', liked);
-        sub.textContent = liked ? '좋아요를 눌러주셨습니다 감사합니다!' : '좋아요를 눌러주세요';
+      function updateCount(n) {
         if (n !== undefined) count.textContent = (BASE + Number(n)).toLocaleString();
       }
 
       fetch(`${API}/get/${NS}/${KEY}`)
         .then(r => r.json())
-        .then(d => { count.textContent = (BASE + Number(d.value || 0)).toLocaleString(); applyLiked(); })
-        .catch(() => { count.textContent = BASE.toLocaleString(); applyLiked(); });
+        .then(d => count.textContent = (BASE + Number(d.value || 0)).toLocaleString())
+        .catch(() => count.textContent = BASE.toLocaleString());
 
       btn.addEventListener('click', () => {
-        if (liked) return;
-        liked = true;
-        localStorage.setItem(LS, '1');
+        heart.textContent = '♥';
+        btn.classList.add('liked');
+        sub.textContent = '좋아요를 눌러주셨습니다 감사합니다!';
         fetch(`${API}/hit/${NS}/${KEY}`)
           .then(r => r.json())
-          .then(d => applyLiked(d.value))
-          .catch(() => applyLiked());
+          .then(d => updateCount(d.value))
+          .catch(() => {});
+        setTimeout(() => {
+          heart.textContent = '♡';
+          btn.classList.remove('liked');
+          sub.textContent = '좋아요를 눌러주세요';
+        }, 1000);
       });
-
-      applyLiked();
     })();
   </script>
 
