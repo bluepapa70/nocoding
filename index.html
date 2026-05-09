@@ -312,18 +312,31 @@
         .then(d => updateCount(d.count))
         .catch(() => count.textContent = BASE.toLocaleString());
 
+      let likeTimer = null;
+
       btn.addEventListener('click', () => {
-        heart.textContent = '♥';
-        btn.classList.add('liked');
-        sub.textContent = '좋아요를 눌러주셨습니다 감사합니다!';
+        if (likeTimer) {
+          clearTimeout(likeTimer);
+          btn.classList.remove('liked');
+          heart.textContent = '♡';
+        }
+
+        requestAnimationFrame(() => {
+          heart.textContent = '♥';
+          btn.classList.add('liked');
+          sub.textContent = '좋아요를 눌러주셨습니다 감사합니다!';
+        });
+
         fetch(`${API}/${NS}/${KEY}/up`)
           .then(r => r.json())
           .then(d => updateCount(d.count))
           .catch(() => {});
-        setTimeout(() => {
+
+        likeTimer = setTimeout(() => {
           heart.textContent = '♡';
           btn.classList.remove('liked');
           sub.textContent = '좋아요를 눌러주세요';
+          likeTimer = null;
         }, 1000);
       });
     })();
