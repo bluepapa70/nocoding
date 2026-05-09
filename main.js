@@ -38,7 +38,7 @@ function pickWeighted() {
     let r = Math.random() * total;
     for (let i = 0; i < nums.length; i++) {
       r -= weights[i];
-      if (r <= 0 && !picked.has(nums[i])) { picked.add(nums[i]); break; }
+      if (r <= 0) { if (!picked.has(nums[i])) picked.add(nums[i]); break; }
     }
   }
   return [...picked].sort((a, b) => a - b);
@@ -67,7 +67,7 @@ function pickTopN(n) {
     let r = Math.random() * total;
     for (let i = 0; i < remaining.length; i++) {
       r -= weights[i];
-      if (r <= 0 && !extra.has(remaining[i])) { extra.add(remaining[i]); break; }
+      if (r <= 0) { if (!extra.has(remaining[i])) extra.add(remaining[i]); break; }
     }
   }
   return [...fixed, ...extra].sort((a, b) => a - b);
@@ -175,7 +175,7 @@ function clearBoard() {
   document.getElementById('btnSave').disabled = true;
   const ts = document.getElementById('ticketSection');
   ts.classList.remove('visible');
-  document.getElementById('ticketBody').innerHTML = '';
+  document.getElementById('ticketGames').innerHTML = '';
   updateStatsHighlight();
 }
 

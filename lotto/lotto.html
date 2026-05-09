@@ -395,14 +395,12 @@
       const total = weights.reduce((a, b) => a + b, 0);
 
       const picked = new Set();
-      while (picked.size < 6) {
+      let tries = 0;
+      while (picked.size < 6 && tries++ < 1000) {
         let r = Math.random() * total;
         for (let i = 0; i < nums.length; i++) {
           r -= weights[i];
-          if (r <= 0 && !picked.has(nums[i])) {
-            picked.add(nums[i]);
-            break;
-          }
+          if (r <= 0) { if (!picked.has(nums[i])) picked.add(nums[i]); break; }
         }
       }
       return [...picked].sort((a, b) => a - b);
