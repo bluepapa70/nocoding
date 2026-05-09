@@ -922,6 +922,13 @@ body.dark-mode .stat-bar-wrap {
   line-height: 1.8;
 }
 
+/* ───────────── DISQUS ───────────── */
+.disqus-section {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
 /* ───────────── SITE FOOTER ───────────── */
 .site-footer {
   width: 100%;
