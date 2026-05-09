@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jocoding-ckj.pages.dev/sitemap.xml
+Sitemap: https://ailottoo.pages.dev/sitemap.xml

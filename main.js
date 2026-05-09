@@ -511,7 +511,7 @@ function drawLottoCanvas(gameNums) {
   ctx.font = '10px system-ui';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('재미용 서비스 · 당첨 보장 없음 · jocoding-ckj.pages.dev', W / 2, tY + GAME_H + FOOTER_H / 2);
+  ctx.fillText('재미용 서비스 · 당첨 보장 없음 · ailottoo.pages.dev', W / 2, tY + GAME_H + FOOTER_H / 2);
 
   return canvas;
 }
