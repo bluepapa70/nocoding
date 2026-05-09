@@ -590,7 +590,7 @@ body.dark-mode .btn-secondary:hover {
   transition: max-height 0.4s ease;
 }
 
-.stats-body.open { max-height: 600px; }
+.stats-body.open { max-height: 2000px; }
 
 .stats-inner { padding: 20px; }
 
