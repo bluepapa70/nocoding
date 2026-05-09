@@ -1050,151 +1050,71 @@ body.dark-mode .stat-bar-wrap {
   box-shadow: 0 4px 12px rgba(251,196,0,0.35);
 }
 
-/* ───────────── REVIEW ───────────── */
-.review-section {
+/* ───────────── LIKE ───────────── */
+.like-section {
   width: 100%;
   max-width: 600px;
   margin-bottom: 40px;
 }
 
-.review-card {
+.like-card {
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-}
-
-.review-form {
+  padding: 32px 24px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 24px;
 }
 
-.star-select {
-  display: flex;
-  gap: 6px;
-}
-
-.star-btn {
-  font-size: 2rem;
-  color: var(--bg4);
-  cursor: pointer;
-  transition: color 0.15s, transform 0.1s;
-  user-select: none;
-  line-height: 1;
-}
-
-.star-btn.active {
-  color: var(--accent);
-}
-
-.star-btn:hover {
-  transform: scale(1.15);
-}
-
-.star-label {
-  font-size: 0.85rem;
+.like-msg {
+  font-size: 0.95rem;
   color: var(--muted);
-  min-height: 1.2em;
 }
 
-.review-input {
-  background: var(--bg);
+.like-btn {
+  background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 0.9rem;
-  padding: 8px 12px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.review-input:focus { border-color: var(--accent); }
-
-.review-textarea {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 0.9rem;
-  padding: 10px 12px;
-  resize: vertical;
-  min-height: 80px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.review-textarea:focus { border-color: var(--accent); }
-
-.review-submit {
-  align-self: flex-end;
-  background: var(--accent);
-  border: none;
-  border-radius: 8px;
-  color: #1f2328;
+  border-radius: 50px;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 8px 24px;
-  transition: opacity 0.2s, transform 0.1s;
-}
-
-.review-submit:hover { opacity: 0.85; }
-.review-submit:active { transform: scale(0.97); }
-
-.review-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.review-item {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-}
-
-.review-item-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 10px;
+  padding: 12px 28px;
+  transition: transform 0.15s, background 0.2s, border-color 0.2s;
 }
 
-.review-item-nick {
-  font-size: 0.85rem;
+.like-btn:hover { transform: scale(1.06); }
+.like-btn:active { transform: scale(0.95); }
+
+.like-btn.liked {
+  background: rgba(251,196,0,0.15);
+  border-color: var(--accent);
+}
+
+.like-heart {
+  font-size: 1.8rem;
+  line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), color 0.2s;
+  color: var(--muted);
+}
+
+.like-btn.liked .like-heart {
+  color: #e53935;
+  transform: scale(1.2);
+}
+
+.like-count {
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--text);
+  min-width: 2ch;
 }
 
-.review-item-stars {
-  color: var(--accent);
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-}
-
-.review-item-date {
-  font-size: 0.75rem;
+.like-sub {
+  font-size: 0.82rem;
   color: var(--muted);
-  margin-left: auto;
-}
-
-.review-item-text {
-  font-size: 0.88rem;
-  color: var(--text);
-  line-height: 1.5;
-  word-break: break-word;
-}
-
-.review-empty {
-  font-size: 0.88rem;
-  color: var(--muted);
-  text-align: center;
-  padding: 16px 0;
 }
 
 /* ───────────── SITE FOOTER ───────────── */
