@@ -168,25 +168,6 @@
   </section>
 
   <!-- Lotto Result -->
-  <section class="result-section">
-    <h2 class="section-title">최근 추첨 결과</h2>
-    <div class="result-snap-card">
-      <div class="result-snap-toolbar">
-        <span class="result-snap-label">동행복권 공식 추첨 결과</span>
-        <div class="result-snap-actions">
-          <button class="result-snap-btn" id="resultRefresh" title="새로고침">↻ 새로고침</button>
-          <a class="result-snap-btn" href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">바로가기 ↗</a>
-        </div>
-      </div>
-      <div class="result-snap-body">
-        <div class="result-snap-loading" id="resultSnapLoading">이미지를 불러오는 중...</div>
-        <a href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">
-          <img id="resultSnapImg" class="result-snap-img" alt="동행복권 추첨 결과" loading="lazy" />
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- FAQ -->
   <section class="faq-section" id="faq">
     <h2 class="faq-title">서비스 안내 및 자주 묻는 질문</h2>
@@ -450,44 +431,6 @@
     }
 
     loadLottoMap();
-  </script>
-  <script>
-    (function () {
-      const TARGET = 'https://www.dhlottery.co.kr/lt645/result';
-      const SNAP = 'https://image.thum.io/get/width/700/crop/900/noanimate/';
-
-      function loadSnap() {
-        const img = document.getElementById('resultSnapImg');
-        const loading = document.getElementById('resultSnapLoading');
-        img.style.display = 'none';
-        loading.style.display = 'block';
-
-        const src = SNAP + TARGET + '?_=' + Math.floor(Date.now() / 300000); // 5분 캐시 버스팅
-        img.onload = function () {
-          loading.style.display = 'none';
-          img.style.display = 'block';
-        };
-        img.onerror = function () {
-          loading.textContent = '이미지를 불러올 수 없습니다.';
-        };
-        img.src = src;
-      }
-
-      document.getElementById('resultRefresh').addEventListener('click', function () {
-        const img = document.getElementById('resultSnapImg');
-        const loading = document.getElementById('resultSnapLoading');
-        img.style.display = 'none';
-        loading.style.display = 'block';
-        loading.textContent = '이미지를 불러오는 중...';
-
-        const src = 'https://image.thum.io/get/width/700/crop/900/noanimate/' + TARGET + '?_=' + Date.now();
-        img.onload = function () { loading.style.display = 'none'; img.style.display = 'block'; };
-        img.onerror = function () { loading.textContent = '이미지를 불러올 수 없습니다.'; };
-        img.src = src;
-      });
-
-      loadSnap();
-    })();
   </script>
 </body>
 </html>
