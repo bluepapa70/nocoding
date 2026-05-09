@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Rename-Item *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(Start-Process python *)",
+      "Bash(Start-Sleep -Seconds 1)",
+      "Bash(Start-Process \"http://localhost:8080\")",
+      "PowerShell(Start-Process python -ArgumentList \"-m http.server 8080 --directory D:\\\\nocoding\" -WindowStyle Hidden)",
+      "PowerShell(Start-Process \"http://localhost:8080\")",
+      "PowerShell(Stop-Process *)"
+    ]
+  }
+}
