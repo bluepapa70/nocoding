@@ -243,8 +243,8 @@
           const d = Math.floor(h / 24);
           const rh = h % 24;
           countdown = d > 0
-            ? `<span class="countdown">${d}일 ${pad(rh)}:${pad(m)}:${pad(s)}</span>`
-            : `<span class="countdown">${pad(rh)}:${pad(m)}:${pad(s)}</span>`;
+            ? `남은 시간 <span class="countdown">${d}일 ${pad(rh)}:${pad(m)}:${pad(s)}</span>`
+            : `남은 시간 <span class="countdown">${pad(rh)}:${pad(m)}:${pad(s)}</span>`;
         }
 
         document.getElementById('drawInfo').innerHTML =
