@@ -848,6 +848,29 @@ body.dark-mode .stat-bar-wrap {
   white-space: nowrap;
 }
 
+/* ───────────── RESULT LINK ───────────── */
+.result-link-wrap {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.result-link-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #1f2328;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.result-link-btn:hover { opacity: 0.85; }
+.result-link-btn:active { transform: scale(0.97); }
+
 /* ───────────── FAQ ───────────── */
 .faq-section {
   width: 100%;
