@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로또 번호 추천기</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #0d1117;
+      --bg2:    #161b22;
+      --bg3:    #1c2230;
+      --border: rgba(255,255,255,0.08);
+      --text:   #e6edf3;
+      --muted:  #8b949e;
+      --accent: #fbc400;
+    }
+
+    html { scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 80px;
+      gap: 0;
+    }
+
+    /* ── Header ── */
+    header { text-align: center; margin-bottom: 48px; }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 8px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Fira Code', monospace;
+    }
+
+    .data-source {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px;
+      font-size: 11px; color: var(--muted);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 12px;
+    }
+
+    .data-source::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4caf50;
+      flex-shrink: 0;
+    }
+
+    /* ── Mode Toggle ── */
+    .mode-toggle {
+      display: flex;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 32px;
+    }
+
+    .mode-btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--bg3);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+
+    /* ── Board ── */
+    .board {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 580px;
+      margin-bottom: 32px;
+    }
+
+    .row {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .row:hover { border-color: rgba(251,196,0,0.2); }
+
+    .row-label {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 32px;
+    }
+
+    .balls { display: flex; gap: 9px; flex-wrap: wrap; }
+
+    /* ── Ball ── */
+    .ball {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      position: relative;
+      opacity: 0;
+      transform: scale(0.4) rotate(-20deg);
+      transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: inset 0 -3px 6px rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.4);
+      cursor: default;
+    }
+
+    .ball::after {
+      content: '';
+      position: absolute;
+      top: 6px; left: 8px;
+      width: 14px; height: 9px;
+      background: rgba(255,255,255,0.28);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+    }
+
+    .ball.show { opacity: 1; transform: scale(1) rotate(0deg); }
+
+    .ball.y  { background: radial-gradient(circle at 35% 35%, #fdd835, #f9a800); }
+    .ball.b  { background: radial-gradient(circle at 35% 35%, #81d4fa, #1976d2); }
+    .ball.r  { background: radial-gradient(circle at 35% 35%, #ef9a9a, #e53935); }
+    .ball.g  { background: radial-gradient(circle at 35% 35%, #cfd8dc, #78909c); }
+    .ball.p  { background: radial-gradient(circle at 35% 35%, #d4e157, #7cb342); }
+
+    .ball-placeholder {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 2px dashed rgba(255,255,255,0.08);
+    }
+
+    /* ── Hot badge ── */
+    .hot-badge {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s 0.6s;
+    }
+
+    .ball-wrap { position: relative; padding-bottom: 20px; }
+    .ball-wrap .hot-badge.visible { opacity: 1; }
+
+    /* ── Buttons ── */
+    .btn-wrap {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 30px;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s, opacity 0.2s;
+    }
+
+    button:active { transform: scale(0.96) !important; }
+
+    .btn-main {
+      background: linear-gradient(135deg, #fbc400, #f39c12);
+      color: #111;
+      box-shadow: 0 4px 20px rgba(251,196,0,0.3);
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(251,196,0,0.45);
+    }
+
+    .btn-clear {
+      background: var(--bg2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-clear:hover { color: var(--text); transform: translateY(-2px); }
+
+    /* ── Stats Panel ── */
+    #stats-panel {
+      width: 100%;
+      max-width: 580px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .stats-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stat-item.highlighted {
+      border-color: rgba(251,196,0,0.5);
+      background: rgba(251,196,0,0.06);
+      transform: scale(1.05);
+    }
+
+    .stat-num {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-bar-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .stat-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #fbc400, #f39c12);
+      transition: width 0.6s ease;
+    }
+
+    .stat-count {
+      font-size: 10px;
+      color: var(--muted);
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* ── Notice ── */
+    .notice {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.8;
+      max-width: 460px;
+    }
+
+    .notice strong { color: var(--accent); }
+    .notice a { color: var(--muted); text-underline-offset: 3px; }
+
+    /* ── Mobile ── */
+    @media (max-width: 480px) {
+      .ball, .ball-placeholder { width: 42px; height: 42px; font-size: 14px; }
+      .row { padding: 16px 14px; gap: 10px; }
+      .balls { gap: 7px; }
+      .ball::after { top: 5px; left: 6px; width: 11px; height: 7px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🍀 로또 번호 <span>추천기</span></h1>
+    <p class="subtitle">// 역대 당첨 통계 기반 · 6/45</p>
+    <div class="data-source">
+      lottolyzer.com 기준 · 2002.12 ~ 2026.05 전체 회차 데이터
+    </div>
+  </header>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="modeFreq" onclick="setMode('freq')">📊 빈도수 기반</button>
+    <button class="mode-btn" id="modeRandom" onclick="setMode('random')">🎲 순수 랜덤</button>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="btn-wrap">
+    <button class="btn-main" onclick="generate()">✨ 번호 추천받기</button>
+    <button class="btn-clear" onclick="clearAll()">↺ 초기화</button>
+  </div>
+
+  <!-- 통계 패널 -->
+  <div id="stats-panel">
+    <p class="stats-title">// 번호별 역대 출현 횟수 (1등 당첨번호 기준)</p>
+    <div class="stats-grid" id="statsGrid"></div>
+  </div>
+
+  <p class="notice">
+    <strong>빈도수 기반</strong>: 출현 횟수에 비례한 가중 확률로 번호 추출<br>
+    <strong>순수 랜덤</strong>: 1~45 균등 확률 추출 · 5게임 생성<br>
+    이 서비스는 재미용이며 당첨을 보장하지 않습니다.<br>
+    데이터 출처: <a href="https://en.lottolyzer.com/number-frequencies/south-korea/6_slash_45-lotto" target="_blank">lottolyzer.com</a>
+  </p>
+
+  <script>
+    // ── 역대 출현 횟수 데이터 (lottolyzer.com, 2002.12 ~ 2026.05) ──
+    const FREQ = {
+       1:131,  2:114,  3:131,  4:119,  5:117,
+       6:130,  7:132,  8:125,  9:108, 10:129,
+      11:129, 12:147, 13:143, 14:133, 15:136,
+      16:133, 17:132, 18:135, 19:127, 20:132,
+      21:130, 22:117, 23:115, 24:130, 25:111,
+      26:127, 27:141, 28:125, 29:122, 30:123,
+      31:128, 32:113, 33:137, 34:144, 35:124,
+      36:121, 37:124, 38:142, 39:128, 40:128,
+      41:119, 42:116, 43:129, 44:125, 45:140
+    };
+
+    const GAMES = 5;
+    let currentMode = 'freq';
+    let lastPicked = [];
+
+    function ballClass(n) {
+      if (n <= 10) return 'y';
+      if (n <= 20) return 'b';
+      if (n <= 30) return 'r';
+      if (n <= 40) return 'g';
+      return 'p';
+    }
+
+    // 가중 확률 뽑기 (빈도수 기반)
+    function pickWeighted() {
+      const nums = Object.keys(FREQ).map(Number);
+      const weights = nums.map(n => FREQ[n]);
+      const total = weights.reduce((a, b) => a + b, 0);
+
+      const picked = new Set();
+      while (picked.size < 6) {
+        let r = Math.random() * total;
+        for (let i = 0; i < nums.length; i++) {
+          r -= weights[i];
+          if (r <= 0 && !picked.has(nums[i])) {
+            picked.add(nums[i]);
+            break;
+          }
+        }
+      }
+      return [...picked].sort((a, b) => a - b);
+    }
+
+    // 순수 랜덤 뽑기
+    function pickRandom() {
+      const pool = Array.from({ length: 45 }, (_, i) => i + 1);
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return pool.slice(0, 6).sort((a, b) => a - b);
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('modeFreq').classList.toggle('active', mode === 'freq');
+      document.getElementById('modeRandom').classList.toggle('active', mode === 'random');
+      clearAll();
+    }
+
+    function generate() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      lastPicked = [];
+
+      for (let g = 0; g < GAMES; g++) {
+        const nums = currentMode === 'freq' ? pickWeighted() : pickRandom();
+        lastPicked.push(nums);
+
+        const maxFreq = Math.max(...nums.map(n => FREQ[n]));
+
+        const row = document.createElement('div');
+        row.className = 'row';
+
+        const ballsHTML = nums.map(n => {
+          const isHot = FREQ[n] === maxFreq;
+          const rank = getRank(n);
+          return `
+            <div class="ball-wrap">
+              <div class="ball ${ballClass(n)}" title="${n}번: 역대 ${FREQ[n]}회 출현 (${rank}위)">${n}</div>
+              ${isHot && currentMode === 'freq' ? '<span class="hot-badge">🔥 HOT</span>' : ''}
+            </div>`;
+        }).join('');
+
+        row.innerHTML = `
+          <span class="row-label">#${g + 1}</span>
+          <div class="balls">${ballsHTML}</div>`;
+
+        board.appendChild(row);
+
+        // 순차 등장 애니메이션
+        const balls = row.querySelectorAll('.ball');
+        balls.forEach((ball, i) => {
+          setTimeout(() => ball.classList.add('show'), g * 100 + i * 70);
+        });
+
+        // HOT 배지 등장
+        if (currentMode === 'freq') {
+          const badges = row.querySelectorAll('.hot-badge');
+          badges.forEach(b => {
+            setTimeout(() => b.classList.add('visible'), g * 100 + 6 * 70 + 200);
+          });
+        }
+      }
+
+      updateStatsHighlight();
+    }
+
+    function clearAll() {
+      lastPicked = [];
+      renderEmpty();
+      updateStatsHighlight();
+    }
+
+    function renderEmpty() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      for (let g = 0; g < GAMES; g++) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <span class="row-label">#${g + 1}</span>
+          <div class="balls">
+            ${Array(6).fill('<div class="ball-placeholder"></div>').join('')}
+          </div>`;
+        board.appendChild(row);
+      }
+    }
+
+    // 순위 계산
+    const SORTED_NUMS = Object.keys(FREQ).map(Number).sort((a, b) => FREQ[b] - FREQ[a]);
+    function getRank(n) { return SORTED_NUMS.indexOf(n) + 1; }
+
+    // 통계 패널 렌더링
+    function renderStats() {
+      const grid = document.getElementById('statsGrid');
+      const maxFreq = Math.max(...Object.values(FREQ));
+
+      grid.innerHTML = SORTED_NUMS.map(n => `
+        <div class="stat-item" id="stat-${n}">
+          <div class="stat-num">${n}</div>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar" style="width:${(FREQ[n] / maxFreq * 100).toFixed(1)}%"></div>
+          </div>
+          <div class="stat-count">${FREQ[n]}회</div>
+        </div>`).join('');
+    }
+
+    function updateStatsHighlight() {
+      document.querySelectorAll('.stat-item').forEach(el => el.classList.remove('highlighted'));
+      const pickedNums = lastPicked.flat();
+      pickedNums.forEach(n => {
+        const el = document.getElementById(`stat-${n}`);
+        if (el) el.classList.add('highlighted');
+      });
+    }
+
+    // 초기화
+    renderEmpty();
+    renderStats();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bluepapa AI Lotto번호 생성기</title>
+  <style>
+    /* ── System Font Stack (외부 폰트 없이 동작) ── */
+    :root {
+      --bg:      #0d1117;
+      --bg2:     #161b22;
+      --bg3:     #1c2230;
+      --bg4:     #222b3a;
+      --border:  rgba(255,255,255,0.08);
+      --text:    #e6edf3;
+      --muted:   #8b949e;
+      --accent:  #fbc400;
+      --accent2: #4f9cf9;
+      --green:   #4caf50;
+      --radius:  16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 56px 20px 80px;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+    /* ───────────── HEADER ───────────── */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .logo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    h1 .blue { color: var(--accent2); }
+    h1 .gold { color: var(--accent); }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .data-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .data-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* ───────────── MODE TOGGLE ───────────── */
+    .mode-wrap {
+      display: flex;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .mode-btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: var(--bg4);
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    /* ───────────── TOP-N 서브 셀렉터 ───────────── */
+    .topn-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease, margin-bottom 0.35s ease;
+    }
+
+    .topn-wrap.visible {
+      max-height: 120px;
+      opacity: 1;
+      margin-bottom: 24px;
+    }
+
+    .topn-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .topn-label strong { color: var(--accent); }
+
+    .topn-btns {
+      display: flex;
+      gap: 7px;
+    }
+
+    .topn-btn {
+      cursor: pointer;
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .topn-btn:hover {
+      border-color: rgba(251,196,0,0.4);
+      color: var(--text);
+    }
+
+    .topn-btn.active {
+      background: linear-gradient(135deg, #fbc400, #e67e00);
+      border-color: transparent;
+      color: #111;
+      box-shadow: 0 4px 12px rgba(251,196,0,0.35);
+      transform: scale(1.1);
+    }
+
+    /* 고정 볼 표시 */
+    .ball.fixed-ball {
+      box-shadow:
+        inset 0 -4px 8px rgba(0,0,0,0.3),
+        inset 0 2px 4px rgba(255,255,255,0.15),
+        0 6px 16px rgba(0,0,0,0.5),
+        0 0 0 3px rgba(251,196,0,0.7);
+    }
+
+    .pin-icon {
+      font-size: 9px;
+      text-align: center;
+      line-height: 1;
+      height: 12px;
+    }
+
+    /* ───────────── BOARD ───────────── */
+    .board {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .game-row {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.25s;
+    }
+
+    .game-row:hover { border-color: rgba(251,196,0,0.2); }
+
+    .game-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 30px;
+      letter-spacing: 0.05em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .balls {
+      display: flex;
+      flex: 1;
+      justify-content: space-evenly;
+      align-items: flex-end;
+    }
+
+    /* ───────────── BALL ───────────── */
+    .ball-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+    .ball {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.35);
+      position: relative;
+      opacity: 0;
+      transform: scale(0.3) rotate(-15deg);
+      transition: opacity 0.3s, transform 0.42s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow:
+        inset 0 -4px 8px rgba(0,0,0,0.3),
+        inset 0 2px 4px rgba(255,255,255,0.15),
+        0 6px 16px rgba(0,0,0,0.5);
+      cursor: default;
+    }
+
+    .ball::after {
+      content: '';
+      position: absolute;
+      top: 7px; left: 9px;
+      width: 14px; height: 9px;
+      background: rgba(255,255,255,0.28);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+    }
+
+    .ball.show { opacity: 1; transform: scale(1) rotate(0deg); }
+
+    /* 로또 공 색상 */
+    .ball.y { background: radial-gradient(circle at 35% 30%, #ffe566, #f9a800); }  /* 1–10 */
+    .ball.b { background: radial-gradient(circle at 35% 30%, #90caf9, #1565c0); }  /* 11–20 */
+    .ball.r { background: radial-gradient(circle at 35% 30%, #ef9a9a, #c62828); }  /* 21–30 */
+    .ball.s { background: radial-gradient(circle at 35% 30%, #cfd8dc, #546e7a); }  /* 31–40 */
+    .ball.g { background: radial-gradient(circle at 35% 30%, #dce775, #558b2f); }  /* 41–45 */
+
+    .ball-placeholder {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 2px dashed rgba(255,255,255,0.07);
+    }
+
+    .ball-rank {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      opacity: 0;
+      transition: opacity 0.3s 0.5s;
+      height: 12px;
+    }
+
+    .ball-rank.hot { color: var(--accent); }
+    .ball-rank.visible { opacity: 1; }
+
+    /* ───────────── BUTTONS ───────────── */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 44px;
+    }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 15px 34px;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .btn:active { transform: scale(0.95) !important; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #fbc400 0%, #e67e00 100%);
+      color: #111;
+      box-shadow: 0 4px 20px rgba(251,196,0,0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(251,196,0,0.42);
+    }
+
+    .btn-secondary {
+      background: var(--bg2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ───────────── STATS PANEL ───────────── */
+    .stats-panel {
+      width: 100%;
+      max-width: 600px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .stats-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .stats-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stats-header h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .stats-toggle-icon {
+      font-size: 13px;
+      color: var(--muted);
+      transition: transform 0.3s;
+    }
+
+    .stats-toggle-icon.open { transform: rotate(180deg); }
+
+    .stats-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .stats-body.open { max-height: 600px; }
+
+    .stats-inner { padding: 20px; }
+
+    /* 정렬 탭 */
+    .sort-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .sort-tab {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+
+    .sort-tab.active {
+      background: var(--bg4);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+      gap: 7px;
+    }
+
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 10px 6px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+
+    .stat-card.picked {
+      border-color: rgba(251,196,0,0.55);
+      background: rgba(251,196,0,0.05);
+      transform: scale(1.04);
+    }
+
+    .stat-num {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .stat-bar-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .stat-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #fbc400, #e67e00);
+    }
+
+    .stat-count {
+      font-size: 10px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ───────────── FOOTER NOTICE ───────────── */
+    .notice {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.85;
+      max-width: 480px;
+    }
+
+    .notice strong { color: var(--accent); }
+    .notice a { color: var(--muted); }
+
+    /* ───────────── RESPONSIVE ───────────── */
+    @media (max-width: 500px) {
+      .ball, .ball-placeholder { width: 44px; height: 44px; font-size: 15px; }
+      .game-row { padding: 14px 12px; gap: 10px; }
+      .balls { gap: 7px; }
+      .ball::after { top: 5px; left: 6px; width: 11px; height: 7px; }
+      .btn { padding: 13px 24px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      Blue Lotto 6/45
+    </div>
+    <h1><span class="blue">Bluepapa</span> <span class="gold">AI Lotto</span>번호 생성기</h1>
+    <p class="tagline">역대 당첨 번호 통계 기반 AI 번호 추천</p>
+    <div class="data-badge">
+      lottolyzer.com · 2002.12 ~ 2026.05 전체 회차 기준
+    </div>
+  </header>
+
+  <!-- Mode Toggle -->
+  <div class="mode-wrap">
+    <button class="mode-btn active" id="btnFreq" onclick="setMode('freq')">📊 빈도수 기반</button>
+    <button class="mode-btn" id="btnRandom" onclick="setMode('random')">🎲 순수 랜덤</button>
+    <button class="mode-btn" id="btnTopN" onclick="setMode('topn')">🏆 Top 번호 고정</button>
+  </div>
+
+  <!-- Top N 서브 셀렉터 -->
+  <div class="topn-wrap" id="topnWrap">
+    <div class="topn-label">상위 <strong id="topnLabelNum">3</strong>개 고정 + 나머지 빈도수 기반 추출</div>
+    <div class="topn-btns">
+      <button class="topn-btn" onclick="setTopN(1)">1</button>
+      <button class="topn-btn" onclick="setTopN(2)">2</button>
+      <button class="topn-btn active" onclick="setTopN(3)">3</button>
+      <button class="topn-btn" onclick="setTopN(4)">4</button>
+      <button class="topn-btn" onclick="setTopN(5)">5</button>
+      <button class="topn-btn" onclick="setTopN(6)">6</button>
+    </div>
+  </div>
+
+  <!-- Board -->
+  <div class="board" id="board"></div>
+
+  <!-- Buttons -->
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="generate()">✨ 번호 추천받기</button>
+    <button class="btn btn-secondary" onclick="clearBoard()">↺ 초기화</button>
+  </div>
+
+  <!-- Stats Panel -->
+  <div class="stats-panel">
+    <div class="stats-header" onclick="toggleStats()">
+      <div class="stats-header-left">
+        <span>📈</span>
+        <h2>번호별 역대 출현 통계 (1등 당첨번호 기준)</h2>
+      </div>
+      <span class="stats-toggle-icon" id="statsIcon">▼</span>
+    </div>
+    <div class="stats-body" id="statsBody">
+      <div class="stats-inner">
+        <div class="sort-tabs">
+          <button class="sort-tab active" onclick="sortStats('freq')">출현 많은 순</button>
+          <button class="sort-tab" onclick="sortStats('asc')">번호 오름차순</button>
+          <button class="sort-tab" onclick="sortStats('rare')">출현 적은 순</button>
+        </div>
+        <div class="stats-grid" id="statsGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notice -->
+  <p class="notice">
+    <strong>빈도수 기반</strong>: 출현 횟수에 비례한 가중 확률로 번호 추출<br>
+    <strong>순수 랜덤</strong>: 1~45 균등 확률 · <strong>Top N 고정</strong>: 상위 N개 고정 + 나머지 빈도수 기반 추출<br>
+    이 서비스는 재미용이며 당첨을 보장하지 않습니다.<br>
+    데이터: <a href="https://en.lottolyzer.com/number-frequencies/south-korea/6_slash_45-lotto" target="_blank">lottolyzer.com</a>
+  </p>
+
+  <script>
+    /* ── 역대 출현 횟수 (lottolyzer.com, 2002.12 ~ 2026.05) ── */
+    const FREQ = {
+       1:131,  2:114,  3:131,  4:119,  5:117,
+       6:130,  7:132,  8:125,  9:108, 10:129,
+      11:129, 12:147, 13:143, 14:133, 15:136,
+      16:133, 17:132, 18:135, 19:127, 20:132,
+      21:130, 22:117, 23:115, 24:130, 25:111,
+      26:127, 27:141, 28:125, 29:122, 30:123,
+      31:128, 32:113, 33:137, 34:144, 35:124,
+      36:121, 37:124, 38:142, 39:128, 40:128,
+      41:119, 42:116, 43:129, 44:125, 45:140
+    };
+
+    const GAMES = 5;
+    const MAX_FREQ = Math.max(...Object.values(FREQ));
+
+    /* 번호 → 볼 색상 */
+    function ballColor(n) {
+      if (n <= 10) return 'y';
+      if (n <= 20) return 'b';
+      if (n <= 30) return 'r';
+      if (n <= 40) return 's';
+      return 'g';
+    }
+
+    /* 순위 (빈도 내림차순) */
+    const BY_FREQ = Object.keys(FREQ).map(Number).sort((a, b) => FREQ[b] - FREQ[a]);
+    function rankOf(n) { return BY_FREQ.indexOf(n) + 1; }
+
+    /* ── 뽑기 알고리즘 ── */
+    function pickWeighted() {
+      const nums = Object.keys(FREQ).map(Number);
+      const weights = nums.map(n => FREQ[n]);
+      const total = weights.reduce((a, b) => a + b, 0);
+      const picked = new Set();
+      let tries = 0;
+      while (picked.size < 6 && tries++ < 1000) {
+        let r = Math.random() * total;
+        for (let i = 0; i < nums.length; i++) {
+          r -= weights[i];
+          if (r <= 0 && !picked.has(nums[i])) { picked.add(nums[i]); break; }
+        }
+      }
+      return [...picked].sort((a, b) => a - b);
+    }
+
+    function pickRandom() {
+      const pool = Array.from({ length: 45 }, (_, i) => i + 1);
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return pool.slice(0, 6).sort((a, b) => a - b);
+    }
+
+    /* Top N 고정 + 나머지 빈도수 기반 */
+    function pickTopN(n) {
+      const fixed = BY_FREQ.slice(0, n);
+      const fixedSet = new Set(fixed);
+      const remaining = Object.keys(FREQ).map(Number).filter(x => !fixedSet.has(x));
+      const weights = remaining.map(x => FREQ[x]);
+      const total = weights.reduce((a, b) => a + b, 0);
+
+      const extra = new Set();
+      let tries = 0;
+      while (extra.size < 6 - n && tries++ < 1000) {
+        let r = Math.random() * total;
+        for (let i = 0; i < remaining.length; i++) {
+          r -= weights[i];
+          if (r <= 0 && !extra.has(remaining[i])) { extra.add(remaining[i]); break; }
+        }
+      }
+      return [...fixed, ...extra].sort((a, b) => a - b);
+    }
+
+    /* ── 상태 ── */
+    let mode = 'freq';
+    let topN = 3;
+    let lastPicked = [];
+    let statsOpen = false;
+    let statSort = 'freq';
+
+    function setMode(m) {
+      mode = m;
+      ['Freq','Random','TopN'].forEach(k => {
+        document.getElementById('btn' + k).classList.toggle('active', m === k.toLowerCase());
+      });
+      document.getElementById('topnWrap').classList.toggle('visible', m === 'topn');
+      clearBoard();
+    }
+
+    function setTopN(n) {
+      topN = n;
+      document.getElementById('topnLabelNum').textContent = n;
+      document.querySelectorAll('.topn-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i + 1 === n);
+      });
+      clearBoard();
+    }
+
+    /* ── 생성 ── */
+    function generate() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      lastPicked = [];
+
+      const fixedNums = mode === 'topn' ? new Set(BY_FREQ.slice(0, topN)) : new Set();
+
+      for (let g = 0; g < GAMES; g++) {
+        const nums = mode === 'freq'   ? pickWeighted()
+                   : mode === 'random' ? pickRandom()
+                   : mode === 'topn'   ? pickTopN(topN)
+                   :                     pickWeighted();
+
+        lastPicked.push(...nums);
+
+        const row = document.createElement('div');
+        row.className = 'game-row';
+
+        const ballsHTML = nums.map(n => {
+          const rank = rankOf(n);
+          const isFixed = mode === 'topn' && fixedNums.has(n);
+          const isHot = rank <= 5;
+          const rankLabel = isFixed ? '📌 고정' : (isHot ? `🔥 ${rank}위` : `${rank}위`);
+          const showRank = mode !== 'random';
+          return `
+            <div class="ball-wrap">
+              <div class="ball ${ballColor(n)} ${isFixed ? 'fixed-ball' : ''}"
+                   title="${n}번 · 역대 ${FREQ[n]}회 (${rank}위)${isFixed ? ' · 고정번호' : ''}">${n}</div>
+              <span class="ball-rank ${isFixed ? 'hot' : isHot ? 'hot' : ''}">${showRank ? rankLabel : ''}</span>
+            </div>`;
+        }).join('');
+
+        row.innerHTML = `<span class="game-label">#${g + 1}</span><div class="balls">${ballsHTML}</div>`;
+        board.appendChild(row);
+
+        /* 볼 순차 등장 */
+        row.querySelectorAll('.ball').forEach((ball, i) => {
+          setTimeout(() => ball.classList.add('show'), g * 90 + i * 65);
+        });
+
+        /* 순위 뱃지 등장 */
+        if (mode !== 'random') {
+          row.querySelectorAll('.ball-rank').forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), g * 90 + i * 65 + 350);
+          });
+        }
+      }
+
+      updateStatsHighlight();
+    }
+
+    /* ── 초기화 ── */
+    function clearBoard() {
+      lastPicked = [];
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      for (let g = 0; g < GAMES; g++) {
+        const row = document.createElement('div');
+        row.className = 'game-row';
+        row.innerHTML = `
+          <span class="game-label">#${g + 1}</span>
+          <div class="balls">${Array(6).fill('<div class="ball-placeholder"></div>').join('')}</div>`;
+        board.appendChild(row);
+      }
+      updateStatsHighlight();
+    }
+
+    /* ── 통계 패널 ── */
+    function toggleStats() {
+      statsOpen = !statsOpen;
+      document.getElementById('statsBody').classList.toggle('open', statsOpen);
+      document.getElementById('statsIcon').classList.toggle('open', statsOpen);
+    }
+
+    function sortStats(by) {
+      statSort = by;
+      document.querySelectorAll('.sort-tab').forEach((el, i) => {
+        el.classList.toggle('active', ['freq','asc','rare'][i] === by);
+      });
+      renderStats();
+    }
+
+    function renderStats() {
+      const order = statSort === 'asc'  ? Object.keys(FREQ).map(Number)
+                  : statSort === 'rare' ? [...BY_FREQ].reverse()
+                  :                       BY_FREQ;
+
+      const picked = new Set(lastPicked);
+      document.getElementById('statsGrid').innerHTML = order.map(n => `
+        <div class="stat-card ${picked.has(n) ? 'picked' : ''}" id="sc-${n}">
+          <div class="stat-num">${n}</div>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar" style="width:${(FREQ[n] / MAX_FREQ * 100).toFixed(1)}%"></div>
+          </div>
+          <div class="stat-count">${FREQ[n]}회</div>
+        </div>`).join('');
+    }
+
+    function updateStatsHighlight() {
+      const picked = new Set(lastPicked);
+      document.querySelectorAll('.stat-card').forEach(el => {
+        const n = parseInt(el.id.replace('sc-', ''));
+        el.classList.toggle('picked', picked.has(n));
+      });
+    }
+
+    /* ── 초기 렌더 ── */
+    clearBoard();
+    renderStats();
+  </script>
+
+</body>
+</html>
