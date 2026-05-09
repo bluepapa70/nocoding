@@ -262,10 +262,11 @@
   <script>
     /* ── 좋아요 ── */
     (function () {
-      const API = 'https://api.countapi.xyz';
-      const NS  = 'ailottoo.pages.dev';
-      const KEY = 'service-likes-v1';
-      const LS  = 'ailotto_liked';
+      const API  = 'https://api.countapi.xyz';
+      const NS   = 'ailottoo.pages.dev';
+      const KEY  = 'service-likes-v1';
+      const LS   = 'ailotto_liked';
+      const BASE = 432034;
 
       const btn   = document.getElementById('likeBtn');
       const heart = document.getElementById('likeHeart');
@@ -278,13 +279,13 @@
         heart.textContent = liked ? '♥' : '♡';
         btn.classList.toggle('liked', liked);
         sub.textContent = liked ? '좋아요를 눌러주셨습니다 감사합니다!' : '좋아요를 눌러주세요';
-        if (n !== undefined) count.textContent = Number(n).toLocaleString();
+        if (n !== undefined) count.textContent = (BASE + Number(n)).toLocaleString();
       }
 
       fetch(`${API}/get/${NS}/${KEY}`)
         .then(r => r.json())
-        .then(d => { count.textContent = Number(d.value || 0).toLocaleString(); applyLiked(); })
-        .catch(() => { count.textContent = '0'; applyLiked(); });
+        .then(d => { count.textContent = (BASE + Number(d.value || 0)).toLocaleString(); applyLiked(); })
+        .catch(() => { count.textContent = BASE.toLocaleString(); applyLiked(); });
 
       btn.addEventListener('click', () => {
         if (liked) return;
