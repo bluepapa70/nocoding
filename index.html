@@ -269,23 +269,26 @@
     </div>
   </section>
 
-  <!-- Disqus Comments -->
-  <section class="disqus-section">
-    <div id="disqus_thread"></div>
+  <!-- Star Review Section -->
+  <section class="review-section">
+    <h2 class="section-title">서비스 평가</h2>
+    <div class="review-card">
+      <div class="review-form">
+        <div class="star-select" id="starSelect" role="radiogroup" aria-label="별점 선택">
+          <span class="star-btn" data-v="1">★</span>
+          <span class="star-btn" data-v="2">★</span>
+          <span class="star-btn" data-v="3">★</span>
+          <span class="star-btn" data-v="4">★</span>
+          <span class="star-btn" data-v="5">★</span>
+        </div>
+        <p class="star-label" id="starLabel">별점을 선택하세요</p>
+        <input class="review-input" id="reviewNick" type="text" placeholder="닉네임 (선택)" maxlength="20" autocomplete="off" />
+        <textarea class="review-textarea" id="reviewText" placeholder="한 마디 남겨주세요 (최대 200자)" maxlength="200"></textarea>
+        <button class="review-submit" id="reviewSubmit">등록</button>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
   </section>
-  <script>
-    var disqus_config = function () {
-      this.page.url = 'https://ailottoo.pages.dev/';
-      this.page.identifier = 'home';
-    };
-    (function() {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://https-ailottoo-pages-dev.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
   <!-- Footer -->
   <footer class="site-footer">
@@ -296,6 +299,91 @@
     </nav>
     <p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p>
   </footer>
+
+  <script>
+    /* ── 5-Star Review System ── */
+    (function () {
+      const STORAGE_KEY = 'ailotto_reviews';
+      const LABELS = ['', '별로예요', '아쉬워요', '보통이에요', '좋아요', '최고예요!'];
+      let selected = 0;
+
+      function load() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+      }
+
+      function save(list) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 50)));
+      }
+
+      function renderStars(n) {
+        return '★'.repeat(n) + '☆'.repeat(5 - n);
+      }
+
+      function formatDate(ts) {
+        const d = new Date(ts);
+        return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+      }
+
+      function render() {
+        const list = load();
+        const el = document.getElementById('reviewList');
+        if (!list.length) {
+          el.innerHTML = '<p class="review-empty">첫 번째 평가를 남겨주세요!</p>';
+          return;
+        }
+        el.innerHTML = list.map(r => `
+          <div class="review-item">
+            <div class="review-item-header">
+              <span class="review-item-nick">${escHtml(r.nick || '익명')}</span>
+              <span class="review-item-stars">${renderStars(r.star)}</span>
+              <span class="review-item-date">${formatDate(r.ts)}</span>
+            </div>
+            ${r.text ? `<p class="review-item-text">${escHtml(r.text)}</p>` : ''}
+          </div>`).join('');
+      }
+
+      function escHtml(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      function updateStarUI(v) {
+        selected = v;
+        document.querySelectorAll('.star-btn').forEach(s => {
+          s.classList.toggle('active', Number(s.dataset.v) <= v);
+        });
+        document.getElementById('starLabel').textContent = v ? LABELS[v] : '별점을 선택하세요';
+      }
+
+      document.getElementById('starSelect').addEventListener('click', e => {
+        const btn = e.target.closest('.star-btn');
+        if (btn) updateStarUI(Number(btn.dataset.v));
+      });
+
+      document.getElementById('starSelect').addEventListener('mouseover', e => {
+        const btn = e.target.closest('.star-btn');
+        if (btn) document.querySelectorAll('.star-btn').forEach(s => {
+          s.classList.toggle('active', Number(s.dataset.v) <= Number(btn.dataset.v));
+        });
+      });
+
+      document.getElementById('starSelect').addEventListener('mouseleave', () => updateStarUI(selected));
+
+      document.getElementById('reviewSubmit').addEventListener('click', () => {
+        if (!selected) { alert('별점을 선택해 주세요.'); return; }
+        const nick = document.getElementById('reviewNick').value.trim();
+        const text = document.getElementById('reviewText').value.trim();
+        const list = load();
+        list.unshift({ star: selected, nick, text, ts: Date.now() });
+        save(list);
+        document.getElementById('reviewNick').value = '';
+        document.getElementById('reviewText').value = '';
+        updateStarUI(0);
+        render();
+      });
+
+      render();
+    })();
+  </script>
 
   <script src="main.js"></script>
   <script>
