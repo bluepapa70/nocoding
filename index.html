@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>통계왕 AI Lotto 번호 생성기 - 통계 기반 번호 추천</title>
-  <meta name="description" content="역대 로또 6/45 당첨 번호 통계를 기반으로 AI가 번호를 추천해 드립니다. 빈도수 기반, 순수 랜덤, Top N 고정 등 다양한 방식으로 번호를 생성하세요." />
-  <meta name="keywords" content="로또번호생성기, 로또번호추천, 로또645, AI로또, 로또통계, 로또번호, 당첨번호" />
+  <title>통계왕 AI Lotto 번호 생성기 - 통계 기반 로또 번호 추천</title>
+  <meta name="description" content="역대 로또 6/45 당첨 번호 통계를 기반으로 AI가 번호를 추천해 드립니다. 빈도수 기반, 순수 랜덤, Top N 고정 등 다양한 방식으로 행운번호를 생성하세요." />
+  <meta name="keywords" content="로또번호생성기, 로또번호추천, 로또645, AI로또, 로또통계, 로또번호, 당첨번호, 행운번호" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#fbc400" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="통계왕 AI Lotto 번호 생성기" />
-  <meta property="og:description" content="역대 당첨 번호 통계 기반 AI 로또 번호 추천 서비스" />
+  <meta property="og:description" content="역대 당첨 번호 통계 기반 AI 로또 번호 추천 서비스. 무료로 행운번호를 받아보세요." />
   <meta property="og:url" content="https://ailottoo.pages.dev" />
   <meta property="og:image" content="https://ailottoo.pages.dev/title.png" />
   <meta property="og:image:width" content="500" />
-  <meta property="og:image:height" content="auto" />
+  <meta property="og:image:height" content="300" />
   <meta property="og:locale" content="ko_KR" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="통계왕 AI Lotto 번호 생성기" />
   <meta name="twitter:description" content="역대 당첨 번호 통계 기반 AI 로또 번호 추천 서비스" />
   <meta name="twitter:image" content="https://ailottoo.pages.dev/title.png" />
-  <link rel="canonical" href="https://ailottoo.pages.dev" />
+  <link rel="canonical" href="https://ailottoo.pages.dev/" />
   <link rel="icon" href="/title.png" type="image/png" />
   <link rel="apple-touch-icon" href="/title.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,7 @@
     "@type": "WebApplication",
     "name": "통계왕 AI Lotto 번호 생성기",
     "description": "역대 로또 6/45 당첨 번호 통계를 기반으로 AI가 번호를 추천해 드리는 무료 서비스",
-    "url": "https://ailottoo.pages.dev",
+    "url": "https://ailottoo.pages.dev/",
     "applicationCategory": "EntertainmentApplication",
     "inLanguage": "ko",
     "isAccessibleForFree": true,
@@ -47,12 +47,11 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="테마 변경">
       <span id="themeIcon">🌙</span>
     </button>
-<h1>
+    <h1>
       <img src="title.png" alt="통계왕 AI Lotto 번호 생성기" class="title-img">
     </h1>
     <p class="tagline">역대 당첨 번호 통계 기반 AI 번호 추천</p>
@@ -62,199 +61,231 @@
     <div class="draw-info" id="drawInfo"></div>
   </header>
 
-  <!-- Mode Toggle -->
-  <div class="mode-wrap">
-    <button class="mode-btn active" id="btnFreq" onclick="setMode('freq')">📊 빈도수 기반</button>
-    <button class="mode-btn" id="btnRandom" onclick="setMode('random')">🎲 순수 랜덤</button>
-    <button class="mode-btn" id="btnTopN" onclick="setMode('topn')">🏆 Top 번호 고정</button>
-  </div>
+  <main>
 
-  <!-- 추천받기 버튼 -->
-  <button class="btn-generate-img" onclick="generate()" title="행운번호 받기">
-    <img src="btn-generate.png" alt="행운번호 받기">
-    <span>✨ 행운번호 받기</span>
-  </button>
+    <!-- 서비스 소개 -->
+    <section class="intro-section">
+      <p class="intro-text">
+        <strong>통계왕 AI Lotto</strong>는 2002년 12월 제1회부터 2026년 5월까지 진행된 로또 6/45 전체 회차의
+        1등 당첨 번호 데이터를 분석하여 행운번호를 추천해 드리는 무료 서비스입니다.
+        빈도수 기반 가중 추출, 순수 랜덤, Top N 고정 등 세 가지 방식 중 원하는 방법을 선택해 나만의 번호를 받아보세요.
+        모든 번호 생성은 브라우저에서 직접 처리되며, 개인정보를 수집하지 않습니다.
+      </p>
+    </section>
 
-  <!-- Top N 서브 셀렉터 -->
-  <div class="topn-wrap" id="topnWrap">
-    <div class="topn-label">상위 <strong id="topnLabelNum">3</strong>개 고정 + 나머지 빈도수 기반 추출</div>
-    <div class="topn-btns">
-      <button class="topn-btn" onclick="setTopN(1)">1</button>
-      <button class="topn-btn" onclick="setTopN(2)">2</button>
-      <button class="topn-btn active" onclick="setTopN(3)">3</button>
-      <button class="topn-btn" onclick="setTopN(4)">4</button>
-      <button class="topn-btn" onclick="setTopN(5)">5</button>
-      <button class="topn-btn" onclick="setTopN(6)">6</button>
+    <!-- Mode Toggle -->
+    <div class="mode-wrap">
+      <button class="mode-btn active" id="btnFreq" onclick="setMode('freq')">📊 빈도수 기반</button>
+      <button class="mode-btn" id="btnRandom" onclick="setMode('random')">🎲 순수 랜덤</button>
+      <button class="mode-btn" id="btnTopN" onclick="setMode('topn')">🏆 Top 번호 고정</button>
     </div>
-  </div>
 
-  <!-- Board -->
-  <div class="board" id="board"></div>
+    <!-- 행운번호 받기 버튼 -->
+    <button class="btn-generate-img" onclick="generate()" title="행운번호 받기">
+      <img src="btn-generate.png" alt="행운번호 받기">
+      <span>✨ 행운번호 받기</span>
+    </button>
 
-  <!-- Lotto Ticket -->
-  <section class="ticket-section" id="ticketSection">
-    <div class="ticket-section-header">
-      <span class="ticket-section-title">📋 로또 기입 용지</span>
+    <!-- Top N 서브 셀렉터 -->
+    <div class="topn-wrap" id="topnWrap">
+      <div class="topn-label">상위 <strong id="topnLabelNum">3</strong>개 고정 + 나머지 빈도수 기반 추출</div>
+      <div class="topn-btns">
+        <button class="topn-btn" onclick="setTopN(1)">1</button>
+        <button class="topn-btn" onclick="setTopN(2)">2</button>
+        <button class="topn-btn active" onclick="setTopN(3)">3</button>
+        <button class="topn-btn" onclick="setTopN(4)">4</button>
+        <button class="topn-btn" onclick="setTopN(5)">5</button>
+        <button class="topn-btn" onclick="setTopN(6)">6</button>
+      </div>
     </div>
-    <div class="ticket-scroll-wrap">
-      <div class="ticket-card">
-        <div class="ticket-brand-strip">
-          <div class="ticket-brand-inner">
-            <span class="tb-logo">Lotto</span>
-            <span class="tb-sub">6/45</span>
+
+    <!-- Board -->
+    <div class="board" id="board"></div>
+
+    <!-- Lotto Ticket -->
+    <section class="ticket-section" id="ticketSection">
+      <div class="ticket-section-header">
+        <span class="ticket-section-title">📋 로또 기입 용지</span>
+      </div>
+      <div class="ticket-scroll-wrap">
+        <div class="ticket-card">
+          <div class="ticket-brand-strip">
+            <div class="ticket-brand-inner">
+              <span class="tb-logo">Lotto</span>
+              <span class="tb-sub">6/45</span>
+            </div>
+          </div>
+          <div class="ticket-games" id="ticketGames"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <div class="btn-group">
+      <div class="btn-sub-group">
+        <button class="btn btn-secondary" onclick="clearBoard()">↺ 초기화</button>
+        <button class="btn btn-save" id="btnSave" onclick="saveAsImage()" disabled>📷 저장</button>
+      </div>
+    </div>
+
+    <!-- Stats Panel -->
+    <div class="stats-panel">
+      <div class="stats-header" onclick="toggleStats()">
+        <div class="stats-header-left">
+          <span>📈</span>
+          <h2>번호별 역대 출현 통계 (1등 당첨번호 기준)</h2>
+        </div>
+        <span class="stats-toggle-icon" id="statsIcon">▼</span>
+      </div>
+      <div class="stats-body" id="statsBody">
+        <div class="stats-inner">
+          <div class="sort-tabs">
+            <button class="sort-tab active" onclick="sortStats('freq')">출현 많은 순</button>
+            <button class="sort-tab" onclick="sortStats('asc')">번호 오름차순</button>
+            <button class="sort-tab" onclick="sortStats('rare')">출현 적은 순</button>
+          </div>
+          <div class="stats-grid" id="statsGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notice -->
+    <p class="notice">
+      <strong>빈도수 기반</strong>: 출현 횟수에 비례한 가중 확률로 번호 추출 &nbsp;|&nbsp;
+      <strong>순수 랜덤</strong>: 1~45 균등 확률 &nbsp;|&nbsp;
+      <strong>Top N 고정</strong>: 상위 N개 고정 + 나머지 빈도수 기반 추출<br>
+      이 서비스는 재미용이며 당첨을 보장하지 않습니다. &nbsp;
+      데이터 출처: <a href="https://en.lottolyzer.com/number-frequencies/south-korea/6_slash_45-lotto" target="_blank" rel="noopener noreferrer">lottolyzer.com</a>
+    </p>
+
+    <!-- 내 근처 로또 명당 -->
+    <section class="map-section">
+      <h2 class="map-title">🗺️ 내 근처 로또 명당</h2>
+      <p class="map-desc">현재 위치 기준으로 가까운 로또 명당을 찾아드립니다.</p>
+      <div class="map-wrap" id="mapWrap">
+        <div class="map-locating" id="mapLocating">
+          <span class="map-locating-icon">📍</span>
+          <span>위치 확인 중...</span>
+        </div>
+        <iframe
+          id="lottoMapIframe"
+          title="내 근처 로또 명당 지도"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          style="display:none">
+        </iframe>
+      </div>
+      <div class="map-btn-row">
+        <button class="map-refresh-btn" onclick="loadLottoMap()">📍 내 위치로 다시 찾기</button>
+        <a class="map-dhlottery-btn" href="https://www.dhlottery.co.kr/wnprchsplcsrch/home" target="_blank" rel="noopener noreferrer">🏆 동행복권 1등 명당 보기</a>
+      </div>
+    </section>
+
+    <!-- 최근 추첨 결과 -->
+    <div class="result-link-wrap">
+      <a class="result-link-btn" href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">동행복권에서 최근 추첨 결과 확인하기 ↗</a>
+    </div>
+
+    <!-- 서비스 안내 및 자주 묻는 질문 -->
+    <section class="faq-section" id="faq">
+      <h2 class="faq-title">서비스 안내 및 자주 묻는 질문</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>빈도수 기반 추출이란 무엇인가요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>2002년 12월부터 현재까지 진행된 모든 로또 6/45 회차의 1등 당첨 번호를 분석하여, 자주 등장한 번호일수록 더 높은 가중 확률로 선택하는 방식입니다. 통계적으로 출현 빈도가 높은 번호를 선호하시는 분께 적합합니다.</p>
           </div>
         </div>
-        <div class="ticket-games" id="ticketGames"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Buttons -->
-  <div class="btn-group">
-    <div class="btn-sub-group">
-      <button class="btn btn-secondary" onclick="clearBoard()">↺ 초기화</button>
-      <button class="btn btn-save" id="btnSave" onclick="saveAsImage()" disabled>📷 저장</button>
-    </div>
-  </div>
-
-  <!-- Stats Panel -->
-  <div class="stats-panel">
-    <div class="stats-header" onclick="toggleStats()">
-      <div class="stats-header-left">
-        <span>📈</span>
-        <h2>번호별 역대 출현 통계 (1등 당첨번호 기준)</h2>
-      </div>
-      <span class="stats-toggle-icon" id="statsIcon">▼</span>
-    </div>
-    <div class="stats-body" id="statsBody">
-      <div class="stats-inner">
-        <div class="sort-tabs">
-          <button class="sort-tab active" onclick="sortStats('freq')">출현 많은 순</button>
-          <button class="sort-tab" onclick="sortStats('asc')">번호 오름차순</button>
-          <button class="sort-tab" onclick="sortStats('rare')">출현 적은 순</button>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>순수 랜덤 추출은 어떻게 다른가요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>1번부터 45번까지 모든 번호를 완전히 동일한 확률로 추출하는 방식입니다. 과거 통계와 무관하게 순수하게 운에 맡기고 싶으신 분께 적합하며, 매 추출마다 완전히 독립적인 번호 조합이 생성됩니다.</p>
+          </div>
         </div>
-        <div class="stats-grid" id="statsGrid"></div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>Top N 고정 방식은 어떻게 사용하나요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>역대 가장 많이 출현한 상위 N개 번호를 매 게임에 반드시 포함시키고, 나머지 번호는 빈도수 기반으로 추출하는 혼합 방식입니다. N은 1~6 중에서 선택할 수 있으며, 핫 번호를 고정하면서 나머지는 통계적으로 추출하고 싶을 때 유용합니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>한 번에 몇 게임까지 생성할 수 있나요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>현재 버튼을 누를 때마다 5게임(5줄)이 한꺼번에 생성됩니다. 각 게임은 서로 독립적으로 계산되며, 초기화 버튼을 누르면 보드가 비워지고 다시 생성할 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>이 서비스를 사용하면 당첨 확률이 높아지나요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>아니요. 로또는 매 회차 독립적으로 진행되는 무작위 추첨이므로, 어떤 통계적 방법으로도 당첨 확률을 높이는 것은 불가능합니다. 이 서비스는 순수하게 재미와 흥미를 위한 도구이며, 당첨을 보장하거나 암시하지 않습니다. 책임감 있는 방식으로 즐겨 주세요.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>데이터는 얼마나 자주 업데이트되나요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>현재 2002년 12월 첫 회차부터 2026년 5월까지의 전체 회차 데이터를 기반으로 하고 있습니다. 통계 데이터는 주기적으로 최신 회차를 반영하여 업데이트됩니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>로또 6/45란 무엇인가요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>로또 6/45는 1부터 45까지의 숫자 중 6개를 선택하는 대한민국의 복권입니다. 매주 토요일 오후 8시 35분에 추첨이 진행되며, 6개 번호가 모두 일치하면 1등에 당첨됩니다. 동행복권에서 구매할 수 있으며, 1장에 1,000원입니다.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            <span>생성된 번호를 저장하려면 어떻게 하나요?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            <p>번호를 생성한 후 아래 나타나는 '📷 저장' 버튼을 누르면 로또 기입 용지 이미지가 기기에 저장됩니다. 저장된 이미지를 캡처하거나 공유하여 번호를 보관할 수 있습니다.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <!-- Notice -->
-  <p class="notice">
-    <strong>빈도수 기반</strong>: 출현 횟수에 비례한 가중 확률로 번호 추출<br>
-    <strong>순수 랜덤</strong>: 1~45 균등 확률 · <strong>Top N 고정</strong>: 상위 N개 고정 + 나머지 빈도수 기반 추출<br>
-    이 서비스는 재미용이며 당첨을 보장하지 않습니다.<br>
-    데이터: <a href="https://en.lottolyzer.com/number-frequencies/south-korea/6_slash_45-lotto" target="_blank" rel="noopener noreferrer">lottolyzer.com</a>
-  </p>
-
-  <!-- Lotto Map -->
-  <section class="map-section">
-    <h2 class="map-title">🗺️ 내 근처 로또 명당</h2>
-    <p class="map-desc">현재 위치 기준으로 가까운 로또 명당을 찾아드립니다.</p>
-    <div class="map-wrap" id="mapWrap">
-      <div class="map-locating" id="mapLocating">
-        <span class="map-locating-icon">📍</span>
-        <span>위치 확인 중...</span>
-      </div>
-      <iframe
-        id="lottoMapIframe"
-        title="내 근처 로또 명당 지도"
-        allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade"
-        style="display:none">
-      </iframe>
-    </div>
-    <div class="map-btn-row">
-      <button class="map-refresh-btn" onclick="loadLottoMap()">📍 내 위치로 다시 찾기</button>
-      <a class="map-dhlottery-btn" href="https://www.dhlottery.co.kr/wnprchsplcsrch/home" target="_blank" rel="noopener noreferrer">🏆 동행복권 1등 명당 보기</a>
-    </div>
-  </section>
-
-  <!-- Lotto Result -->
-  <!-- 최근 추첨 결과 링크 -->
-  <div class="result-link-wrap">
-    <a class="result-link-btn" href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">동행복권에서 최근 추첨 결과 확인하기 ↗</a>
-  </div>
-
-  <!-- FAQ -->
-  <section class="faq-section" id="faq">
-    <h2 class="faq-title">서비스 안내 및 자주 묻는 질문</h2>
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          <span>빈도수 기반 추출이란 무엇인가요?</span>
-          <span class="faq-icon">+</span>
+    <!-- 좋아요 -->
+    <section class="like-section">
+      <div class="like-card">
+        <p class="like-msg">이 서비스가 마음에 드셨나요?</p>
+        <button class="like-btn" id="likeBtn">
+          <span class="like-heart" id="likeHeart">♡</span>
+          <span class="like-count" id="likeCount">...</span>
         </button>
-        <div class="faq-a">
-          <p>2002년 12월부터 현재까지 진행된 모든 로또 6/45 회차의 1등 당첨 번호를 분석하여, 자주 등장한 번호일수록 더 높은 가중 확률로 선택하는 방식입니다. 통계적으로 출현 빈도가 높은 번호를 선호하시는 분께 적합합니다.</p>
-        </div>
+        <p class="like-sub" id="likeSub">좋아요를 눌러주세요</p>
       </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          <span>순수 랜덤 추출은 어떻게 다른가요?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          <p>1번부터 45번까지 모든 번호를 완전히 동일한 확률로 추출하는 방식입니다. 과거 통계와 무관하게 순수하게 운에 맡기고 싶으신 분께 적합하며, 매 추출마다 완전히 독립적인 번호 조합이 생성됩니다.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          <span>Top N 고정 방식은 어떻게 사용하나요?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          <p>역대 가장 많이 출현한 상위 N개 번호를 매 게임에 반드시 포함시키고, 나머지 번호는 빈도수 기반으로 추출하는 혼합 방식입니다. N은 1~6 중에서 선택할 수 있으며, 핫 번호를 고정하면서 나머지는 통계적으로 추출하고 싶을 때 유용합니다.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          <span>한 번에 몇 게임까지 생성할 수 있나요?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          <p>현재 버튼을 누를 때마다 5게임(5줄)이 한꺼번에 생성됩니다. 각 게임은 서로 독립적으로 계산되며, 초기화 버튼을 누르면 보드가 비워지고 다시 생성할 수 있습니다.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          <span>이 서비스를 사용하면 당첨 확률이 높아지나요?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          <p>아니요. 로또는 매 회차 독립적으로 진행되는 무작위 추첨이므로, 어떤 통계적 방법으로도 당첨 확률을 높이는 것은 불가능합니다. 이 서비스는 순수하게 재미와 흥미를 위한 도구이며, 당첨을 보장하거나 암시하지 않습니다. 책임감 있는 방식으로 즐겨 주세요.</p>
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">
-          <span>데이터는 얼마나 자주 업데이트되나요?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-a">
-          <p>현재 2002년 12월 첫 회차부터 2026년 5월까지의 전체 회차 데이터를 기반으로 하고 있습니다. 통계 데이터는 주기적으로 최신 회차를 반영하여 업데이트됩니다.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Star Review Section -->
-  <!-- 좋아요 -->
-  <section class="like-section">
-    <div class="like-card">
-      <p class="like-msg">이 서비스가 마음에 드셨나요?</p>
-      <button class="like-btn" id="likeBtn">
-        <span class="like-heart" id="likeHeart">♡</span>
-        <span class="like-count" id="likeCount">...</span>
-      </button>
-      <p class="like-sub" id="likeSub">좋아요를 눌러주세요</p>
-    </div>
-  </section>
+  </main>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <nav class="footer-nav">
       <a href="/">홈</a>
       <span class="footer-divider">·</span>
       <a href="/privacy.html">개인정보처리방침</a>
+      <span class="footer-divider">·</span>
+      <a href="https://www.dhlottery.co.kr" target="_blank" rel="noopener noreferrer">동행복권</a>
     </nav>
     <p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p>
   </footer>
