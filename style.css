@@ -164,6 +164,14 @@ h1 .gold { color: var(--accent); }
   margin-left: 4px;
 }
 
+/* ───────────── MAIN ───────────── */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 /* ───────────── INTRO ───────────── */
 .intro-section {
   width: 100%;
