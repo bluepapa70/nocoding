@@ -67,6 +67,8 @@
     <button class="mode-btn active" id="btnFreq" onclick="setMode('freq')">📊 빈도수 기반</button>
     <button class="mode-btn" id="btnRandom" onclick="setMode('random')">🎲 순수 랜덤</button>
     <button class="mode-btn" id="btnTopN" onclick="setMode('topn')">🏆 Top 번호 고정</button>
+    <span class="mode-sep"></span>
+    <button class="mode-btn mode-generate" onclick="generate()">✨ 추천받기</button>
   </div>
 
   <!-- Top N 서브 셀렉터 -->
@@ -105,10 +107,6 @@
 
   <!-- Buttons -->
   <div class="btn-group">
-    <button class="btn-generate-img" onclick="generate()" title="번호 추천받기">
-      <img src="btn-generate.png" alt="번호 추천받기">
-      <span>✨ 번호 추천받기</span>
-    </button>
     <div class="btn-sub-group">
       <button class="btn btn-secondary" onclick="clearBoard()">↺ 초기화</button>
       <button class="btn btn-save" id="btnSave" onclick="saveAsImage()" disabled>📷 저장</button>
