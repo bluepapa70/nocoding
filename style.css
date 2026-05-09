@@ -980,14 +980,15 @@ body.dark-mode .stat-bar-wrap {
   width: 100%;
   max-width: 600px;
   margin-bottom: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 40px;
 }
 
 .map-title {
-  font-size: 14px;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: var(--muted);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  color: var(--text);
+  letter-spacing: -0.01em;
   margin-bottom: 8px;
   text-align: center;
 }
