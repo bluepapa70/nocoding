@@ -394,37 +394,10 @@
     }
 
     async function fetchDrwData(no) {
-      const url = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${no}`;
-      for (const src of [url, `https://corsproxy.io/?${encodeURIComponent(url)}`]) {
-        try {
-          const res = await fetch(src);
-          const data = await res.json();
-          if (data.returnValue === 'success') return data;
-        } catch(e) {}
-      }
-      return null;
-    }
-
-    /* 동행복권 결과 페이지를 파싱해 전체 등위별 당첨금 추출 */
-    async function fetchPrizeData(no) {
-      const url = `https://www.dhlottery.co.kr/gameResult.do?method=byWin&drwNo=${no}`;
       try {
-        const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-        const html = await res.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-
-        for (const table of doc.querySelectorAll('table')) {
-          const rows = [...table.querySelectorAll('tbody tr')];
-          if (rows.length < 2) continue;
-          const prizes = {};
-          rows.slice(0, 5).forEach((row, i) => {
-            const cells = [...row.querySelectorAll('td')].map(td =>
-              td.textContent.replace(/\s+/g, ' ').trim()
-            );
-            if (cells.length >= 4) prizes[i + 1] = cells;
-          });
-          if (Object.keys(prizes).length >= 2) return prizes;
-        }
+        const res = await fetch(`/api/lotto?drwNo=${no}`);
+        const data = await res.json();
+        if (data.returnValue === 'success') return data;
       } catch(e) {}
       return null;
     }
@@ -433,50 +406,25 @@
       return Number(n).toLocaleString('ko-KR') + '원';
     }
 
-    function renderDrw(numData, prizes) {
-      document.getElementById('resultDrwNo').textContent = numData.drwNo;
-      document.getElementById('resultDate').textContent = numData.drwNoDate + ' 추첨';
-      document.getElementById('resultNextBtn').disabled = numData.drwNo >= getLatestDrawNo();
+    function renderDrw(d) {
+      document.getElementById('resultDrwNo').textContent = d.drwNo;
+      document.getElementById('resultDate').textContent = d.drwNoDate + ' 추첨';
+      document.getElementById('resultNextBtn').disabled = d.drwNo >= getLatestDrawNo();
 
-      const nums = [numData.drwtNo1, numData.drwtNo2, numData.drwtNo3, numData.drwtNo4, numData.drwtNo5, numData.drwtNo6];
+      const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
       document.getElementById('resultNums').innerHTML =
         nums.map(n => `<div class="result-ball ${ballColor(n)}">${n}</div>`).join('') +
         `<span class="result-plus">+</span>
-         <div class="result-ball ${ballColor(numData.bnusNo)} result-bonus">${numData.bnusNo}</div>`;
+         <div class="result-ball ${ballColor(d.bnusNo)} result-bonus">${d.bnusNo}</div>`;
 
-      /* prizes[rank] = [rank셀, 총당첨금셀, 게임수셀, 1게임당셀, 기준셀, ...] */
-      function p(rank) {
-        const c = prizes && prizes[rank];
-        return c ? { total: c[1] ?? '-', count: c[2] ?? '-', per: c[3] ?? '-' }
-                 : { total: '-', count: '-', per: '-' };
-      }
-
-      const ROWS = [
-        { rank:'1등', cls:'r1', ...( prizes ? p(1) : { total: fmtMoney(numData.firstAccumamnt), count: Number(numData.firstPrzwnerCo).toLocaleString()+'게임', per: fmtMoney(numData.firstWinamnt) }), crit:'6개번호 일치' },
-        { rank:'2등', cls:'r2', ...p(2), crit:'5개번호 + 보너스번호 일치' },
-        { rank:'3등', cls:'r3', ...p(3), crit:'5개번호 일치' },
-        { rank:'4등', cls:'r4', ...p(4), crit:'4개번호 일치' },
-        { rank:'5등', cls:'r5', ...p(5), crit:'3개번호 일치' },
-      ];
-
-      /* prizes 없으면 API 1등 데이터 + 4·5등 고정값으로 폴백 */
-      if (!prizes) {
-        ROWS[0].total = fmtMoney(numData.firstAccumamnt);
-        ROWS[0].count = Number(numData.firstPrzwnerCo).toLocaleString() + '게임';
-        ROWS[0].per   = fmtMoney(numData.firstWinamnt);
-        ROWS[3].per   = '50,000원';
-        ROWS[4].per   = '5,000원';
-      }
-
-      document.getElementById('resultTbody').innerHTML = ROWS.map(r =>
-        `<tr>
-          <td class="result-rank ${r.cls}">${r.rank}</td>
-          <td>${r.total}</td>
-          <td>${r.count}</td>
-          <td>${r.per}</td>
-          <td>${r.crit}</td>
-        </tr>`
-      ).join('');
+      document.getElementById('resultTbody').innerHTML = `
+        <tr>
+          <td class="result-rank r1">1등</td>
+          <td>${fmtMoney(d.firstAccumamnt)}</td>
+          <td>${Number(d.firstPrzwnerCo).toLocaleString()}게임</td>
+          <td>${fmtMoney(d.firstWinamnt)}</td>
+          <td>6개번호 일치</td>
+        </tr>`;
 
       document.getElementById('resultLoading').style.display = 'none';
       document.getElementById('resultError').style.display = 'none';
@@ -487,10 +435,8 @@
       document.getElementById('resultBody').style.display = 'none';
       document.getElementById('resultError').style.display = 'none';
       document.getElementById('resultLoading').style.display = 'block';
-
-      const [numData, prizes] = await Promise.all([fetchDrwData(no), fetchPrizeData(no)]);
-
-      if (numData) { currentDrwNo = no; renderDrw(numData, prizes); }
+      const data = await fetchDrwData(no);
+      if (data) { currentDrwNo = no; renderDrw(data); }
       else {
         document.getElementById('resultLoading').style.display = 'none';
         document.getElementById('resultError').style.display = 'block';
