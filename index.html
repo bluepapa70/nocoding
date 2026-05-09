@@ -169,41 +169,18 @@
 
   <!-- Lotto Result -->
   <section class="result-section">
-    <div class="result-card">
-      <div class="result-header">
-        <button class="result-nav" onclick="changeDrawNo(-1)">&#8592;</button>
-        <div class="result-title-wrap">
-          <span class="result-title">제 <strong id="resultDrwNo">-</strong>회 추첨 결과</span>
-          <span class="result-date" id="resultDate">-</span>
-        </div>
-        <button class="result-nav" id="resultNextBtn" onclick="changeDrawNo(1)">&#8594;</button>
-      </div>
-      <div class="result-loading" id="resultLoading">불러오는 중...</div>
-      <div class="result-body" id="resultBody" style="display:none">
-        <div class="result-balls-wrap">
-          <div class="result-nums" id="resultNums"></div>
-          <div class="result-ball-labels">
-            <span>당첨번호</span>
-            <span>보너스번호</span>
-          </div>
-        </div>
-        <div class="result-table-wrap">
-          <table class="result-table">
-            <thead>
-              <tr>
-                <th>순위</th>
-                <th>등위별 총 당첨금</th>
-                <th>당첨게임 수</th>
-                <th>1게임당 당첨금</th>
-                <th>당첨기준</th>
-              </tr>
-            </thead>
-            <tbody id="resultTbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="result-error" id="resultError" style="display:none">
-        데이터를 불러올 수 없습니다. <a href="https://www.dhlottery.co.kr" target="_blank" rel="noopener noreferrer">동행복권에서 확인</a>
+    <h2 class="section-title">최근 추첨 결과</h2>
+    <div class="result-iframe-wrap">
+      <iframe
+        id="resultIframe"
+        src="https://www.dhlottery.co.kr/lt645/result"
+        title="동행복권 로또 추첨 결과"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-forms"
+      ></iframe>
+      <div class="result-iframe-fallback" id="resultFallback">
+        <p>이 페이지는 동행복권 정책으로 인해 직접 표시가 제한됩니다.</p>
+        <a class="map-dhlottery-btn" href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">동행복권에서 확인하기</a>
       </div>
     </div>
   </section>
@@ -473,71 +450,10 @@
     loadLottoMap();
   </script>
   <script>
-    let currentDrwNo = 0;
-
-    function getLatestDrawNo() {
-      const refDate = new Date('2026-02-07');
-      const refNo = 1210;
-      return refNo + Math.floor((Date.now() - refDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
-    }
-
-    async function fetchDrwData(no) {
-      try {
-        const res = await fetch(`/api/lotto?drwNo=${no}`);
-        const data = await res.json();
-        if (data.returnValue === 'success') return data;
-      } catch(e) {}
-      return null;
-    }
-
-    function fmtMoney(n) {
-      return Number(n).toLocaleString('ko-KR') + '원';
-    }
-
-    function renderDrw(d) {
-      document.getElementById('resultDrwNo').textContent = d.drwNo;
-      document.getElementById('resultDate').textContent = d.drwNoDate + ' 추첨';
-      document.getElementById('resultNextBtn').disabled = d.drwNo >= getLatestDrawNo();
-
-      const nums = [d.drwtNo1, d.drwtNo2, d.drwtNo3, d.drwtNo4, d.drwtNo5, d.drwtNo6];
-      document.getElementById('resultNums').innerHTML =
-        nums.map(n => `<div class="result-ball ${ballColor(n)}">${n}</div>`).join('') +
-        `<span class="result-plus">+</span>
-         <div class="result-ball ${ballColor(d.bnusNo)} result-bonus">${d.bnusNo}</div>`;
-
-      document.getElementById('resultTbody').innerHTML = `
-        <tr>
-          <td class="result-rank r1">1등</td>
-          <td>${fmtMoney(d.firstAccumamnt)}</td>
-          <td>${Number(d.firstPrzwnerCo).toLocaleString()}게임</td>
-          <td>${fmtMoney(d.firstWinamnt)}</td>
-          <td>6개번호 일치</td>
-        </tr>`;
-
-      document.getElementById('resultLoading').style.display = 'none';
-      document.getElementById('resultError').style.display = 'none';
-      document.getElementById('resultBody').style.display = 'block';
-    }
-
-    async function loadDrw(no) {
-      document.getElementById('resultBody').style.display = 'none';
-      document.getElementById('resultError').style.display = 'none';
-      document.getElementById('resultLoading').style.display = 'block';
-      const data = await fetchDrwData(no);
-      if (data) { currentDrwNo = no; renderDrw(data); }
-      else {
-        document.getElementById('resultLoading').style.display = 'none';
-        document.getElementById('resultError').style.display = 'block';
-      }
-    }
-
-    function changeDrawNo(delta) {
-      const next = currentDrwNo + delta;
-      if (next < 1 || next > getLatestDrawNo()) return;
-      loadDrw(next);
-    }
-
-    loadDrw(getLatestDrawNo());
+    document.getElementById('resultIframe').addEventListener('error', function () {
+      document.getElementById('resultFallback').style.display = 'flex';
+      this.style.display = 'none';
+    });
   </script>
 </body>
 </html>
