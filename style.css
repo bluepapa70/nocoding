@@ -458,6 +458,7 @@ h1 .gold { color: var(--accent); }
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+  align-self: center;
   transition: transform 0.2s, filter 0.2s;
 }
 
