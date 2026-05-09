@@ -901,6 +901,136 @@ body.dark-mode .stat-bar-wrap {
 .result-link-btn:hover { opacity: 0.85; }
 .result-link-btn:active { transform: scale(0.97); }
 
+/* ───────────── LATEST RESULT ───────────── */
+.latest-result {
+  width: 100%;
+  max-width: 600px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px 16px;
+  margin-bottom: 32px;
+}
+
+.lr-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.lr-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lr-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.lr-balls {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.lr-ball-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.lr-ball-label {
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 600;
+  height: 12px;
+}
+
+.latest-result .ball {
+  width: 46px;
+  height: 46px;
+  font-size: 15px;
+}
+
+.latest-result .ball::after {
+  top: 5px;
+  left: 6px;
+  width: 11px;
+  height: 7px;
+}
+
+.lr-plus {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--muted);
+  align-self: center;
+  padding-bottom: 15px;
+}
+
+.lr-bonus-ball {
+  box-shadow:
+    inset 0 -4px 8px rgba(0,0,0,0.3),
+    inset 0 2px 4px rgba(255,255,255,0.15),
+    var(--ball-shadow),
+    0 0 0 2.5px var(--accent);
+}
+
+.lr-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 16px 0;
+}
+
+.lr-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: lr-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes lr-spin {
+  to { transform: rotate(360deg); }
+}
+
+.lr-error {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 12px 0;
+  line-height: 1.6;
+}
+
+.lr-prize {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.lr-prize strong { color: var(--text); }
+.lr-prize-sep { opacity: 0.4; }
+
+.lr-link-wrap { text-align: center; }
+
 /* ───────────── FAQ ───────────── */
 .faq-section {
   width: 100%;

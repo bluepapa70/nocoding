@@ -182,9 +182,22 @@
     </section>
 
     <!-- 최근 추첨 결과 -->
-    <div class="result-link-wrap">
-      <a class="result-link-btn" href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">동행복권에서 최근 추첨 결과 확인하기 ↗</a>
-    </div>
+    <section class="latest-result">
+      <div class="lr-header">
+        <h2 class="lr-title">🎱 최근 당첨번호</h2>
+        <span class="lr-meta" id="lrMeta">불러오는 중...</span>
+      </div>
+      <div class="lr-balls" id="lrBalls">
+        <div class="lr-loading">
+          <span class="lr-spinner"></span>
+          <span>당첨번호 조회 중...</span>
+        </div>
+      </div>
+      <div class="lr-prize" id="lrPrize"></div>
+      <div class="lr-link-wrap">
+        <a class="result-link-btn" href="https://www.dhlottery.co.kr/lt645/result" target="_blank" rel="noopener noreferrer">동행복권에서 자세히 보기 ↗</a>
+      </div>
+    </section>
 
     <!-- 서비스 안내 및 자주 묻는 질문 -->
     <section class="faq-section" id="faq">
@@ -333,6 +346,112 @@
   </script>
 
   <script src="main.js"></script>
+  <script>
+    /* ── 동행복권 최근 당첨번호 조회 ── */
+    (function () {
+      function getEstimatedDrawNo() {
+        /* 1회차: 2002-12-07 20:35 KST = 2002-12-07 11:35 UTC */
+        const start = new Date('2002-12-07T11:35:00Z');
+        const now = new Date();
+        const weeks = Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000));
+        return weeks + 1;
+      }
+
+      function formatDate(dateStr) {
+        const [y, m, d] = dateStr.split('-');
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const dow = days[new Date(dateStr).getDay()];
+        return `${y}년 ${Number(m)}월 ${Number(d)}일 (${dow})`;
+      }
+
+      async function fetchDraw(drwNo) {
+        const apiUrl = `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=${drwNo}`;
+
+        /* 직접 fetch 시도 */
+        try {
+          const ctrl = new AbortController();
+          const tid = setTimeout(() => ctrl.abort(), 5000);
+          const res = await fetch(apiUrl, { signal: ctrl.signal });
+          clearTimeout(tid);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.returnValue === 'success') return data;
+          }
+        } catch (e) { /* CORS 차단 → 프록시로 fallback */ }
+
+        /* allorigins.win 프록시 */
+        try {
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+          const ctrl = new AbortController();
+          const tid = setTimeout(() => ctrl.abort(), 10000);
+          const res = await fetch(proxyUrl, { signal: ctrl.signal });
+          clearTimeout(tid);
+          if (res.ok) {
+            const json = await res.json();
+            const data = JSON.parse(json.contents);
+            if (data.returnValue === 'success') return data;
+          }
+        } catch (e) { /* proxy 실패 */ }
+
+        return null;
+      }
+
+      async function loadLatestDraw() {
+        const estimated = getEstimatedDrawNo();
+        let data = null;
+
+        for (let i = 0; i <= 2; i++) {
+          data = await fetchDraw(estimated - i);
+          if (data) break;
+        }
+
+        const metaEl  = document.getElementById('lrMeta');
+        const ballsEl = document.getElementById('lrBalls');
+        const prizeEl = document.getElementById('lrPrize');
+
+        if (!data) {
+          metaEl.textContent = '조회 실패';
+          ballsEl.innerHTML = '<span class="lr-error">당첨 번호를 불러올 수 없습니다.<br>동행복권 사이트에서 직접 확인해 주세요.</span>';
+          return;
+        }
+
+        const { drwNo, drwNoDate, drwtNo1, drwtNo2, drwtNo3, drwtNo4, drwtNo5, drwtNo6,
+                bnusNo, firstPrzwnerCo, firstWinamnt } = data;
+
+        metaEl.textContent = `제${drwNo}회 · ${formatDate(drwNoDate)}`;
+
+        const mainNums = [drwtNo1, drwtNo2, drwtNo3, drwtNo4, drwtNo5, drwtNo6];
+        ballsEl.innerHTML =
+          mainNums.map(n => `
+            <div class="lr-ball-wrap">
+              <div class="ball ${ballColor(n)}">${n}</div>
+              <span class="lr-ball-label">&nbsp;</span>
+            </div>`).join('') +
+          `<div class="lr-plus">+</div>
+           <div class="lr-ball-wrap">
+             <div class="ball ${ballColor(bnusNo)} lr-bonus-ball">${bnusNo}</div>
+             <span class="lr-ball-label">보너스</span>
+           </div>`;
+
+        ballsEl.querySelectorAll('.ball').forEach((ball, i) => {
+          setTimeout(() => ball.classList.add('show'), i * 80);
+        });
+
+        const prizeFmt = Number(firstWinamnt).toLocaleString('ko-KR');
+        prizeEl.innerHTML = firstWinamnt
+          ? `<span>🏆 1등 당첨자 <strong>${firstPrzwnerCo}명</strong></span>
+             <span class="lr-prize-sep">·</span>
+             <span>1인 당첨금 <strong>${prizeFmt}원</strong></span>`
+          : `<span>🏆 1등 당첨자 <strong>${firstPrzwnerCo}명</strong></span>`;
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadLatestDraw);
+      } else {
+        loadLatestDraw();
+      }
+    })();
+  </script>
   <script>
     function toggleFaq(btn) {
       const item = btn.closest('.faq-item');
