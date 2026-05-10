@@ -99,6 +99,138 @@ function pickHotCold() {
   return [...pickFrom(hotPool, 3), ...pickFrom(neutralPool, 1), ...pickFrom(coldPool, 2)].sort((a, b) => a - b);
 }
 
+/* ── 꿈 번호 사전 ── */
+const DREAM_DICT = {
+  '돼지':     [4,9,14,24],  '호랑이': [3,8,38],   '용':     [8,18,28,38],
+  '뱀':       [2,12,22],    '소':     [5,15,25],   '말':     [6,16,26],
+  '개':       [1,11,21],    '고양이': [10,20],     '물고기': [7,17,27],
+  '독수리':   [9,29],       '토끼':   [2,12],      '원숭이': [13,23],
+  '거북이':   [8,18],       '사자':   [1,31],
+  '돈 줍기':  [1,11,21],    '금덩이': [7,17,37],   '반지':   [8,18],
+  '보석':     [3,13,33],    '복권':   [5,15,25],   '지갑':   [2,12],
+  '통장':     [4,14],       '집 매입':[10,30],     '은행':   [5,35],
+  '대통령':   [1,15,35],    '조상':   [4,14,24],   '결혼':   [2,22],
+  '아기':     [3,13],       '승진':   [6,16],      '하늘비행':[9,19,39],
+  '산 정상':  [8,28],       '무지개': [7,17],
+  '맑은물':   [1,11],       '폭포':   [9,19],      '바다':   [5,15,25],
+  '홍수':     [4,14],       '비':     [6,16],      '수영':   [3,23],
+  '똥':       [1,7,9],      '똥 묻음':[17,27],     '똥 가득':[9,19,29],
+  '피':       [4,9,19],     '코피':   [14],        '피 흘림':[29],
+  '장례식':   [4,44],       '죽은 사람':[2,12],    '관':     [8,18],
+  '묘지':     [5,15],
+};
+const DREAM_CATS = [
+  { label: '🐷 동물', keys: ['돼지','호랑이','용','뱀','소','말','개','고양이','물고기','독수리','토끼','원숭이','거북이','사자'] },
+  { label: '💰 재물', keys: ['돈 줍기','금덩이','반지','보석','복권','지갑','통장','집 매입','은행'] },
+  { label: '🌟 길몽', keys: ['대통령','조상','결혼','아기','승진','하늘비행','산 정상','무지개'] },
+  { label: '🌊 물',   keys: ['맑은물','폭포','바다','홍수','비','수영'] },
+  { label: '💩 기타', keys: ['똥','똥 묻음','똥 가득','피','코피','피 흘림','장례식','죽은 사람','관','묘지'] },
+];
+
+/* 꿈번호 조합 */
+let dreamSymbols    = new Set();
+let dreamDirectNums = [];
+let dreamRepeatSet  = new Set();
+let dreamDirectSet  = new Set();
+
+function pickDream() {
+  const numCount = {};
+  [...dreamSymbols].forEach(sym => {
+    (DREAM_DICT[sym] || []).forEach(n => { numCount[n] = (numCount[n] || 0) + 1; });
+  });
+  dreamRepeatSet = new Set(Object.keys(numCount).map(Number).filter(n => numCount[n] >= 2));
+
+  const direct = dreamDirectNums.filter(n => n >= 1 && n <= 45).slice(0, 3);
+  dreamDirectSet = new Set(direct);
+
+  const symbolNums = Object.keys(numCount).map(Number)
+    .filter(n => !dreamDirectSet.has(n))
+    .sort((a, b) => numCount[b] - numCount[a] || FREQ[b] - FREQ[a]);
+  const symbolSet = new Set(symbolNums);
+  const hotExtra  = BY_FREQ.slice(0, 15).filter(n => !dreamDirectSet.has(n) && !symbolSet.has(n));
+  const hotSet    = new Set(hotExtra);
+  const rest      = Object.keys(FREQ).map(Number).filter(n => !dreamDirectSet.has(n) && !symbolSet.has(n) && !hotSet.has(n));
+
+  const pool = [], weights = [];
+  symbolNums.forEach(n => { pool.push(n); weights.push(numCount[n] * 4 + FREQ[n] * 0.05); });
+  hotExtra.forEach(n =>   { pool.push(n); weights.push(FREQ[n] * 0.04); });
+  rest.forEach(n =>       { pool.push(n); weights.push(FREQ[n] * 0.01); });
+
+  const totalW = weights.reduce((a, b) => a + b, 0);
+  const picked = new Set(direct);
+  let tries = 0;
+  while (picked.size < 6 && tries++ < 2000) {
+    let r = Math.random() * totalW;
+    for (let i = 0; i < pool.length; i++) {
+      r -= weights[i];
+      if (r <= 0) { if (!picked.has(pool[i])) picked.add(pool[i]); break; }
+    }
+  }
+  return [...picked].sort((a, b) => a - b);
+}
+
+function toggleDreamSymbol(key) {
+  dreamSymbols.has(key) ? dreamSymbols.delete(key) : dreamSymbols.add(key);
+  renderDreamSummary();
+}
+
+function addDreamDirectNum() {
+  const input = document.getElementById('dreamNumInput');
+  const v = parseInt(input.value, 10);
+  input.value = '';
+  if (!v || v < 1 || v > 45 || dreamDirectNums.includes(v) || dreamDirectNums.length >= 3) return;
+  dreamDirectNums.push(v);
+  renderDreamSummary();
+}
+
+function removeDreamDirectNum(n) {
+  dreamDirectNums = dreamDirectNums.filter(x => x !== n);
+  renderDreamSummary();
+}
+
+function renderDreamSummary() {
+  DREAM_CATS.forEach(cat => {
+    cat.keys.forEach(key => {
+      const el = document.getElementById('dsym-' + key.replace(/\s/g, '_'));
+      if (el) el.classList.toggle('active', dreamSymbols.has(key));
+    });
+  });
+
+  const dd = document.getElementById('dreamDirectDisplay');
+  if (dd) dd.innerHTML = dreamDirectNums.map(n =>
+    `<span class="dream-direct-tag">${n}<button class="dream-tag-del" onclick="removeDreamDirectNum(${n})">×</button></span>`
+  ).join('');
+
+  const sm = document.getElementById('dreamSummary');
+  if (!sm) return;
+  const numCount = {};
+  [...dreamSymbols].forEach(s => (DREAM_DICT[s]||[]).forEach(n => { numCount[n]=(numCount[n]||0)+1; }));
+  const repeats = Object.keys(numCount).filter(n => numCount[n] >= 2).map(Number);
+  if (dreamSymbols.size === 0 && dreamDirectNums.length === 0) {
+    sm.className = 'dream-summary empty';
+    sm.textContent = '상징 또는 직접 본 숫자를 선택 후 행운번호를 받아보세요.';
+  } else {
+    sm.className = 'dream-summary';
+    let parts = [];
+    if (dreamDirectNums.length > 0) parts.push(`직접 본 숫자 ${dreamDirectNums.join(', ')} 고정`);
+    if (repeats.length > 0) parts.push(`반복 번호 ${repeats.join(', ')} 우선`);
+    parts.push('HOT 번호 혼합');
+    sm.textContent = parts.join(' · ');
+  }
+}
+
+function renderDreamCats() {
+  const c = document.getElementById('dreamCats');
+  if (!c) return;
+  c.innerHTML = DREAM_CATS.map(cat => `
+    <div class="dream-cat">
+      <div class="dream-cat-label">${cat.label}</div>
+      <div class="dream-tags">${cat.keys.map(key =>
+        `<button class="dream-tag-btn" id="dsym-${key.replace(/\s/g,'_')}" data-key="${key}" onclick="toggleDreamSymbol(this.dataset.key)">${key}</button>`
+      ).join('')}</div>
+    </div>`).join('');
+}
+
 /* 통계 조합 최적화: 실제 홀짝 비율 가중 선택 + 저고·합계·끝수 필터 */
 function pickCombo() {
   /* 실제 통계: 3:3≈33.6%, 4:2≈26.7%, 2:4≈22.2%, 나머지≈17.5% */
@@ -135,6 +267,7 @@ const MODE_DESC = {
   topn:    { title: '🏆 Top 번호 고정', text: '역대 가장 많이 출현한 상위 N개 번호를 매 게임에 반드시 포함하고, 나머지는 빈도수 기반으로 추출합니다. N은 1~6 중 선택할 수 있습니다.' },
   hotcold: { title: '🔥 Hot/Cold 분석', text: '빈도 상위 15개(Hot 🔥) 3개 + 중립 15개 1개 + 하위 15개(Cold ❄️) 2개를 조합합니다. "흐름이 이어진다"는 Hot 가설과 "안 나온 번호는 곧 나온다"는 Cold 가설, 중립 번호까지 균형 있게 반영한 혼합 전략입니다.' },
   combo:   { title: '🎯 AI통계조합 최적화', text: '실제 통계 기반 홀짝 비율(3:3 약 34% · 4:2 약 27% · 2:4 약 22%)로 가중 선택 후, 저고 비율(1~22 / 23~45), 합계값(100~170), 끝수 중복(2개 이하) 조건을 추가 적용합니다. 극단 조합(6홀 · 6짝)은 자동 제외됩니다.' },
+  dream:   { title: '🌙 꿈번호 조합', text: '꿈의 핵심 상징을 선택하면 반복 등장 번호를 우선 추출합니다. 꿈에서 직접 본 숫자는 최우선 고정되며, 나머지 슬롯은 역대 HOT 번호와 혼합해 6개를 완성합니다.' },
 };
 
 function updateModeDesc() {
@@ -152,10 +285,11 @@ let statSort = 'freq';
 
 function setMode(m) {
   mode = m;
-  ['Freq','Random','TopN','Hotcold','Combo'].forEach(k => {
+  ['Freq','Random','TopN','Hotcold','Combo','Dream'].forEach(k => {
     document.getElementById('btn' + k).classList.toggle('active', m === k.toLowerCase());
   });
   document.getElementById('topnWrap').classList.toggle('visible', m === 'topn');
+  document.getElementById('dreamWrap').classList.toggle('visible', m === 'dream');
   updateModeDesc();
   clearBoard();
 }
@@ -183,6 +317,7 @@ function generate() {
                : mode === 'topn'    ? pickTopN(topN)
                : mode === 'hotcold' ? pickHotCold()
                : mode === 'combo'   ? pickCombo()
+               : mode === 'dream'   ? pickDream()
                :                      pickWeighted();
 
     lastPicked.push(...nums);
@@ -192,21 +327,32 @@ function generate() {
 
     const ballsHTML = nums.map(n => {
       const rank = rankOf(n);
-      const isFixed   = mode === 'topn'    && fixedNums.has(n);
-      const isHotBall = mode === 'hotcold' && HOT_SET.has(n);
-      const isColdBall= mode === 'hotcold' && COLD_SET.has(n);
+      const isFixed      = mode === 'topn'    && fixedNums.has(n);
+      const isHotBall    = mode === 'hotcold' && HOT_SET.has(n);
+      const isColdBall   = mode === 'hotcold' && COLD_SET.has(n);
+      const isDreamDirect= mode === 'dream'   && dreamDirectSet.has(n);
+      const isDreamRepeat= mode === 'dream'   && !isDreamDirect && dreamRepeatSet.has(n);
+      const isDreamHot   = mode === 'dream'   && !isDreamDirect && !isDreamRepeat && HOT_SET.has(n);
       const isHot = rank <= 5;
-      const rankLabel = isFixed   ? '📌 고정'
-                      : isHotBall ? `🔥 ${rank}위`
-                      : isColdBall? `❄️ ${rank}위`
-                      : isHot     ? `🔥 ${rank}위`
-                      :             `${rank}위`;
-      const rankClass = isFixed || isHot || isHotBall ? 'hot' : isColdBall ? 'cold' : '';
+      const rankLabel = isDreamDirect ? '✍️ 직접'
+                      : isDreamRepeat ? '✦ 반복'
+                      : isDreamHot    ? `🔥 ${rank}위`
+                      : isFixed       ? '📌 고정'
+                      : isHotBall     ? `🔥 ${rank}위`
+                      : isColdBall    ? `❄️ ${rank}위`
+                      : isHot         ? `🔥 ${rank}위`
+                      :                 `${rank}위`;
+      const rankClass = isDreamDirect ? 'dream-direct'
+                      : isDreamRepeat ? 'dream-repeat'
+                      : isFixed || isHot || isHotBall || isDreamHot ? 'hot'
+                      : isColdBall ? 'cold' : '';
+      const ballExtra = isFixed ? 'fixed-ball' : isDreamDirect ? 'dream-fixed-ball' : '';
       const showRank = mode !== 'random';
+      const titleExtra = isDreamDirect ? ' · 직접 본 숫자' : isDreamRepeat ? ' · 반복 상징' : isDreamHot ? ' · HOT 혼합' : isFixed ? ' · 고정번호' : isHotBall ? ' · Hot' : isColdBall ? ' · Cold' : '';
       return `
         <div class="ball-wrap">
-          <div class="ball ${ballColor(n)} ${isFixed ? 'fixed-ball' : ''}"
-               title="${n}번 · 역대 ${FREQ[n]}회 (${rank}위)${isFixed ? ' · 고정번호' : isHotBall ? ' · Hot' : isColdBall ? ' · Cold' : ''}">${n}</div>
+          <div class="ball ${ballColor(n)} ${ballExtra}"
+               title="${n}번 · 역대 ${FREQ[n]}회 (${rank}위)${titleExtra}">${n}</div>
           <span class="ball-rank ${rankClass}">${showRank ? rankLabel : ''}</span>
         </div>`;
     }).join('');
@@ -669,6 +815,7 @@ async function saveAsImage() {
 /* ── 초기 렌더 ── */
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    renderDreamCats();
     setMode('topn');
     renderStats();
 });

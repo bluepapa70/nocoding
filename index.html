@@ -68,7 +68,7 @@
       <p class="intro-text">
         <strong>통계왕 AI Lotto</strong>는 2002년 12월 제1회부터 2026년 5월까지 진행된 로또 6/45 전체 회차의
         1등 당첨 번호 데이터를 분석하여 행운번호를 추천해 드리는 무료 서비스입니다.
-        빈도수 기반, 순수 랜덤, Top N 고정, Hot/Cold 분석, AI통계조합 등 다섯 가지 방식 중 원하는 방법을 선택해 나만의 번호를 받아보세요.
+        빈도수 기반, 순수 랜덤, Top N 고정, Hot/Cold 분석, AI통계조합, 꿈번호 조합 등 여섯 가지 방식 중 원하는 방법을 선택해 나만의 번호를 받아보세요.
         모든 번호 생성은 브라우저에서 직접 처리되며, 개인정보를 수집하지 않습니다.
       </p>
     </section>
@@ -80,6 +80,7 @@
       <button class="mode-btn active" id="btnTopN" onclick="setMode('topn')">🏆 Top 번호 고정</button>
       <button class="mode-btn" id="btnHotcold" onclick="setMode('hotcold')">🔥 Hot/Cold</button>
       <button class="mode-btn" id="btnCombo" onclick="setMode('combo')">🎯 AI통계조합</button>
+      <button class="mode-btn" id="btnDream" onclick="setMode('dream')">🌙 꿈번호 조합</button>
     </div>
 
     <!-- Mode Description -->
@@ -94,6 +95,24 @@
       <img src="btn-generate.png" alt="행운번호 받기">
       <span>✨ 행운번호 받기</span>
     </button>
+
+    <!-- Dream 패널 -->
+    <div class="dream-panel" id="dreamWrap">
+      <div class="dream-panel-step">
+        <div class="dream-panel-step-title"><span class="step-badge">1</span> 꿈의 핵심 상징 선택 <span class="dream-optional">(복수 선택 가능)</span></div>
+        <div id="dreamCats"></div>
+      </div>
+      <div class="dream-panel-step">
+        <div class="dream-panel-step-title"><span class="step-badge">2</span> 꿈에서 직접 본 숫자 <span class="dream-optional">(선택사항 · 최대 3개 · 1~45)</span></div>
+        <div class="dream-num-row">
+          <input type="number" id="dreamNumInput" class="dream-num-input" min="1" max="45" placeholder="숫자 입력"
+                 onkeydown="if(event.key==='Enter')addDreamDirectNum()">
+          <button class="dream-add-btn" onclick="addDreamDirectNum()">추가</button>
+        </div>
+        <div class="dream-direct-display" id="dreamDirectDisplay"></div>
+      </div>
+      <div class="dream-summary empty" id="dreamSummary">상징 또는 직접 본 숫자를 선택 후 행운번호를 받아보세요.</div>
+    </div>
 
     <!-- Top N 서브 셀렉터 -->
     <div class="topn-wrap" id="topnWrap">
