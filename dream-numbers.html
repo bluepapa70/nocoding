@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>꿈별 숫자 사전 - 통계왕 AI Lotto</title>
+  <meta name="description" content="동물, 재물, 길몽, 물, 색깔 등 꿈의 종류별 로또 번호를 정리한 꿈별 숫자 사전입니다. 꿈을 꾸고 로또 번호를 찾아보세요." />
+  <meta name="keywords" content="꿈번호, 꿈풀이 로또, 로또 꿈번호, 돼지꿈 번호, 길몽 번호, 꿈 숫자" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="꿈별 숫자 사전 - 통계왕 AI Lotto" />
+  <meta property="og:description" content="동물, 재물, 길몽 등 꿈 종류별 로또 번호 사전" />
+  <meta property="og:url" content="https://ailottoo.pages.dev/dream-numbers.html" />
+  <meta property="og:image" content="https://ailottoo.pages.dev/title.png" />
+  <meta property="og:locale" content="ko_KR" />
+  <link rel="canonical" href="https://ailottoo.pages.dev/dream-numbers.html" />
+  <link rel="icon" href="/title.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6010995244588886" crossorigin="anonymous"></script>
+  <style>
+    .dream-wrap {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .dream-wrap h1 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      white-space: normal;
+    }
+    .dream-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* 섹션 */
+    .dream-section {
+      margin-bottom: 40px;
+    }
+    .dream-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .dream-section-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+
+    /* 테이블 */
+    .dream-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+    }
+    .dream-table thead tr {
+      background: var(--bg3);
+    }
+    .dream-table th {
+      padding: 10px 16px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .dream-table td {
+      padding: 11px 16px;
+      border-top: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .dream-table tr:hover td {
+      background: var(--bg3);
+    }
+    .dream-name {
+      font-weight: 600;
+      color: var(--text);
+      min-width: 90px;
+    }
+    .dream-numbers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .dream-ball {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: var(--ball-shadow);
+    }
+
+    /* 번호별 컬러 (로또 표준) */
+    .ball-1  { background: #f7971e; }
+    .ball-2  { background: #4caf50; }
+    .ball-3  { background: #e53935; }
+    .ball-4  { background: #757575; }
+    .ball-5  { background: #1565c0; }
+
+    /* 실전 조합 박스 */
+    .combo-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+    }
+    .combo-box h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .combo-step {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      align-items: flex-start;
+    }
+    .combo-step-num {
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #1f2328;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .combo-step-text { color: var(--text); line-height: 1.6; }
+    .combo-example {
+      background: var(--bg3);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .combo-example strong { color: var(--text); }
+
+    /* 컬러 테이블 */
+    .color-dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* 인기 꿈 태그 */
+    .famous-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .famous-tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .famous-tag.hot {
+      background: #fff3cd;
+      border-color: #fbc400;
+      color: #7a5500;
+    }
+    body.dark-mode .famous-tag.hot {
+      background: #3d2e00;
+      border-color: #fbc400;
+      color: #fbc400;
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      margin: 48px 0 8px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #1f2328;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(251,196,0,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251,196,0,0.45);
+    }
+
+    @media (max-width: 500px) {
+      .dream-table th, .dream-table td { padding: 9px 12px; }
+      .dream-ball { width: 28px; height: 28px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dream-wrap">
+
+    <nav class="footer-nav" style="justify-content:flex-start; margin-bottom:32px;">
+      <a href="/">← 홈으로</a>
+    </nav>
+
+    <h1>꿈별 숫자 사전 🌙</h1>
+    <p class="dream-subtitle">
+      한국 로또 문화에서 전해 내려오는 꿈 풀이 번호를 정리했습니다.<br>
+      꿈의 핵심 상징을 찾아 번호를 조합해 보세요. 재미 목적으로만 활용하세요.
+    </p>
+
+    <!-- 동물 꿈 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🐷 동물 꿈 숫자</div>
+      <table class="dream-table">
+        <thead>
+          <tr><th>꿈</th><th>대표 숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dream-name">돼지</td><td><div class="dream-numbers" data-nums="4,9,14,24"></div></td></tr>
+          <tr><td class="dream-name">호랑이</td><td><div class="dream-numbers" data-nums="3,8,38"></div></td></tr>
+          <tr><td class="dream-name">용</td><td><div class="dream-numbers" data-nums="8,18,28,38"></div></td></tr>
+          <tr><td class="dream-name">뱀</td><td><div class="dream-numbers" data-nums="2,12,22"></div></td></tr>
+          <tr><td class="dream-name">소</td><td><div class="dream-numbers" data-nums="5,15,25"></div></td></tr>
+          <tr><td class="dream-name">말</td><td><div class="dream-numbers" data-nums="6,16,26"></div></td></tr>
+          <tr><td class="dream-name">개</td><td><div class="dream-numbers" data-nums="1,11,21"></div></td></tr>
+          <tr><td class="dream-name">고양이</td><td><div class="dream-numbers" data-nums="10,20"></div></td></tr>
+          <tr><td class="dream-name">물고기</td><td><div class="dream-numbers" data-nums="7,17,27"></div></td></tr>
+          <tr><td class="dream-name">독수리</td><td><div class="dream-numbers" data-nums="9,29"></div></td></tr>
+          <tr><td class="dream-name">토끼</td><td><div class="dream-numbers" data-nums="2,12"></div></td></tr>
+          <tr><td class="dream-name">원숭이</td><td><div class="dream-numbers" data-nums="13,23"></div></td></tr>
+          <tr><td class="dream-name">거북이</td><td><div class="dream-numbers" data-nums="8,18"></div></td></tr>
+          <tr><td class="dream-name">사자</td><td><div class="dream-numbers" data-nums="1,31"></div></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 재물·행운 꿈 -->
+    <section class="dream-section">
+      <div class="dream-section-title">💰 재물·행운 꿈 숫자</div>
+      <table class="dream-table">
+        <thead>
+          <tr><th>꿈</th><th>대표 숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dream-name">돈 줍는 꿈</td><td><div class="dream-numbers" data-nums="1,11,21"></div></td></tr>
+          <tr><td class="dream-name">금덩이</td><td><div class="dream-numbers" data-nums="7,17,37"></div></td></tr>
+          <tr><td class="dream-name">반지</td><td><div class="dream-numbers" data-nums="8,18"></div></td></tr>
+          <tr><td class="dream-name">보석</td><td><div class="dream-numbers" data-nums="3,13,33"></div></td></tr>
+          <tr><td class="dream-name">복권 줍는 꿈</td><td><div class="dream-numbers" data-nums="5,15,25"></div></td></tr>
+          <tr><td class="dream-name">지갑</td><td><div class="dream-numbers" data-nums="2,12"></div></td></tr>
+          <tr><td class="dream-name">통장</td><td><div class="dream-numbers" data-nums="4,14"></div></td></tr>
+          <tr><td class="dream-name">집 사는 꿈</td><td><div class="dream-numbers" data-nums="10,30"></div></td></tr>
+          <tr><td class="dream-name">은행</td><td><div class="dream-numbers" data-nums="5,35"></div></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 길몽 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🌟 길몽 대표 숫자</div>
+      <table class="dream-table">
+        <thead>
+          <tr><th>꿈</th><th>대표 숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dream-name">대통령 만남</td><td><div class="dream-numbers" data-nums="1,15,35"></div></td></tr>
+          <tr><td class="dream-name">조상 등장</td><td><div class="dream-numbers" data-nums="4,14,24"></div></td></tr>
+          <tr><td class="dream-name">결혼식</td><td><div class="dream-numbers" data-nums="2,22"></div></td></tr>
+          <tr><td class="dream-name">아기 안는 꿈</td><td><div class="dream-numbers" data-nums="3,13"></div></td></tr>
+          <tr><td class="dream-name">승진</td><td><div class="dream-numbers" data-nums="6,16"></div></td></tr>
+          <tr><td class="dream-name">하늘 나는 꿈</td><td><div class="dream-numbers" data-nums="9,19,39"></div></td></tr>
+          <tr><td class="dream-name">산 정상 오름</td><td><div class="dream-numbers" data-nums="8,28"></div></td></tr>
+          <tr><td class="dream-name">무지개</td><td><div class="dream-numbers" data-nums="7,17"></div></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 물 관련 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🌊 물 관련 꿈 숫자</div>
+      <table class="dream-table">
+        <thead>
+          <tr><th>꿈</th><th>대표 숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dream-name">맑은 물</td><td><div class="dream-numbers" data-nums="1,11"></div></td></tr>
+          <tr><td class="dream-name">폭포</td><td><div class="dream-numbers" data-nums="9,19"></div></td></tr>
+          <tr><td class="dream-name">바다</td><td><div class="dream-numbers" data-nums="5,15,25"></div></td></tr>
+          <tr><td class="dream-name">홍수</td><td><div class="dream-numbers" data-nums="4,14"></div></td></tr>
+          <tr><td class="dream-name">비</td><td><div class="dream-numbers" data-nums="6,16"></div></td></tr>
+          <tr><td class="dream-name">수영</td><td><div class="dream-numbers" data-nums="3,23"></div></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 똥·피 관련 -->
+    <section class="dream-section">
+      <div class="dream-section-title">💩 똥·피 관련 꿈 숫자</div>
+      <p class="dream-section-note">한국 로또 문화에서 가장 유명한 횡재수 계열입니다.</p>
+      <table class="dream-table">
+        <thead>
+          <tr><th>꿈</th><th>대표 숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dream-name">똥</td><td><div class="dream-numbers" data-nums="1,7,9"></div></td></tr>
+          <tr><td class="dream-name">몸에 똥 묻음</td><td><div class="dream-numbers" data-nums="17,27"></div></td></tr>
+          <tr><td class="dream-name">집에 똥 가득</td><td><div class="dream-numbers" data-nums="9,19,29"></div></td></tr>
+          <tr><td class="dream-name">피 보는 꿈</td><td><div class="dream-numbers" data-nums="4,9,19"></div></td></tr>
+          <tr><td class="dream-name">코피</td><td><div class="dream-numbers" data-nums="14"></div></td></tr>
+          <tr><td class="dream-name">피 흘림</td><td><div class="dream-numbers" data-nums="29"></div></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 죽음·장례 -->
+    <section class="dream-section">
+      <div class="dream-section-title">⚰️ 죽음·장례 꿈 숫자</div>
+      <p class="dream-section-note">의외로 재물운으로 해석되는 경우도 있습니다.</p>
+      <table class="dream-table">
+        <thead>
+          <tr><th>꿈</th><th>대표 숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dream-name">장례식</td><td><div class="dream-numbers" data-nums="4,44"></div></td></tr>
+          <tr><td class="dream-name">죽은 사람</td><td><div class="dream-numbers" data-nums="2,12"></div></td></tr>
+          <tr><td class="dream-name">관</td><td><div class="dream-numbers" data-nums="8,18"></div></td></tr>
+          <tr><td class="dream-name">묘지</td><td><div class="dream-numbers" data-nums="5,15"></div></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 색깔과 숫자 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🎨 색깔과 숫자 연결</div>
+      <table class="dream-table">
+        <thead>
+          <tr><th>색</th><th>숫자</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dream-name"><span class="color-dot" style="background:#e53935;"></span>빨강</td>
+            <td><div class="dream-numbers" data-nums="3"></div></td>
+          </tr>
+          <tr>
+            <td class="dream-name"><span class="color-dot" style="background:#1565c0;"></span>파랑</td>
+            <td><div class="dream-numbers" data-nums="1"></div></td>
+          </tr>
+          <tr>
+            <td class="dream-name"><span class="color-dot" style="background:#fbc400;"></span>노랑/금색</td>
+            <td><div class="dream-numbers" data-nums="7"></div></td>
+          </tr>
+          <tr>
+            <td class="dream-name"><span class="color-dot" style="background:#424242;"></span>검정</td>
+            <td><div class="dream-numbers" data-nums="4"></div></td>
+          </tr>
+          <tr>
+            <td class="dream-name"><span class="color-dot" style="background:#bdbdbd; border:1px solid var(--border);"></span>흰색</td>
+            <td><div class="dream-numbers" data-nums="9"></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 숫자 직접 등장 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🔢 숫자가 직접 등장한 꿈</div>
+      <div class="combo-box">
+        <p style="font-size:14px; color:var(--muted); line-height:1.8; margin-bottom:14px;">
+          꿈에서 숫자가 직접 보인 경우 가장 강하게 해석합니다.<br>
+          예: 문에 "27" 적혀 있음 / 시계가 4:45 / 자동차 번호 3812
+        </p>
+        <p style="font-size:14px; color:var(--text); line-height:1.8;">
+          직접 나온 숫자를 우선 사용합니다.<br>
+          → <strong>27, 4, 45, 38, 12</strong> 등으로 조합
+        </p>
+      </div>
+    </section>
+
+    <!-- 실전 조합 방식 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🧩 실전 꿈 번호 조합 방식</div>
+      <div class="combo-box">
+        <h3>조합 순서</h3>
+        <div class="combo-step">
+          <div class="combo-step-num">1</div>
+          <div class="combo-step-text">꿈의 핵심 상징을 선택합니다</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-num">2</div>
+          <div class="combo-step-text">반복 등장한 요소를 우선합니다</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-num">3</div>
+          <div class="combo-step-text">직접 나온 숫자를 최우선으로 씁니다</div>
+        </div>
+        <div class="combo-step">
+          <div class="combo-step-num">4</div>
+          <div class="combo-step-text">최근 HOT 번호와 혼합합니다</div>
+        </div>
+        <div class="combo-example">
+          <strong>예시 꿈:</strong> "황금 돼지 3마리가 물속에서 나오는 꿈"<br>
+          황금 → <strong>7</strong> &nbsp;|&nbsp; 돼지 → <strong>4, 9</strong> &nbsp;|&nbsp; 3마리 → <strong>3</strong> &nbsp;|&nbsp; 물 → <strong>1</strong><br>
+          <strong>조합 예:</strong> 1 / 3 / 7 / 9 / 24 / 37
+        </div>
+      </div>
+    </section>
+
+    <!-- 당첨자들의 인기 꿈 -->
+    <section class="dream-section">
+      <div class="dream-section-title">🏆 당첨자 인터뷰에 자주 등장한 꿈</div>
+      <p class="dream-section-note">한국 로또 당첨자 인터뷰에서 반복 언급되는 꿈입니다. 특히 "누가 돈을 주는 꿈", "큰 동물을 안는 꿈", "황금빛 꿈"은 강한 길몽으로 취급됩니다.</p>
+      <div class="famous-list">
+        <span class="famous-tag hot">🐷 돼지</span>
+        <span class="famous-tag hot">👴 조상</span>
+        <span class="famous-tag hot">💩 똥</span>
+        <span class="famous-tag hot">🐉 용</span>
+        <span class="famous-tag hot">🐟 큰 물고기</span>
+        <span class="famous-tag">💵 돈 받는 꿈</span>
+        <span class="famous-tag">🤗 큰 동물 안는 꿈</span>
+        <span class="famous-tag">✨ 황금빛 꿈</span>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <a href="/" class="cta-btn">✨ 지금 바로 행운번호 뽑기</a>
+    </div>
+
+    <p style="text-align:center; font-size:12px; color:var(--muted); margin-top:20px; margin-bottom:48px;">
+      이 사전은 재미 목적으로 제공되며 당첨을 보장하지 않습니다.
+    </p>
+
+    <footer class="site-footer" style="width:100%;">
+      <nav class="footer-nav">
+        <a href="/">홈</a>
+        <span class="footer-divider">·</span>
+        <a href="/dream-numbers.html">꿈별 숫자 사전</a>
+        <span class="footer-divider">·</span>
+        <a href="/privacy.html">개인정보처리방침</a>
+        <span class="footer-divider">·</span>
+        <a href="https://www.dhlottery.co.kr" target="_blank" rel="noopener noreferrer">동행복권</a>
+      </nav>
+      <p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    /* 번호 → 로또 컬러 볼 렌더링 */
+    function ballClass(n) {
+      if (n <= 10) return 'ball-1';
+      if (n <= 20) return 'ball-2';
+      if (n <= 30) return 'ball-3';
+      if (n <= 40) return 'ball-4';
+      return 'ball-5';
+    }
+
+    document.querySelectorAll('.dream-numbers[data-nums]').forEach(el => {
+      const nums = el.dataset.nums.split(',').map(s => parseInt(s.trim(), 10));
+      el.innerHTML = nums.map(n =>
+        `<span class="dream-ball ${ballClass(n)}">${n}</span>`
+      ).join('');
+    });
+
+    /* 다크모드 동기화 */
+    (function () {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+</body>
+</html>
