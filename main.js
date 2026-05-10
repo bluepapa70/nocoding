@@ -77,7 +77,7 @@ function pickTopN(n) {
   return [...fixed, ...extra].sort((a, b) => a - b);
 }
 
-/* Hot/Cold: 상위 15개(Hot) 4개 + 하위 15개(Cold) 2개 */
+/* Hot/Cold: 상위 15개(Hot) 3개 + 중립 15개 1개 + 하위 15개(Cold) 2개 */
 function pickHotCold() {
   function pickFrom(pool, count) {
     const weights = pool.map(n => FREQ[n]);
@@ -93,16 +93,24 @@ function pickHotCold() {
     }
     return [...picked];
   }
-  const hotPool = BY_FREQ.slice(0, 15);
-  const coldPool = BY_FREQ.slice(-15);
-  return [...pickFrom(hotPool, 4), ...pickFrom(coldPool, 2)].sort((a, b) => a - b);
+  const hotPool     = BY_FREQ.slice(0, 15);
+  const neutralPool = BY_FREQ.slice(15, 30);
+  const coldPool    = BY_FREQ.slice(30);
+  return [...pickFrom(hotPool, 3), ...pickFrom(neutralPool, 1), ...pickFrom(coldPool, 2)].sort((a, b) => a - b);
 }
 
-/* 통계 조합 최적화: 홀짝·저고 비율, 합계값, 끝수 중복 필터 */
+/* 통계 조합 최적화: 실제 홀짝 비율 가중 선택 + 저고·합계·끝수 필터 */
 function pickCombo() {
-  function isValid(nums) {
-    const odds = nums.filter(n => n % 2 !== 0).length;
-    if (odds < 2 || odds > 4) return false;
+  /* 실제 통계: 3:3≈33.6%, 4:2≈26.7%, 2:4≈22.2%, 나머지≈17.5% */
+  function targetOdds() {
+    const r = Math.random() * 100;
+    if (r < 33.6) return 3;
+    if (r < 60.3) return 4;
+    if (r < 82.5) return 2;
+    return 3;
+  }
+  function isValid(nums, targetOdd) {
+    if (nums.filter(n => n % 2 !== 0).length !== targetOdd) return false;
     const lows = nums.filter(n => n <= 22).length;
     if (lows < 2 || lows > 4) return false;
     const sum = nums.reduce((a, b) => a + b, 0);
@@ -112,9 +120,10 @@ function pickCombo() {
     if (Object.values(tailMap).some(c => c > 2)) return false;
     return true;
   }
+  const target = targetOdds();
   for (let i = 0; i < 500; i++) {
     const nums = pickWeighted();
-    if (isValid(nums)) return nums;
+    if (isValid(nums, target)) return nums;
   }
   return pickWeighted();
 }
@@ -124,8 +133,8 @@ const MODE_DESC = {
   freq:    { title: '📊 빈도수 기반', text: '2002년 12월 ~ 2026년 5월 전체 회차의 1등 당첨 번호 출현 횟수에 비례한 가중 확률로 번호를 추출합니다. 많이 등장한 번호일수록 더 높은 확률로 선택됩니다.' },
   random:  { title: '🎲 순수 랜덤', text: '1~45 모든 번호를 완전히 동일한 확률로 추출합니다. 통계와 무관하게 순수하게 운에 맡기는 방식으로, 매 게임 독립적인 조합이 생성됩니다.' },
   topn:    { title: '🏆 Top 번호 고정', text: '역대 가장 많이 출현한 상위 N개 번호를 매 게임에 반드시 포함하고, 나머지는 빈도수 기반으로 추출합니다. N은 1~6 중 선택할 수 있습니다.' },
-  hotcold: { title: '🔥 Hot/Cold 분석', text: '출현 빈도 상위 15개(Hot 🔥)에서 4개, 하위 15개(Cold ❄️)에서 2개를 추출합니다. "흐름이 이어진다"는 Hot 가설과 "안 나온 번호는 곧 나온다"는 Cold 가설을 동시에 반영한 균형 전략입니다.' },
-  combo:   { title: '🎯 통계 조합 최적화', text: '홀짝 비율(2:4 · 3:3 · 4:2), 저고 비율(1~22 / 23~45, 동일 조건), 합계값(100~170), 끝수 중복(2개 이하) 4가지 조건을 동시에 만족하는 조합만 선별합니다. 실전에서 가장 많이 활용되는 통계적 필터링 방식입니다.' },
+  hotcold: { title: '🔥 Hot/Cold 분석', text: '빈도 상위 15개(Hot 🔥) 3개 + 중립 15개 1개 + 하위 15개(Cold ❄️) 2개를 조합합니다. "흐름이 이어진다"는 Hot 가설과 "안 나온 번호는 곧 나온다"는 Cold 가설, 중립 번호까지 균형 있게 반영한 혼합 전략입니다.' },
+  combo:   { title: '🎯 통계 조합 최적화', text: '실제 통계 기반 홀짝 비율(3:3 약 34% · 4:2 약 27% · 2:4 약 22%)로 가중 선택 후, 저고 비율(1~22 / 23~45), 합계값(100~170), 끝수 중복(2개 이하) 조건을 추가 적용합니다. 극단 조합(6홀 · 6짝)은 자동 제외됩니다.' },
 };
 
 function updateModeDesc() {
