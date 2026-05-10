@@ -265,18 +265,6 @@
       </div>
     </section>
 
-    <!-- 좋아요 -->
-    <section class="like-section">
-      <div class="like-card">
-        <p class="like-msg">이 서비스가 마음에 드셨나요?</p>
-        <button class="like-btn" id="likeBtn">
-          <span class="like-heart" id="likeHeart">♡</span>
-          <span class="like-count" id="likeCount">...</span>
-        </button>
-        <p class="like-sub" id="likeSub">좋아요를 눌러주세요</p>
-      </div>
-    </section>
-
   </main>
 
   <!-- Disqus Comments -->
@@ -307,58 +295,6 @@
     </nav>
     <p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p>
   </footer>
-
-  <script>
-    /* ── 좋아요 ── */
-    (function () {
-      const API  = 'https://api.counterapi.dev/v1';
-      const NS   = 'ailottoo';
-      const KEY  = 'likes';
-      const BASE = 432034;
-
-      const btn   = document.getElementById('likeBtn');
-      const heart = document.getElementById('likeHeart');
-      const count = document.getElementById('likeCount');
-      const sub   = document.getElementById('likeSub');
-
-      function updateCount(n) {
-        if (n !== undefined) count.textContent = (BASE + Number(n)).toLocaleString();
-      }
-
-      fetch(`${API}/${NS}/${KEY}/`)
-        .then(r => r.json())
-        .then(d => updateCount(d.count))
-        .catch(() => count.textContent = BASE.toLocaleString());
-
-      let likeTimer = null;
-
-      btn.addEventListener('click', () => {
-        if (likeTimer) {
-          clearTimeout(likeTimer);
-          btn.classList.remove('liked');
-          heart.textContent = '♡';
-        }
-
-        requestAnimationFrame(() => {
-          heart.textContent = '♥';
-          btn.classList.add('liked');
-          sub.textContent = '좋아요를 눌러주셨습니다 감사합니다!';
-        });
-
-        fetch(`${API}/${NS}/${KEY}/up`)
-          .then(r => r.json())
-          .then(d => updateCount(d.count))
-          .catch(() => {});
-
-        likeTimer = setTimeout(() => {
-          heart.textContent = '♡';
-          btn.classList.remove('liked');
-          sub.textContent = '좋아요를 눌러주세요';
-          likeTimer = null;
-        }, 1000);
-      });
-    })();
-  </script>
 
   <script src="main.js"></script>
   <script>
