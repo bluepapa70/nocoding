@@ -144,7 +144,7 @@ function updateModeDesc() {
 }
 
 /* ── 상태 ── */
-let mode = 'freq';
+let mode = 'topn';
 let topN = 3;
 let lastPicked = [];
 let statsOpen = false;
@@ -669,7 +669,6 @@ async function saveAsImage() {
 /* ── 초기 렌더 ── */
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
-    clearBoard();
+    setMode('topn');
     renderStats();
-    updateModeDesc();
 });
