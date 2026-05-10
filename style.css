@@ -195,6 +195,8 @@ main {
 /* ───────────── MODE TOGGLE ───────────── */
 .mode-wrap {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -397,7 +399,8 @@ main {
   height: 12px;
 }
 
-.ball-rank.hot { color: var(--accent); }
+.ball-rank.hot  { color: var(--accent); }
+.ball-rank.cold { color: var(--accent2); }
 .ball-rank.visible { opacity: 1; }
 
 /* ───────────── BUTTONS ───────────── */
@@ -1129,17 +1132,40 @@ body.dark-mode .stat-bar-wrap {
   line-height: 1.7;
 }
 
-/* ───────────── FOOTER NOTICE ───────────── */
-.notice {
-  font-size: 12px;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.85;
-  max-width: 480px;
+/* ───────────── MODE DESC ───────────── */
+.mode-desc {
+  width: 100%;
+  max-width: 600px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 16px;
 }
 
-.notice strong { color: var(--accent); }
-.notice a { color: var(--muted); }
+.mode-desc-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.mode-desc-text {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 10px;
+}
+
+.mode-desc-footer {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.mode-desc-footer a { color: var(--muted); }
 
 /* ───────────── RESPONSIVE ───────────── */
 @media (max-width: 500px) {

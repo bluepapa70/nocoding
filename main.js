@@ -27,6 +27,10 @@ function ballColor(n) {
 const BY_FREQ = Object.keys(FREQ).map(Number).sort((a, b) => FREQ[b] - FREQ[a]);
 function rankOf(n) { return BY_FREQ.indexOf(n) + 1; }
 
+/* Hot/Cold 풀 */
+const HOT_SET  = new Set(BY_FREQ.slice(0, 15));
+const COLD_SET = new Set(BY_FREQ.slice(-15));
+
 /* ── 뽑기 알고리즘 ── */
 function pickWeighted() {
   const nums = Object.keys(FREQ).map(Number);
@@ -73,6 +77,63 @@ function pickTopN(n) {
   return [...fixed, ...extra].sort((a, b) => a - b);
 }
 
+/* Hot/Cold: 상위 15개(Hot) 4개 + 하위 15개(Cold) 2개 */
+function pickHotCold() {
+  function pickFrom(pool, count) {
+    const weights = pool.map(n => FREQ[n]);
+    const total = weights.reduce((a, b) => a + b, 0);
+    const picked = new Set();
+    let tries = 0;
+    while (picked.size < count && tries++ < 1000) {
+      let r = Math.random() * total;
+      for (let i = 0; i < pool.length; i++) {
+        r -= weights[i];
+        if (r <= 0) { if (!picked.has(pool[i])) picked.add(pool[i]); break; }
+      }
+    }
+    return [...picked];
+  }
+  const hotPool = BY_FREQ.slice(0, 15);
+  const coldPool = BY_FREQ.slice(-15);
+  return [...pickFrom(hotPool, 4), ...pickFrom(coldPool, 2)].sort((a, b) => a - b);
+}
+
+/* 통계 조합 최적화: 홀짝·저고 비율, 합계값, 끝수 중복 필터 */
+function pickCombo() {
+  function isValid(nums) {
+    const odds = nums.filter(n => n % 2 !== 0).length;
+    if (odds < 2 || odds > 4) return false;
+    const lows = nums.filter(n => n <= 22).length;
+    if (lows < 2 || lows > 4) return false;
+    const sum = nums.reduce((a, b) => a + b, 0);
+    if (sum < 100 || sum > 170) return false;
+    const tailMap = {};
+    nums.forEach(n => { const t = n % 10; tailMap[t] = (tailMap[t] || 0) + 1; });
+    if (Object.values(tailMap).some(c => c > 2)) return false;
+    return true;
+  }
+  for (let i = 0; i < 500; i++) {
+    const nums = pickWeighted();
+    if (isValid(nums)) return nums;
+  }
+  return pickWeighted();
+}
+
+/* 모드별 설명 */
+const MODE_DESC = {
+  freq:    { title: '📊 빈도수 기반', text: '2002년 12월 ~ 2026년 5월 전체 회차의 1등 당첨 번호 출현 횟수에 비례한 가중 확률로 번호를 추출합니다. 많이 등장한 번호일수록 더 높은 확률로 선택됩니다.' },
+  random:  { title: '🎲 순수 랜덤', text: '1~45 모든 번호를 완전히 동일한 확률로 추출합니다. 통계와 무관하게 순수하게 운에 맡기는 방식으로, 매 게임 독립적인 조합이 생성됩니다.' },
+  topn:    { title: '🏆 Top 번호 고정', text: '역대 가장 많이 출현한 상위 N개 번호를 매 게임에 반드시 포함하고, 나머지는 빈도수 기반으로 추출합니다. N은 1~6 중 선택할 수 있습니다.' },
+  hotcold: { title: '🔥 Hot/Cold 분석', text: '출현 빈도 상위 15개(Hot 🔥)에서 4개, 하위 15개(Cold ❄️)에서 2개를 추출합니다. "흐름이 이어진다"는 Hot 가설과 "안 나온 번호는 곧 나온다"는 Cold 가설을 동시에 반영한 균형 전략입니다.' },
+  combo:   { title: '🎯 통계 조합 최적화', text: '홀짝 비율(2:4 · 3:3 · 4:2), 저고 비율(1~22 / 23~45, 동일 조건), 합계값(100~170), 끝수 중복(2개 이하) 4가지 조건을 동시에 만족하는 조합만 선별합니다. 실전에서 가장 많이 활용되는 통계적 필터링 방식입니다.' },
+};
+
+function updateModeDesc() {
+  const d = MODE_DESC[mode];
+  document.getElementById('modeDescTitle').textContent = d.title;
+  document.getElementById('modeDescText').textContent = d.text;
+}
+
 /* ── 상태 ── */
 let mode = 'freq';
 let topN = 3;
@@ -82,10 +143,11 @@ let statSort = 'freq';
 
 function setMode(m) {
   mode = m;
-  ['Freq','Random','TopN'].forEach(k => {
+  ['Freq','Random','TopN','Hotcold','Combo'].forEach(k => {
     document.getElementById('btn' + k).classList.toggle('active', m === k.toLowerCase());
   });
   document.getElementById('topnWrap').classList.toggle('visible', m === 'topn');
+  updateModeDesc();
   clearBoard();
 }
 
@@ -107,10 +169,12 @@ function generate() {
   const fixedNums = mode === 'topn' ? new Set(BY_FREQ.slice(0, topN)) : new Set();
 
   for (let g = 0; g < GAMES; g++) {
-    const nums = mode === 'freq'   ? pickWeighted()
-               : mode === 'random' ? pickRandom()
-               : mode === 'topn'   ? pickTopN(topN)
-               :                     pickWeighted();
+    const nums = mode === 'freq'    ? pickWeighted()
+               : mode === 'random'  ? pickRandom()
+               : mode === 'topn'    ? pickTopN(topN)
+               : mode === 'hotcold' ? pickHotCold()
+               : mode === 'combo'   ? pickCombo()
+               :                      pickWeighted();
 
     lastPicked.push(...nums);
 
@@ -119,15 +183,22 @@ function generate() {
 
     const ballsHTML = nums.map(n => {
       const rank = rankOf(n);
-      const isFixed = mode === 'topn' && fixedNums.has(n);
+      const isFixed   = mode === 'topn'    && fixedNums.has(n);
+      const isHotBall = mode === 'hotcold' && HOT_SET.has(n);
+      const isColdBall= mode === 'hotcold' && COLD_SET.has(n);
       const isHot = rank <= 5;
-      const rankLabel = isFixed ? '📌 고정' : (isHot ? `🔥 ${rank}위` : `${rank}위`);
+      const rankLabel = isFixed   ? '📌 고정'
+                      : isHotBall ? `🔥 ${rank}위`
+                      : isColdBall? `❄️ ${rank}위`
+                      : isHot     ? `🔥 ${rank}위`
+                      :             `${rank}위`;
+      const rankClass = isFixed || isHot || isHotBall ? 'hot' : isColdBall ? 'cold' : '';
       const showRank = mode !== 'random';
       return `
         <div class="ball-wrap">
           <div class="ball ${ballColor(n)} ${isFixed ? 'fixed-ball' : ''}"
-               title="${n}번 · 역대 ${FREQ[n]}회 (${rank}위)${isFixed ? ' · 고정번호' : ''}">${n}</div>
-          <span class="ball-rank ${isFixed ? 'hot' : isHot ? 'hot' : ''}">${showRank ? rankLabel : ''}</span>
+               title="${n}번 · 역대 ${FREQ[n]}회 (${rank}위)${isFixed ? ' · 고정번호' : isHotBall ? ' · Hot' : isColdBall ? ' · Cold' : ''}">${n}</div>
+          <span class="ball-rank ${rankClass}">${showRank ? rankLabel : ''}</span>
         </div>`;
     }).join('');
 
@@ -591,4 +662,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     clearBoard();
     renderStats();
+    updateModeDesc();
 });
