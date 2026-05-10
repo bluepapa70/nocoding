@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /lotto/
 
 Sitemap: https://ailottoo.pages.dev/sitemap.xml
