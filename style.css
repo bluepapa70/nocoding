@@ -252,6 +252,7 @@ main {
   max-height: 120px;
   opacity: 1;
   margin-bottom: 24px;
+  overflow: visible;
 }
 
 .topn-label {
