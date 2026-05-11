@@ -1272,13 +1272,6 @@ body.dark-mode .stat-bar-wrap {
   box-shadow: 0 4px 12px rgba(251,196,0,0.35);
 }
 
-/* ───────────── DISQUS ───────────── */
-.disqus-section {
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 40px;
-}
-
 /* ───────────── SITE FOOTER ───────────── */
 .site-footer {
   width: 100%;
