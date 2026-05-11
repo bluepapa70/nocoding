@@ -31,20 +31,44 @@ function rankOf(n) { return BY_FREQ.indexOf(n) + 1; }
 const HOT_SET  = new Set(BY_FREQ.slice(0, 15));
 const COLD_SET = new Set(BY_FREQ.slice(-15));
 
+/* 최근 6회차 당첨번호 (1218~1223회, 2026.04.04~2026.05.09) */
+const RECENT_DRAWS = [
+  [16,18,20,32,33,39],
+  [4,11,17,22,32,41],
+  [6,13,18,28,30,36],
+  [2,22,25,28,34,43],
+  [1,2,15,28,39,45],
+  [3,28,31,32,42,45],
+];
+const RECENT_SET = new Set(RECENT_DRAWS.flat());
+
+let freqColdSet = new Set();
+
 /* ── 뽑기 알고리즘 ── */
-function pickWeighted() {
-  const nums = Object.keys(FREQ).map(Number);
-  const weights = nums.map(n => FREQ[n]);
+function weightedPickOne(pool, exclude) {
+  const candidates = pool.filter(n => !exclude.has(n));
+  const weights = candidates.map(n => FREQ[n]);
   const total = weights.reduce((a, b) => a + b, 0);
-  const picked = new Set();
-  let tries = 0;
-  while (picked.size < 6 && tries++ < 1000) {
-    let r = Math.random() * total;
-    for (let i = 0; i < nums.length; i++) {
-      r -= weights[i];
-      if (r <= 0) { if (!picked.has(nums[i])) picked.add(nums[i]); break; }
-    }
+  let r = Math.random() * total;
+  for (let i = 0; i < candidates.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return candidates[i];
   }
+  return candidates[candidates.length - 1];
+}
+
+function pickWeighted() {
+  const allNums = Object.keys(FREQ).map(Number);
+  const coldPool = allNums.filter(n => !RECENT_SET.has(n));
+  const picked = new Set();
+
+  // 2개: 최근 6주 미출현 번호 (빈도 가중)
+  for (let i = 0; i < 2; i++) picked.add(weightedPickOne(coldPool, picked));
+  freqColdSet = new Set(picked);
+
+  // 4개: 전체 빈도수 가중 추출
+  while (picked.size < 6) picked.add(weightedPickOne(allNums, picked));
+
   return [...picked].sort((a, b) => a - b);
 }
 
@@ -262,7 +286,7 @@ function pickCombo() {
 
 /* 모드별 설명 */
 const MODE_DESC = {
-  freq:    { title: '📊 빈도수 기반', text: '2002년 12월 ~ 2026년 5월 전체 회차의 1등 당첨 번호 출현 횟수에 비례한 가중 확률로 번호를 추출합니다. 많이 등장한 번호일수록 더 높은 확률로 선택됩니다.' },
+  freq:    { title: '📊 빈도수 기반', text: '2002년 12월 ~ 2026년 5월 전체 회차의 1등 당첨 번호 출현 횟수에 비례한 가중 확률로 4개를 추출하고, 최근 6주(6회차)간 단 한 번도 등장하지 않은 번호 중 빈도 가중으로 2개를 추가합니다. ❄️ 미출현 표시가 붙은 번호가 6주 미출현 번호입니다.' },
   random:  { title: '🎲 순수 랜덤', text: '1~45 모든 번호를 완전히 동일한 확률로 추출합니다. 통계와 무관하게 순수하게 운에 맡기는 방식으로, 매 게임 독립적인 조합이 생성됩니다.' },
   topn:    { title: '🏆 Top 번호 고정', text: '역대 가장 많이 출현한 상위 N개 번호를 매 게임에 반드시 포함하고, 나머지는 빈도수 기반으로 추출합니다. N은 1~6 중 선택할 수 있습니다.' },
   hotcold: { title: '🔥 Hot/Cold 분석', text: '빈도 상위 15개(Hot 🔥) 3개 + 중립 15개 1개 + 하위 15개(Cold ❄️) 2개를 조합합니다. "흐름이 이어진다"는 Hot 가설과 "안 나온 번호는 곧 나온다"는 Cold 가설, 중립 번호까지 균형 있게 반영한 혼합 전략입니다.' },
@@ -330,6 +354,7 @@ function generate() {
       const isFixed      = mode === 'topn'    && fixedNums.has(n);
       const isHotBall    = mode === 'hotcold' && HOT_SET.has(n);
       const isColdBall   = mode === 'hotcold' && COLD_SET.has(n);
+      const isFreqCold   = mode === 'freq'    && freqColdSet.has(n);
       const isDreamDirect= mode === 'dream'   && dreamDirectSet.has(n);
       const isDreamRepeat= mode === 'dream'   && !isDreamDirect && dreamRepeatSet.has(n);
       const isDreamHot   = mode === 'dream'   && !isDreamDirect && !isDreamRepeat && HOT_SET.has(n);
@@ -337,6 +362,7 @@ function generate() {
       const rankLabel = isDreamDirect ? '✍️ 직접'
                       : isDreamRepeat ? '✦ 반복'
                       : isDreamHot    ? `🔥 ${rank}위`
+                      : isFreqCold    ? '❄️ 미출현'
                       : isFixed       ? '📌 고정'
                       : isHotBall     ? `🔥 ${rank}위`
                       : isColdBall    ? `❄️ ${rank}위`
@@ -344,11 +370,12 @@ function generate() {
                       :                 `${rank}위`;
       const rankClass = isDreamDirect ? 'dream-direct'
                       : isDreamRepeat ? 'dream-repeat'
+                      : isFreqCold    ? 'cold'
                       : isFixed || isHot || isHotBall || isDreamHot ? 'hot'
                       : isColdBall ? 'cold' : '';
       const ballExtra = isFixed ? 'fixed-ball' : isDreamDirect ? 'dream-fixed-ball' : '';
       const showRank = mode !== 'random';
-      const titleExtra = isDreamDirect ? ' · 직접 본 숫자' : isDreamRepeat ? ' · 반복 상징' : isDreamHot ? ' · HOT 혼합' : isFixed ? ' · 고정번호' : isHotBall ? ' · Hot' : isColdBall ? ' · Cold' : '';
+      const titleExtra = isDreamDirect ? ' · 직접 본 숫자' : isDreamRepeat ? ' · 반복 상징' : isDreamHot ? ' · HOT 혼합' : isFreqCold ? ' · 6주 미출현' : isFixed ? ' · 고정번호' : isHotBall ? ' · Hot' : isColdBall ? ' · Cold' : '';
       return `
         <div class="ball-wrap">
           <div class="ball ${ballColor(n)} ${ballExtra}"
