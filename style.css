@@ -814,6 +814,16 @@ body.dark-mode .stat-bar-wrap {
   background: linear-gradient(90deg, #fbc400, #e67e00);
 }
 
+.absence-bar {
+  background: linear-gradient(90deg, #4f9cf9, #0969da);
+}
+
+.absence-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
 .stat-count {
   font-size: 10px;
   color: var(--muted);

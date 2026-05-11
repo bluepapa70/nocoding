@@ -42,6 +42,22 @@ const RECENT_DRAWS = [
 ];
 const RECENT_SET = new Set(RECENT_DRAWS.flat());
 
+/* 번호별 마지막 출현 회차 (1174~1223회 기준) */
+const LATEST_DRAW = 1223;
+const LAST_SEEN = {
+   1:1219,  2:1220,  3:1218,  4:1222,  5:1213,  6:1221,  7:1210,  8:1217,
+   9:1210, 10:1217, 11:1222, 12:1202, 13:1221, 14:1216, 15:1219, 16:1223,
+  17:1222, 18:1223, 19:1215, 20:1223, 21:1215, 22:1222, 23:1216, 24:1216,
+  25:1220, 26:1211, 27:1214, 28:1221, 29:1217, 30:1221, 31:1218, 32:1223,
+  33:1223, 34:1220, 35:1211, 36:1221, 37:1209, 38:1213, 39:1223, 40:1211,
+  41:1222, 42:1218, 43:1220, 44:1215, 45:1219
+};
+const ABSENCE = Object.fromEntries(Object.keys(LAST_SEEN).map(n => [n, LATEST_DRAW - LAST_SEEN[+n]]));
+const MAX_ABSENCE = Math.max(...Object.values(ABSENCE));
+const ABSENCE_TOP20 = Object.keys(ABSENCE).map(Number)
+  .sort((a, b) => ABSENCE[b] - ABSENCE[a] || a - b)
+  .slice(0, 20);
+
 let freqColdSet = new Set();
 
 /* ── 뽑기 알고리즘 ── */
@@ -465,10 +481,32 @@ function renderStats() {
 
 function updateStatsHighlight() {
   const picked = new Set(lastPicked);
-  document.querySelectorAll('.stat-card').forEach(el => {
-    const n = parseInt(el.id.replace('sc-', ''));
-    el.classList.toggle('picked', picked.has(n));
+  document.querySelectorAll('#statsGrid .stat-card').forEach(el => {
+    el.classList.toggle('picked', picked.has(parseInt(el.id.replace('sc-', ''))));
   });
+  document.querySelectorAll('#absenceGrid .stat-card').forEach(el => {
+    el.classList.toggle('picked', picked.has(parseInt(el.id.replace('ac-', ''))));
+  });
+}
+
+let absenceOpen = false;
+
+function toggleAbsenceStats() {
+  absenceOpen = !absenceOpen;
+  document.getElementById('absenceBody').classList.toggle('open', absenceOpen);
+  document.getElementById('absenceIcon').classList.toggle('open', absenceOpen);
+}
+
+function renderAbsenceStats() {
+  const picked = new Set(lastPicked);
+  document.getElementById('absenceGrid').innerHTML = ABSENCE_TOP20.map(n => `
+    <div class="stat-card ${picked.has(n) ? 'picked' : ''}" id="ac-${n}">
+      <div class="stat-num">${n}</div>
+      <div class="stat-bar-wrap">
+        <div class="stat-bar absence-bar" style="width:${(ABSENCE[n] / MAX_ABSENCE * 100).toFixed(1)}%"></div>
+      </div>
+      <div class="stat-count">${ABSENCE[n]}주</div>
+    </div>`).join('');
 }
 
 /* ── 테마 토글 ── */
@@ -845,4 +883,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDreamCats();
     setMode('topn');
     renderStats();
+    renderAbsenceStats();
 });

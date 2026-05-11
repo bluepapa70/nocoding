@@ -177,6 +177,23 @@
       </div>
     </div>
 
+    <!-- 연속 미출현 번호 통계 -->
+    <div class="stats-panel">
+      <div class="stats-header" onclick="toggleAbsenceStats()">
+        <div class="stats-header-left">
+          <span>❄️</span>
+          <h2>연속 미출현 번호 통계 (최근 50회차 기준)</h2>
+        </div>
+        <span class="stats-toggle-icon" id="absenceIcon">▼</span>
+      </div>
+      <div class="stats-body" id="absenceBody">
+        <div class="stats-inner">
+          <p class="absence-desc">가장 오랫동안 출현하지 않은 상위 20개 번호를 미출현 주차 순으로 보여줍니다.</p>
+          <div class="stats-grid" id="absenceGrid"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- 내 근처 로또 명당 -->
     <section class="map-section">
       <h2 class="map-title">🏯 내 근처 로또 명당</h2>
