@@ -284,6 +284,14 @@
       </div>
     </section>
 
+    <!-- 리액션 -->
+    <section class="reactions-section">
+      <p class="reactions-title">이 서비스가 도움이 됐나요?</p>
+      <div class="reactions-row" id="reactionsRow">
+        <span class="reactions-loading">불러오는 중...</span>
+      </div>
+    </section>
+
   </main>
 
   <!-- Disqus Comments -->
@@ -319,6 +327,68 @@
   </footer>
 
   <script src="main.js"></script>
+  <script>
+    const REACTIONS = [
+      { key: 'upvote',    emoji: '👍', label: '추천' },
+      { key: 'funny',     emoji: '🤣', label: '재밌어요' },
+      { key: 'love',      emoji: '❤️', label: '좋아요' },
+      { key: 'surprised', emoji: '😲', label: '놀라워요' },
+      { key: 'angry',     emoji: '😡', label: '화나요' },
+      { key: 'sad',       emoji: '😢', label: '슬퍼요' },
+    ];
+    const VOTED_KEY = 'lotto_reactions_voted';
+
+    function getVoted() {
+      try { return JSON.parse(localStorage.getItem(VOTED_KEY) || '{}'); } catch { return {}; }
+    }
+    function setVoted(obj) { localStorage.setItem(VOTED_KEY, JSON.stringify(obj)); }
+
+    function renderReactions(counts) {
+      const voted = getVoted();
+      const row = document.getElementById('reactionsRow');
+      if (!row) return;
+      row.innerHTML = REACTIONS.map(r => `
+        <button class="reaction-btn${voted[r.key] ? ' voted' : ''}" onclick="toggleReaction('${r.key}')">
+          <span class="reaction-emoji">${r.emoji}</span>
+          <span class="reaction-label">${r.label}</span>
+          <span class="reaction-count" id="rc-${r.key}">${(counts[r.key] || 0).toLocaleString()}</span>
+        </button>`).join('');
+    }
+
+    async function loadReactions() {
+      try {
+        const res = await fetch('/api/reactions');
+        if (!res.ok) throw new Error();
+        renderReactions(await res.json());
+      } catch {
+        const row = document.getElementById('reactionsRow');
+        if (row) row.innerHTML = '<span class="reactions-loading">불러오기 실패</span>';
+      }
+    }
+
+    async function toggleReaction(key) {
+      const voted = getVoted();
+      const action = voted[key] ? 'remove' : 'add';
+      if (action === 'add') voted[key] = true; else delete voted[key];
+      setVoted(voted);
+
+      document.querySelectorAll('.reaction-btn').forEach((btn, i) => {
+        btn.classList.toggle('voted', !!voted[REACTIONS[i].key]);
+      });
+
+      try {
+        const res = await fetch('/api/reactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reaction: key, action })
+        });
+        if (!res.ok) throw new Error();
+        renderReactions(await res.json());
+      } catch {}
+    }
+
+    document.addEventListener('DOMContentLoaded', loadReactions);
+  </script>
   <script>
     function toggleFaq(btn) {
       const item = btn.closest('.faq-item');
