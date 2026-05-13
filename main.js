@@ -326,7 +326,9 @@ let statSort = 'freq';
 function setMode(m) {
   mode = m;
   ['Freq','Random','TopN','Hotcold','Combo','Dream'].forEach(k => {
-    document.getElementById('btn' + k).classList.toggle('active', m === k.toLowerCase());
+    const btn = document.getElementById('btn' + k);
+    btn.classList.toggle('active', m === k.toLowerCase());
+    btn.setAttribute('aria-pressed', String(m === k.toLowerCase()));
   });
   document.getElementById('topnWrap').classList.toggle('visible', m === 'topn');
   document.getElementById('dreamWrap').classList.toggle('visible', m === 'dream');
@@ -453,6 +455,8 @@ function toggleStats() {
   statsOpen = !statsOpen;
   document.getElementById('statsBody').classList.toggle('open', statsOpen);
   document.getElementById('statsIcon').classList.toggle('open', statsOpen);
+  const btn = document.getElementById('statsToggleBtn');
+  if (btn) btn.setAttribute('aria-expanded', String(statsOpen));
 }
 
 function sortStats(by) {
@@ -495,6 +499,8 @@ function toggleAbsenceStats() {
   absenceOpen = !absenceOpen;
   document.getElementById('absenceBody').classList.toggle('open', absenceOpen);
   document.getElementById('absenceIcon').classList.toggle('open', absenceOpen);
+  const btn = document.getElementById('absenceToggleBtn');
+  if (btn) btn.setAttribute('aria-expanded', String(absenceOpen));
 }
 
 function renderAbsenceStats() {

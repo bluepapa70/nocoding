@@ -1,0 +1,24 @@
+{
+  "name": "nocoding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluepapa70/nocoding.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bluepapa70/nocoding/issues"
+  },
+  "homepage": "https://github.com/bluepapa70/nocoding#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
