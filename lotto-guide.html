@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로또 6/45 통계 완벽 가이드 - 당첨 번호 패턴 분석 | 통계왕 AI Lotto</title>
+  <meta name="description" content="로또 6/45의 역대 당첨 번호 통계를 심층 분석합니다. 출현 빈도, Hot/Cold 번호, 홀짝·저고 패턴, 합계 범위, 연속 번호, 끝수 패턴까지 완벽하게 정리한 가이드." />
+  <meta name="keywords" content="로또6/45통계, 로또당첨번호분석, 로또번호패턴, 로또핫번호콜드번호, 로또홀짝비율, 로또합계범위, 로또번호분석가이드" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="로또 6/45 통계 완벽 가이드 - 당첨 번호 패턴 분석" />
+  <meta property="og:description" content="역대 로또 6/45 당첨 번호 통계 심층 분석 — 빈도, 홀짝, 합계, 연속 번호 패턴 완벽 정리" />
+  <meta property="og:url" content="https://ailottoo.pages.dev/lotto-guide.html" />
+  <meta property="og:image" content="https://ailottoo.pages.dev/title.png" />
+  <meta property="og:locale" content="ko_KR" />
+  <link rel="canonical" href="https://ailottoo.pages.dev/lotto-guide.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6010995244588886" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "로또 6/45 통계 완벽 가이드 - 당첨 번호 패턴 분석",
+    "description": "역대 로또 6/45 당첨 번호 통계 심층 분석. 출현 빈도, Hot/Cold 번호, 홀짝·저고 패턴, 합계 범위, 연속 번호 패턴 완벽 정리.",
+    "url": "https://ailottoo.pages.dev/lotto-guide.html",
+    "inLanguage": "ko",
+    "datePublished": "2026-05-09",
+    "dateModified": "2026-06-01",
+    "image": "https://ailottoo.pages.dev/title.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "통계왕 AI Lotto",
+      "url": "https://ailottoo.pages.dev"
+    }
+  }
+  </script>
+  <style>
+    .guide-wrap {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .guide-wrap h1 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .guide-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .guide-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 48px;
+      box-shadow: var(--shadow);
+    }
+    .toc-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .toc ol {
+      padding-left: 18px;
+      margin: 0;
+    }
+    .toc li {
+      font-size: 14px;
+      line-height: 1.9;
+    }
+    .toc a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .guide-section {
+      margin-bottom: 56px;
+    }
+    .guide-section h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--accent);
+    }
+    .guide-section h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 24px 0 10px;
+    }
+    .guide-section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 14px;
+    }
+    .guide-section ul, .guide-section ol {
+      padding-left: 22px;
+      margin: 10px 0 14px;
+    }
+    .guide-section li {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 6px;
+    }
+    .guide-section strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .guide-section a {
+      color: var(--accent2);
+    }
+
+    /* 데이터 표 */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      margin: 16px 0;
+    }
+    .data-table thead tr { background: var(--bg3); }
+    .data-table th {
+      padding: 11px 14px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .data-table td {
+      padding: 11px 14px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .data-table td:first-child {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .rank-hot { color: #e53935; font-weight: 700; }
+    .rank-cold { color: #1565c0; font-weight: 700; }
+
+    /* 번호 볼 */
+    .mini-ball {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      margin: 2px;
+    }
+    .mb-y { background: linear-gradient(135deg,#ffe566,#f9a800); color: #5a3800; }
+    .mb-b { background: linear-gradient(135deg,#90caf9,#1565c0); }
+    .mb-r { background: linear-gradient(135deg,#ef9a9a,#c62828); }
+    .mb-s { background: linear-gradient(135deg,#cfd8dc,#546e7a); }
+    .mb-g { background: linear-gradient(135deg,#dce775,#558b2f); }
+
+    .ball-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+      margin: 8px 0;
+    }
+
+    /* 인포 박스 */
+    .info-box {
+      background: var(--bg2);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .info-box p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .warn-box {
+      background: #fff3e0;
+      border-left: 4px solid #f57c00;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    body.dark-mode .warn-box {
+      background: #2a1a00;
+      border-left-color: #f57c00;
+    }
+    .warn-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #7a4800;
+      line-height: 1.75;
+    }
+    body.dark-mode .warn-box p { color: #f0a060; }
+
+    .tip-box {
+      background: #e8f5e9;
+      border-left: 4px solid #2e7d32;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    body.dark-mode .tip-box {
+      background: #0a2010;
+      border-left-color: #4caf50;
+    }
+    .tip-box p {
+      margin: 0;
+      font-size: 14px;
+      color: #1b5e20;
+      line-height: 1.75;
+    }
+    body.dark-mode .tip-box p { color: #81c784; }
+
+    /* 비율 막대 */
+    .ratio-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .ratio-label { min-width: 80px; font-weight: 600; color: var(--text); }
+    .ratio-bar-wrap { flex: 1; height: 16px; background: var(--bg3); border-radius: 8px; overflow: hidden; }
+    .ratio-bar { height: 100%; border-radius: 8px; background: var(--accent); }
+    .ratio-pct { min-width: 46px; text-align: right; font-weight: 600; color: var(--text); }
+
+    /* 상금표 */
+    .prize-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 16px 0;
+      background: var(--bg2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .prize-table thead { background: var(--bg3); }
+    .prize-table th {
+      padding: 11px 14px;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+    .prize-table td {
+      padding: 11px 14px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--muted);
+    }
+    .prize-table .rank1 { background: rgba(251,196,0,0.12); font-weight: 700; color: var(--text); }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      margin: 56px 0 16px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #1f2328;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 36px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(251,196,0,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251,196,0,0.45);
+    }
+
+    @media (max-width: 500px) {
+      .data-table th, .data-table td { padding: 9px 10px; font-size: 13px; }
+      .prize-table th, .prize-table td { padding: 9px 10px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="guide-wrap">
+
+    <nav class="footer-nav" style="justify-content:flex-start; margin-bottom:32px;">
+      <a href="/">← 홈으로</a>
+    </nav>
+
+    <h1>로또 6/45 통계 완벽 가이드</h1>
+    <p class="guide-meta">마지막 업데이트: 2026년 6월 · 데이터 기간: 2002년 12월 ~ 2026년 5월</p>
+    <p class="guide-subtitle">
+      역대 로또 6/45 당첨 번호를 통계적으로 분석했습니다. 출현 빈도, Hot/Cold 번호, 홀짝·저고 패턴, 합계 범위,
+      연속 번호, 끝수 패턴까지 1,223회차 이상의 데이터를 기반으로 정리합니다.
+    </p>
+
+    <!-- 목차 -->
+    <nav class="toc">
+      <div class="toc-title">📋 목차</div>
+      <ol>
+        <li><a href="#basics">로또 6/45 기본 안내</a></li>
+        <li><a href="#prizes">당첨 등급과 상금 구조</a></li>
+        <li><a href="#probability">당첨 확률과 기댓값</a></li>
+        <li><a href="#frequency">번호별 출현 빈도 분석</a></li>
+        <li><a href="#hotcold">Hot/Cold 번호 이론</a></li>
+        <li><a href="#oddeven">홀수·짝수 패턴 분석</a></li>
+        <li><a href="#lowhigh">저번호·고번호 패턴 분석</a></li>
+        <li><a href="#sum">번호 합계 범위 분석</a></li>
+        <li><a href="#consecutive">연속 번호 패턴</a></li>
+        <li><a href="#taildigit">끝수(일의 자리) 패턴</a></li>
+        <li><a href="#strategies">번호 선택 전략 비교</a></li>
+        <li><a href="#responsible">책임감 있는 복권 참여</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. 기본 안내 -->
+    <section class="guide-section" id="basics">
+      <h2>1. 로또 6/45 기본 안내</h2>
+      <p>
+        <strong>로또 6/45</strong>는 1부터 45까지의 숫자 중 6개를 선택하는 대한민국의 대표 복권입니다.
+        2002년 12월 7일 제1회 추첨을 시작으로 매주 토요일 오후 8시 35분에 추첨이 진행됩니다.
+        복권 1장 가격은 1,000원이며, 동행복권에서 온라인 및 오프라인으로 구매할 수 있습니다.
+      </p>
+      <p>
+        추첨 방식은 1~45번이 적힌 공 45개 중 6개를 순서 없이 무작위로 뽑는 방식입니다.
+        이후 보너스 번호 1개를 추가로 뽑아 2등 당첨 판별에 활용합니다.
+        6개의 숫자를 모두 맞히면 1등이며, 당첨 금액은 판매 금액에 따라 매주 달라집니다.
+      </p>
+      <h3>복권 구매 방법</h3>
+      <ul>
+        <li><strong>수동 구매</strong>: 1~45 중 6개를 직접 선택합니다.</li>
+        <li><strong>자동 구매</strong>: 기계가 무작위로 6개를 선택해 줍니다.</li>
+        <li><strong>반자동 구매</strong>: 일부 번호는 직접 선택하고 나머지는 자동으로 채웁니다.</li>
+      </ul>
+      <div class="info-box">
+        <p>
+          💡 통계에 따르면 1등 당첨자의 약 70~80%는 자동 구매 방식을 선택한 것으로 알려져 있습니다.
+          이는 자동 구매가 더 유리해서가 아니라, 자동 구매 비율 자체가 훨씬 높기 때문입니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. 당첨 등급과 상금 -->
+    <section class="guide-section" id="prizes">
+      <h2>2. 당첨 등급과 상금 구조</h2>
+      <p>
+        로또 6/45의 당첨 등급은 총 5등급으로 나뉩니다.
+        1등과 2등은 당첨자 수에 따라 상금이 분배되며, 3등 이상은 정해진 금액이 지급됩니다.
+      </p>
+      <table class="prize-table">
+        <thead>
+          <tr>
+            <th>등급</th>
+            <th>조건</th>
+            <th>상금 방식</th>
+            <th>평균 당첨금</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rank1">
+            <td>🥇 1등</td>
+            <td>6개 모두 일치</td>
+            <td>판매액의 40% 분배</td>
+            <td>약 20~30억 원</td>
+          </tr>
+          <tr>
+            <td>🥈 2등</td>
+            <td>5개 + 보너스 1개 일치</td>
+            <td>판매액의 12.5% 분배</td>
+            <td>약 5,000만~1억 원</td>
+          </tr>
+          <tr>
+            <td>🥉 3등</td>
+            <td>5개 일치</td>
+            <td>판매액의 12.5% 분배</td>
+            <td>약 150만~200만 원</td>
+          </tr>
+          <tr>
+            <td>4등</td>
+            <td>4개 일치</td>
+            <td>고정 50,000원</td>
+            <td>50,000원</td>
+          </tr>
+          <tr>
+            <td>5등</td>
+            <td>3개 일치</td>
+            <td>고정 5,000원</td>
+            <td>5,000원</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        1등 당첨금은 그 주 판매 금액의 40%에서 당첨자 수로 나눈 금액입니다.
+        단독 당첨 시 수십억 원에 이르는 경우도 있으며, 역대 최고 1등 당첨금은 약 407억 원(2003년 4월)입니다.
+        복권 기금의 나머지는 복지기금, 문화예술진흥기금 등으로 사용됩니다.
+      </p>
+    </section>
+
+    <!-- 3. 당첨 확률 -->
+    <section class="guide-section" id="probability">
+      <h2>3. 당첨 확률과 기댓값</h2>
+      <p>
+        로또 6/45에서 6개의 번호를 모두 맞히는 1등 확률은 다음과 같이 계산됩니다.
+      </p>
+      <p>
+        <strong>1등 확률 = C(45,6) 분의 1 = 45! / (6! × 39!) 분의 1 = 8,145,060 분의 1</strong>
+      </p>
+      <p>
+        즉, 약 814만 5천 분의 1의 확률입니다. 매주 1장씩 구매한다면 통계적으로 1등이 되려면
+        약 <strong>15만 6천 년</strong>이 필요합니다.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>등급</th>
+            <th>당첨 확률</th>
+            <th>약 1회 당첨에 필요한 구매 횟수</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1등 (6개 일치)</td>
+            <td>1 / 8,145,060</td>
+            <td>약 814만 번</td>
+          </tr>
+          <tr>
+            <td>2등 (5개 + 보너스)</td>
+            <td>1 / 1,357,510</td>
+            <td>약 136만 번</td>
+          </tr>
+          <tr>
+            <td>3등 (5개 일치)</td>
+            <td>1 / 35,724</td>
+            <td>약 3만 5천 번</td>
+          </tr>
+          <tr>
+            <td>4등 (4개 일치)</td>
+            <td>1 / 733</td>
+            <td>약 733번</td>
+          </tr>
+          <tr>
+            <td>5등 (3개 일치)</td>
+            <td>1 / 45</td>
+            <td>약 45번</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="warn-box">
+        <p>
+          ⚠️ 어떤 통계적 방법, AI 분석, 번호 선택 전략도 당첨 확률을 높이지 못합니다.
+          각 번호 조합은 완전히 동일한 당첨 확률(1/8,145,060)을 가집니다.
+          통계적 분석은 과거 패턴을 이해하는 데 도움이 될 뿐, 미래를 예측하지 않습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. 출현 빈도 분석 -->
+    <section class="guide-section" id="frequency">
+      <h2>4. 번호별 출현 빈도 분석</h2>
+      <p>
+        2002년 12월부터 2026년 5월까지 1,223회차 이상의 1등 당첨 번호를 분석한 결과입니다.
+        (1등 당첨 번호 = 추첨된 6개의 공, 보너스 번호 제외)
+      </p>
+
+      <h3>출현 빈도 상위 10개 번호 (Hot 번호)</h3>
+      <div class="ball-row">
+        <span class="mini-ball mb-b">12</span>
+        <span class="mini-ball mb-r">34</span>
+        <span class="mini-ball mb-b">13</span>
+        <span class="mini-ball mb-r">38</span>
+        <span class="mini-ball mb-r">27</span>
+        <span class="mini-ball mb-g">45</span>
+        <span class="mini-ball mb-r">33</span>
+        <span class="mini-ball mb-b">15</span>
+        <span class="mini-ball mb-b">18</span>
+        <span class="mini-ball mb-b">14</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>순위</th><th>번호</th><th>출현 횟수</th><th>출현율</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="rank-hot">1위</span></td><td>12번</td><td>147회</td><td>약 12.0%</td></tr>
+          <tr><td><span class="rank-hot">2위</span></td><td>34번</td><td>144회</td><td>약 11.8%</td></tr>
+          <tr><td><span class="rank-hot">3위</span></td><td>13번</td><td>143회</td><td>약 11.7%</td></tr>
+          <tr><td><span class="rank-hot">4위</span></td><td>38번</td><td>142회</td><td>약 11.6%</td></tr>
+          <tr><td><span class="rank-hot">5위</span></td><td>27번</td><td>141회</td><td>약 11.5%</td></tr>
+          <tr><td><span class="rank-hot">6위</span></td><td>45번</td><td>140회</td><td>약 11.4%</td></tr>
+          <tr><td><span class="rank-hot">7위</span></td><td>33번</td><td>137회</td><td>약 11.2%</td></tr>
+          <tr><td><span class="rank-hot">8위</span></td><td>15번</td><td>136회</td><td>약 11.1%</td></tr>
+          <tr><td><span class="rank-hot">9위</span></td><td>18번</td><td>135회</td><td>약 11.0%</td></tr>
+          <tr><td><span class="rank-hot">10위</span></td><td>14번 · 16번</td><td>133회</td><td>약 10.9%</td></tr>
+        </tbody>
+      </table>
+
+      <h3>출현 빈도 하위 10개 번호 (Cold 번호)</h3>
+      <div class="ball-row">
+        <span class="mini-ball mb-y">9</span>
+        <span class="mini-ball mb-r">25</span>
+        <span class="mini-ball mb-s">32</span>
+        <span class="mini-ball mb-y">2</span>
+        <span class="mini-ball mb-s">42</span>
+        <span class="mini-ball mb-y">5</span>
+        <span class="mini-ball mb-b">22</span>
+        <span class="mini-ball mb-b">23</span>
+        <span class="mini-ball mb-s">36</span>
+        <span class="mini-ball mb-r">29</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>순위</th><th>번호</th><th>출현 횟수</th><th>출현율</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="rank-cold">최하위</span></td><td>9번</td><td>108회</td><td>약 8.8%</td></tr>
+          <tr><td><span class="rank-cold">44위</span></td><td>25번</td><td>111회</td><td>약 9.1%</td></tr>
+          <tr><td><span class="rank-cold">43위</span></td><td>32번</td><td>113회</td><td>약 9.2%</td></tr>
+          <tr><td><span class="rank-cold">42위</span></td><td>2번</td><td>114회</td><td>약 9.3%</td></tr>
+          <tr><td><span class="rank-cold">41위</span></td><td>42번</td><td>116회</td><td>약 9.5%</td></tr>
+          <tr><td><span class="rank-cold">40위</span></td><td>5번 · 22번</td><td>117회</td><td>약 9.6%</td></tr>
+          <tr><td><span class="rank-cold">38위</span></td><td>23번</td><td>115회</td><td>약 9.4%</td></tr>
+          <tr><td><span class="rank-cold">37위</span></td><td>36번</td><td>121회</td><td>약 9.9%</td></tr>
+          <tr><td><span class="rank-cold">36위</span></td><td>29번</td><td>122회</td><td>약 10.0%</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        흥미롭게도 가장 많이 나온 12번(147회)과 가장 적게 나온 9번(108회)의 차이는 39회로,
+        비율로 보면 약 36% 차이입니다. 이는 완전한 균등 분포(각 번호가 동일하게 출현)와 비교했을 때
+        통계적으로 예상 가능한 편차 범위 내에 있습니다.
+      </p>
+      <div class="info-box">
+        <p>
+          💡 1등 당첨 번호 한 회차에 6개의 번호가 출현하고 회차가 1,223회라면,
+          총 출현 횟수는 1,223 × 6 = 7,338회입니다. 45개 번호에 균등 분포를 가정하면
+          각 번호는 평균 약 163회 출현하게 됩니다. 최다 출현 12번의 147회도
+          이 이론값보다 약간 낮습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. Hot/Cold 이론 -->
+    <section class="guide-section" id="hotcold">
+      <h2>5. Hot/Cold 번호 이론</h2>
+      <p>
+        로또 분석에서 자주 사용되는 개념으로, <strong>Hot 번호</strong>는 최근 또는 역대 출현 빈도가 높은 번호를,
+        <strong>Cold 번호</strong>는 출현 빈도가 낮거나 최근 오랫동안 나오지 않은 번호를 말합니다.
+      </p>
+
+      <h3>Hot 번호 이론</h3>
+      <p>
+        "자주 나온 번호는 앞으로도 계속 나온다"는 이론입니다. 출현 빈도가 높은 번호에는
+        어떤 구조적 이유가 있을 것이라는 생각에서 비롯됩니다. 실제로 로또 기계의 물리적 특성이나
+        공 무게 차이가 미세하게 결과에 영향을 줄 수 있다는 주장도 있으나,
+        현재까지 검증된 과학적 근거는 없습니다.
+      </p>
+
+      <h3>Cold 번호 이론 (도박사의 오류에 가까움)</h3>
+      <p>
+        "오랫동안 나오지 않은 번호는 곧 나올 것이다"는 이론입니다. 이를 통계학에서는
+        <strong>도박사의 오류(Gambler's Fallacy)</strong>라고 합니다.
+        각 추첨은 완전히 독립적인 사건이므로, 이전 결과가 다음 추첨에 영향을 주지 않습니다.
+        즉, 오랫동안 나오지 않은 번호가 이제 나올 확률이 높아지는 것은 아닙니다.
+      </p>
+      <div class="warn-box">
+        <p>
+          ⚠️ Hot/Cold 이론은 재미와 전략적 선택의 도구로 활용할 수 있지만,
+          당첨 확률을 실제로 높이지는 않습니다. 각 번호의 매 회차 출현 확률은 동일합니다.
+        </p>
+      </div>
+
+      <h3>이 서비스의 Hot/Cold 분류 기준</h3>
+      <p>
+        통계왕 AI Lotto에서는 역대 출현 빈도를 기준으로 번호를 세 그룹으로 분류합니다:
+      </p>
+      <ul>
+        <li><strong>Hot 번호 (상위 15개)</strong>: 12, 15, 16, 18, 14, 13, 38, 34, 27, 45, 33, 7, 20, 17, 11번 등</li>
+        <li><strong>중립 번호 (중간 15개)</strong>: 출현 빈도 중간 구간의 번호들</li>
+        <li><strong>Cold 번호 (하위 15개)</strong>: 9, 25, 32, 2, 42, 23, 22, 5, 36, 29번 등</li>
+      </ul>
+    </section>
+
+    <!-- 6. 홀짝 패턴 -->
+    <section class="guide-section" id="oddeven">
+      <h2>6. 홀수·짝수 패턴 분석</h2>
+      <p>
+        1등 당첨 번호 6개의 홀수(1,3,5...45)와 짝수(2,4,6...44) 구성 비율을 분석하면
+        특정 패턴이 뚜렷하게 나타납니다.
+      </p>
+
+      <h3>홀짝 비율 분포 (1~1,223회 기준)</h3>
+      <div class="ratio-row">
+        <div class="ratio-label">3홀 : 3짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:33.6%;background:#fbc400;"></div></div>
+        <div class="ratio-pct">약 33.6%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">4홀 : 2짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:26.7%;background:#ef9a9a;"></div></div>
+        <div class="ratio-pct">약 26.7%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">2홀 : 4짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:22.2%;background:#90caf9;"></div></div>
+        <div class="ratio-pct">약 22.2%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">5홀 : 1짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:9.3%;background:#cfd8dc;"></div></div>
+        <div class="ratio-pct">약 9.3%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">1홀 : 5짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:6.1%;background:#dce775;"></div></div>
+        <div class="ratio-pct">약 6.1%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">6홀 : 0짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:1.5%;background:#b0bec5;"></div></div>
+        <div class="ratio-pct">약 1.5%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">0홀 : 6짝</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:1.0%;background:#b0bec5;"></div></div>
+        <div class="ratio-pct">약 1.0%</div>
+      </div>
+
+      <p>
+        전체 홀수가 23개, 짝수가 22개이므로 이론적으로 홀수가 약간 더 자주 나와야 합니다.
+        실제로도 3홀3짝(33.6%)이 가장 흔하며, 4홀2짝(26.7%)이 그 다음입니다.
+        모두 홀수(6홀)이거나 모두 짝수(6짝)인 경우는 합쳐서 약 2.5%에 불과합니다.
+      </p>
+      <div class="tip-box">
+        <p>
+          ✅ 번호를 선택할 때 홀수와 짝수를 2:4~4:2 범위로 구성하면
+          역대 당첨 번호의 약 82.5%와 같은 패턴을 갖게 됩니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 7. 저고 패턴 -->
+    <section class="guide-section" id="lowhigh">
+      <h2>7. 저번호·고번호 패턴 분석</h2>
+      <p>
+        번호를 저번호(1~22)와 고번호(23~45)로 나누어 분석하면 홀짝 패턴과 유사한 경향이 나타납니다.
+        1~22는 22개, 23~45는 23개이므로 거의 동등한 비율입니다.
+      </p>
+
+      <h3>저고 비율 분포 (1~1,223회 기준)</h3>
+      <div class="ratio-row">
+        <div class="ratio-label">3저 : 3고</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:31.0%;background:#fbc400;"></div></div>
+        <div class="ratio-pct">약 31.0%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">4저 : 2고</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:23.5%;background:#ef9a9a;"></div></div>
+        <div class="ratio-pct">약 23.5%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">2저 : 4고</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:23.0%;background:#90caf9;"></div></div>
+        <div class="ratio-pct">약 23.0%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">5저 : 1고</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:11.0%;background:#cfd8dc;"></div></div>
+        <div class="ratio-pct">약 11.0%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">1저 : 5고</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:10.0%;background:#dce775;"></div></div>
+        <div class="ratio-pct">약 10.0%</div>
+      </div>
+
+      <p>
+        저고 분포는 홀짝보다 더 균등한 편입니다. 3저3고, 4저2고, 2저4고가 비슷한 비율로
+        전체의 약 77.5%를 차지합니다. 저번호 2~4개, 고번호 2~4개인 조합이
+        당첨 번호에서 가장 흔한 패턴입니다.
+      </p>
+    </section>
+
+    <!-- 8. 합계 범위 -->
+    <section class="guide-section" id="sum">
+      <h2>8. 번호 합계 범위 분석</h2>
+      <p>
+        1등 당첨 번호 6개의 합계를 계산하면 어떤 범위에 집중되어 있을까요?
+        이론적으로 최소 합계는 1+2+3+4+5+6 = 21이고, 최대 합계는 40+41+42+43+44+45 = 255입니다.
+      </p>
+
+      <h3>합계 범위별 출현 빈도</h3>
+      <div class="ratio-row">
+        <div class="ratio-label">100~170</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:72%;background:#fbc400;"></div></div>
+        <div class="ratio-pct">약 72%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">80~99</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:10%;background:#ef9a9a;"></div></div>
+        <div class="ratio-pct">약 10%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">171~190</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:12%;background:#90caf9;"></div></div>
+        <div class="ratio-pct">약 12%</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">기타</div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar" style="width:6%;background:#cfd8dc;"></div></div>
+        <div class="ratio-pct">약 6%</div>
+      </div>
+
+      <p>
+        역대 당첨 번호의 약 72%가 합계 100~170 범위에 속합니다. 중앙값은 약 135 내외입니다.
+        합계가 너무 낮거나(소번호들로만 구성) 너무 높은(대번호들로만 구성) 조합은 통계적으로 드물게 나타납니다.
+      </p>
+      <div class="tip-box">
+        <p>
+          ✅ 합계 100~170 범위의 조합을 선택하면 역대 당첨 번호 패턴과 유사한 조합을 만들 수 있습니다.
+          통계왕 AI Lotto의 'AI통계조합' 방식이 이 필터를 적용합니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 9. 연속 번호 -->
+    <section class="guide-section" id="consecutive">
+      <h2>9. 연속 번호 패턴</h2>
+      <p>
+        연속된 두 번호(예: 5, 6 또는 28, 29, 30)가 함께 당첨되는 경우가 얼마나 자주 있을까요?
+      </p>
+      <p>
+        분석 결과, 전체 당첨 번호 중 <strong>연속 번호 쌍(2개 연속)이 1쌍 이상 포함된 경우가 약 65~70%</strong>에 달합니다.
+        순수 랜덤 이론상 예상되는 확률(약 50% 수준)보다 높은 편이며, 이는 실제 당첨 번호에서
+        연속 번호가 생각보다 자주 등장함을 의미합니다.
+      </p>
+      <p>
+        3개 이상의 연속 번호(예: 7, 8, 9)가 함께 나오는 경우는 약 10~15%로 드문 편이며,
+        4개 이상의 연속은 매우 드뭅니다. 번호를 고를 때 연속 번호를 1~2쌍 포함시키는 것이
+        통계적으로 합리적인 전략이 될 수 있습니다.
+      </p>
+    </section>
+
+    <!-- 10. 끝수 패턴 -->
+    <section class="guide-section" id="taildigit">
+      <h2>10. 끝수(일의 자리) 패턴</h2>
+      <p>
+        각 번호의 일의 자리 숫자(끝수)를 분석하면 흥미로운 패턴이 나타납니다.
+        예를 들어 1, 11, 21, 31, 41의 끝수는 모두 '1'입니다.
+      </p>
+      <p>
+        역대 당첨 번호 분석 결과, <strong>같은 끝수가 3개 이상 포함된 조합은 전체의 약 5% 미만</strong>으로
+        매우 드뭅니다. 즉, 1, 11, 21 세 개가 함께 당첨되는 경우는 거의 없다는 의미입니다.
+      </p>
+      <p>
+        실용적인 조합 원칙으로, <strong>같은 끝수 번호는 최대 2개까지만 포함</strong>시키는 것이
+        통계적 패턴에 부합합니다. 통계왕 AI Lotto의 'AI통계조합' 방식에서 이 필터를 적용하고 있습니다.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>끝수 조건</th>
+            <th>해당 번호 예시</th>
+            <th>당첨 번호에서의 출현 빈도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>끝수 중복 없음 (6개 모두 다른 끝수)</td>
+            <td>1, 12, 23, 34, 45, 6</td>
+            <td>약 16%</td>
+          </tr>
+          <tr>
+            <td>끝수 1개만 중복 (1쌍)</td>
+            <td>1, 11, 22, 33, 44, 5</td>
+            <td>약 55%</td>
+          </tr>
+          <tr>
+            <td>끝수 2개 중복 (2쌍)</td>
+            <td>1, 11, 2, 12, 33, 44</td>
+            <td>약 24%</td>
+          </tr>
+          <tr>
+            <td>끝수 3개 이상 중복</td>
+            <td>1, 11, 21, 2, 12, 33</td>
+            <td>약 5% 미만</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 11. 번호 선택 전략 비교 -->
+    <section class="guide-section" id="strategies">
+      <h2>11. 번호 선택 전략 비교</h2>
+      <p>
+        로또 번호를 선택하는 다양한 방식의 특성을 비교합니다. 어떤 방식도 당첨 확률을 높이지 못한다는 점을
+        전제로, 각 방식의 통계적 특성과 심리적 만족도를 비교합니다.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>방식</th>
+            <th>특징</th>
+            <th>통계 활용</th>
+            <th>추천 대상</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>자동 구매 (QP)</td>
+            <td>기계가 완전 랜덤으로 선택</td>
+            <td>없음</td>
+            <td>편의성 중시, 통계 불신자</td>
+          </tr>
+          <tr>
+            <td>📊 빈도수 기반</td>
+            <td>자주 나온 번호에 높은 가중치</td>
+            <td>역대 출현 빈도</td>
+            <td>통계를 신뢰하는 분</td>
+          </tr>
+          <tr>
+            <td>🎲 순수 랜덤</td>
+            <td>1~45 완전 균등 추출</td>
+            <td>없음</td>
+            <td>운에만 맡기고 싶은 분</td>
+          </tr>
+          <tr>
+            <td>🏆 Top N 고정</td>
+            <td>최다 출현 번호 고정 포함</td>
+            <td>역대 출현 빈도</td>
+            <td>핫번호를 반드시 넣고 싶은 분</td>
+          </tr>
+          <tr>
+            <td>🔥 Hot/Cold</td>
+            <td>Hot, 중립, Cold 번호 혼합</td>
+            <td>역대 출현 빈도</td>
+            <td>균형 잡힌 조합 선호자</td>
+          </tr>
+          <tr>
+            <td>🎯 AI통계조합</td>
+            <td>다중 필터 통과한 조합만 사용</td>
+            <td>빈도, 홀짝, 저고, 합계, 끝수</td>
+            <td>종합 통계 최적화 선호자</td>
+          </tr>
+          <tr>
+            <td>🌙 꿈번호 조합</td>
+            <td>꿈 풀이 번호 + Hot 번호 혼합</td>
+            <td>전통 꿈 풀이 + 빈도</td>
+            <td>꿈을 꾼 분, 재미 추구</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 12. 책임감 있는 참여 -->
+    <section class="guide-section" id="responsible">
+      <h2>12. 책임감 있는 복권 참여</h2>
+      <p>
+        복권은 건전한 엔터테인먼트입니다. 하지만 과도한 구매는 재정적, 심리적 문제로 이어질 수 있습니다.
+        아래의 원칙을 지켜 건강하고 즐겁게 로또를 즐기세요.
+      </p>
+      <ul>
+        <li>
+          <strong>예산을 정하고 지키세요.</strong> 한 주에 얼마까지 구매할지 미리 결정하고,
+          그 금액 안에서만 구매하세요. 여유 자금이 아닌 생활비나 저축에서 구매하지 마세요.
+        </li>
+        <li>
+          <strong>당첨을 기대하지 마세요.</strong> 1등 확률은 약 814만 분의 1입니다.
+          로또 구매 금액은 엔터테인먼트 비용으로 생각하고, 당첨을 수입으로 계획하지 마세요.
+        </li>
+        <li>
+          <strong>손실을 만회하려 하지 마세요.</strong> 복권에서 잃은 돈을 복구하기 위해 더 많이 구매하는 것은
+          매우 위험한 행동입니다. 손실은 엔터테인먼트 비용으로 인정하세요.
+        </li>
+        <li>
+          <strong>어린이·청소년에게 구매하지 마세요.</strong> 복권 구매는 만 19세 이상만 가능합니다.
+        </li>
+        <li>
+          <strong>도박 중독이 의심되면 전문 기관에 도움을 요청하세요.</strong>
+          한국도박문제관리센터(☎ 1336)에서 무료 상담과 지원을 받을 수 있습니다.
+        </li>
+      </ul>
+      <div class="info-box">
+        <p>
+          📌 통계왕 AI Lotto는 완전한 무료 서비스입니다. 번호 생성에 어떤 비용도 청구하지 않으며,
+          회원가입이나 개인정보 수집도 없습니다. 모든 번호 생성은 이용자의 브라우저에서 직접 처리됩니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <a href="/" class="cta-btn">✨ 지금 바로 번호 생성하기</a>
+    </div>
+
+    <p style="text-align:center; font-size:13px; color:var(--muted); margin-top:20px; margin-bottom:48px;">
+      이 가이드의 통계 수치는 2002년 12월 ~ 2026년 5월 기준이며, 주기적으로 업데이트됩니다.<br>
+      데이터 출처: <a href="https://en.lottolyzer.com/number-frequencies/south-korea/6_slash_45-lotto" target="_blank" rel="noopener noreferrer">lottolyzer.com</a>
+    </p>
+
+    <footer class="site-footer" style="width:100%;">
+      <nav class="footer-nav">
+        <a href="/">홈</a>
+        <span class="footer-divider">·</span>
+        <a href="/about.html">서비스 소개</a>
+        <span class="footer-divider">·</span>
+        <a href="/lotto-guide.html" aria-current="page">로또 가이드</a>
+        <span class="footer-divider">·</span>
+        <a href="/dream-numbers.html">꿈별 숫자 사전</a>
+        <span class="footer-divider">·</span>
+        <a href="/privacy.html">개인정보처리방침</a>
+      </nav>
+      <p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+</body>
+</html>

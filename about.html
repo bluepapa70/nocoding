@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>서비스 소개 - 통계왕 AI Lotto</title>
+  <meta name="description" content="통계왕 AI Lotto는 2002년부터 현재까지 역대 로또 6/45 당첨 번호 데이터를 분석해 번호를 추천하는 무료 서비스입니다. 서비스 소개와 데이터 방법론을 확인하세요." />
+  <meta name="keywords" content="통계왕AI로또, 로또번호생성기소개, 로또통계분석, 로또AI추천, 로또번호추천서비스" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="서비스 소개 - 통계왕 AI Lotto" />
+  <meta property="og:description" content="역대 로또 당첨 번호 통계 기반 AI 번호 추천 서비스 소개 및 방법론" />
+  <meta property="og:url" content="https://ailottoo.pages.dev/about.html" />
+  <meta property="og:image" content="https://ailottoo.pages.dev/title.png" />
+  <meta property="og:locale" content="ko_KR" />
+  <link rel="canonical" href="https://ailottoo.pages.dev/about.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6010995244588886" crossorigin="anonymous"></script>
+  <style>
+    .about-wrap {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .about-wrap h1 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .about-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .about-section {
+      margin-bottom: 48px;
+    }
+    .about-section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+    .about-section p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 12px;
+    }
+    .about-section ul {
+      padding-left: 20px;
+      margin: 10px 0 12px;
+    }
+    .about-section li {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 6px;
+    }
+    .about-section strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .feature-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .feature-card-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .feature-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .feature-card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .method-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      margin-top: 16px;
+    }
+    .method-table thead tr {
+      background: var(--bg3);
+    }
+    .method-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .method-table td {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+    .method-table td:first-child {
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .stat-highlight-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .stat-highlight {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+      flex: 1 1 120px;
+      box-shadow: var(--shadow);
+    }
+    .stat-highlight-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+    .stat-highlight-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .contact-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .contact-box p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+    .contact-box a {
+      color: var(--accent2);
+    }
+
+    .notice-box {
+      background: #fffbeb;
+      border: 1px solid #fbc400;
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-top: 16px;
+    }
+    body.dark-mode .notice-box {
+      background: #2a2000;
+      border-color: #fbc400;
+    }
+    .notice-box p {
+      font-size: 14px;
+      color: #7a5500;
+      line-height: 1.75;
+      margin: 0;
+    }
+    body.dark-mode .notice-box p {
+      color: #e0b800;
+    }
+
+    @media (max-width: 500px) {
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="about-wrap">
+
+    <nav class="footer-nav" style="justify-content:flex-start; margin-bottom:32px;">
+      <a href="/">← 홈으로</a>
+    </nav>
+
+    <h1>서비스 소개</h1>
+    <p class="about-subtitle">
+      통계왕 AI Lotto는 역대 로또 6/45 당첨 번호 데이터를 기반으로 번호를 추천해 드리는 무료 서비스입니다.<br>
+      이 페이지에서 서비스 특징, 데이터 방법론, 이용 안내를 확인할 수 있습니다.
+    </p>
+
+    <!-- 서비스 개요 -->
+    <section class="about-section">
+      <h2>서비스 개요</h2>
+      <p>
+        <strong>통계왕 AI Lotto</strong>는 대한민국 로또 6/45의 2002년 12월 제1회 추첨부터 현재까지 진행된
+        전체 회차의 1등 당첨 번호 데이터를 분석하여 번호를 추천하는 무료 웹 서비스입니다.
+      </p>
+      <p>
+        로또는 완전한 확률 게임이므로 어떤 방법으로도 당첨을 보장할 수는 없습니다.
+        그러나 과거 당첨 번호의 통계적 패턴을 이해하고, 다양한 방식으로 번호를 조합하는 경험 자체가
+        로또를 더욱 재미있게 즐기는 방법이 될 수 있습니다.
+        이 서비스는 그 재미를 도와드리기 위해 만들어졌습니다.
+      </p>
+
+      <div class="stat-highlight-row">
+        <div class="stat-highlight">
+          <span class="stat-highlight-num">1,223+</span>
+          <div class="stat-highlight-label">분석 회차 수</div>
+        </div>
+        <div class="stat-highlight">
+          <span class="stat-highlight-num">23년+</span>
+          <div class="stat-highlight-label">데이터 기간</div>
+        </div>
+        <div class="stat-highlight">
+          <span class="stat-highlight-num">6가지</span>
+          <div class="stat-highlight-label">번호 생성 방식</div>
+        </div>
+        <div class="stat-highlight">
+          <span class="stat-highlight-num">무료</span>
+          <div class="stat-highlight-label">서비스 이용료</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 주요 기능 -->
+    <section class="about-section">
+      <h2>주요 기능</h2>
+      <p>총 6가지 번호 생성 방식을 제공하며, 각 방식은 서로 다른 통계적 접근법에 기반합니다.</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">📊</div>
+          <div class="feature-card-title">빈도수 기반</div>
+          <div class="feature-card-desc">역대 출현 횟수에 비례한 가중 확률로 번호를 추출합니다. 최근 6주 미출현 번호 2개를 추가 포함합니다.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">🎲</div>
+          <div class="feature-card-title">순수 랜덤</div>
+          <div class="feature-card-desc">통계와 무관하게 1~45 모든 번호를 동일한 확률로 추출하는 완전 무작위 방식입니다.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">🏆</div>
+          <div class="feature-card-title">Top N 고정</div>
+          <div class="feature-card-desc">역대 가장 많이 나온 상위 N개 번호를 고정하고 나머지는 빈도수 기반으로 추출합니다.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">🔥</div>
+          <div class="feature-card-title">Hot/Cold 분석</div>
+          <div class="feature-card-desc">Hot 번호 3개, 중립 1개, Cold 번호 2개를 균형 있게 조합하는 혼합 전략입니다.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">🎯</div>
+          <div class="feature-card-title">AI통계조합</div>
+          <div class="feature-card-desc">홀짝·저고 비율, 합계 범위, 끝수 중복 등 다중 통계 필터를 적용한 최적화 방식입니다.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-icon">🌙</div>
+          <div class="feature-card-title">꿈번호 조합</div>
+          <div class="feature-card-desc">꿈의 상징을 선택하면 전통 꿈 풀이 번호와 Hot 번호를 혼합해 번호를 만들어 드립니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 데이터 방법론 -->
+    <section class="about-section">
+      <h2>데이터 방법론</h2>
+      <p>
+        이 서비스에서 사용하는 통계 데이터는 <strong>lottolyzer.com</strong>에서 공개 제공하는
+        대한민국 로또 6/45 역대 당첨 번호 데이터를 기반으로 합니다.
+        2002년 12월 제1회부터 2026년 5월까지 진행된 전체 회차의 <strong>1등 당첨 번호</strong>만을
+        분석 대상으로 합니다.
+      </p>
+
+      <table class="method-table">
+        <thead>
+          <tr>
+            <th>분석 항목</th>
+            <th>설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>출현 빈도</td>
+            <td>각 번호(1~45)가 1등 당첨 번호로 선택된 총 횟수를 집계합니다. 가장 많이 나온 번호는 12번(147회), 가장 적게 나온 번호는 9번(108회)입니다.</td>
+          </tr>
+          <tr>
+            <td>Hot/Cold 분류</td>
+            <td>출현 빈도 기준 상위 15개를 Hot 번호, 하위 15개를 Cold 번호, 나머지 15개를 중립 번호로 분류합니다.</td>
+          </tr>
+          <tr>
+            <td>최근 출현 추적</td>
+            <td>각 번호의 마지막 출현 회차를 추적하여 최근 6주(6회차) 동안 한 번도 출현하지 않은 번호를 '미출현 번호'로 표시합니다.</td>
+          </tr>
+          <tr>
+            <td>홀짝 비율</td>
+            <td>역대 당첨 번호의 홀짝 분포를 분석합니다. 3:3 조합이 약 34%, 4:2가 약 27%, 2:4가 약 22%를 차지합니다.</td>
+          </tr>
+          <tr>
+            <td>저고 비율</td>
+            <td>1~22(저번호)와 23~45(고번호)의 비율을 분석합니다. 저번호 2~4개, 고번호 2~4개인 조합이 가장 흔합니다.</td>
+          </tr>
+          <tr>
+            <td>합계 범위</td>
+            <td>당첨 번호 6개의 합계를 분석하면 100~170 범위에 약 70% 이상의 회차가 집중됩니다.</td>
+          </tr>
+          <tr>
+            <td>끝수 패턴</td>
+            <td>각 번호의 끝자리 숫자(0~9)가 2개 이상 중복되는 경우가 드문 편으로, AI통계조합에서 이를 필터링합니다.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice-box" style="margin-top: 20px;">
+        <p>
+          ⚠️ 통계 데이터는 과거의 패턴을 보여줄 뿐이며, 미래 추첨 결과를 예측하는 것은 불가능합니다.
+          로또 추첨은 매 회차 독립적으로 이루어지는 완전한 무작위 이벤트입니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 데이터 업데이트 -->
+    <section class="about-section">
+      <h2>데이터 업데이트</h2>
+      <p>
+        통계 데이터는 주기적으로 최신 회차를 반영하여 업데이트됩니다.
+        현재 데이터는 <strong>2002년 12월 ~ 2026년 5월</strong> 기간의 전체 회차를 포함합니다.
+      </p>
+      <p>
+        최신 추첨 결과는 <a href="https://www.dhlottery.co.kr" target="_blank" rel="noopener noreferrer">동행복권 공식 사이트</a>에서
+        확인하실 수 있습니다. 이 서비스는 동행복권과 공식적인 제휴 관계가 없는 독립 서비스입니다.
+      </p>
+    </section>
+
+    <!-- 번호 생성 방식 비교 -->
+    <section class="about-section">
+      <h2>번호 생성 방식 선택 가이드</h2>
+      <p>6가지 방식 중 어떤 것을 선택해야 할지 망설이신다면 아래 가이드를 참고하세요.</p>
+      <table class="method-table">
+        <thead>
+          <tr>
+            <th>이런 분께</th>
+            <th>추천 방식</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>통계를 믿고 싶은 분</td>
+            <td>📊 빈도수 기반 — 역대 자주 나온 번호를 우선적으로 선택합니다.</td>
+          </tr>
+          <tr>
+            <td>완전히 운에 맡기고 싶은 분</td>
+            <td>🎲 순수 랜덤 — 어떤 통계도 개입하지 않는 완전 무작위 조합입니다.</td>
+          </tr>
+          <tr>
+            <td>핫번호를 꼭 넣고 싶은 분</td>
+            <td>🏆 Top N 고정 — 가장 많이 나온 N개를 반드시 포함합니다.</td>
+          </tr>
+          <tr>
+            <td>균형 잡힌 조합을 원하는 분</td>
+            <td>🔥 Hot/Cold — 자주 나온 번호와 드물게 나온 번호를 고루 섞습니다.</td>
+          </tr>
+          <tr>
+            <td>가장 최적화된 조합을 원하는 분</td>
+            <td>🎯 AI통계조합 — 다중 통계 필터를 모두 통과한 조합만 사용합니다.</td>
+          </tr>
+          <tr>
+            <td>꿈을 꾸셨다면</td>
+            <td>🌙 꿈번호 조합 — 꿈의 상징을 선택하면 관련 번호를 조합합니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 개인정보 보호 -->
+    <section class="about-section">
+      <h2>개인정보 보호</h2>
+      <p>
+        이 서비스는 이용자의 개인정보를 수집하거나 저장하지 않습니다.
+        번호 생성은 모두 이용자의 브라우저 내에서 처리되며, 어떤 정보도 서버로 전송되지 않습니다.
+      </p>
+      <p>
+        다크 모드 설정 및 리액션 투표 정보는 브라우저의 로컬 스토리지 또는 Cloudflare KV에 저장될 수 있습니다.
+        자세한 내용은 <a href="/privacy.html">개인정보처리방침</a>을 참고하세요.
+      </p>
+    </section>
+
+    <!-- 책임감 있는 복권 참여 -->
+    <section class="about-section">
+      <h2>책임감 있는 복권 참여</h2>
+      <p>
+        복권은 재미를 위한 엔터테인먼트입니다. 아래 원칙을 지켜 건강하게 즐기세요.
+      </p>
+      <ul>
+        <li><strong>예산 내에서 구매하세요.</strong> 여유 자금 범위 안에서만 구매하고, 생활비나 대출금을 사용하지 마세요.</li>
+        <li><strong>당첨을 기대하지 마세요.</strong> 로또 1등 확률은 약 814만 분의 1입니다. 통계적 방법은 이 확률을 높이지 못합니다.</li>
+        <li><strong>손실을 만회하려 하지 마세요.</strong> 잃은 돈을 복구하려고 더 구매하는 것은 위험한 행동입니다.</li>
+        <li><strong>복권 중독이 의심되면 도움을 요청하세요.</strong> 한국도박문제관리센터(1336)에서 무료 상담을 제공합니다.</li>
+      </ul>
+    </section>
+
+    <!-- 문의 -->
+    <section class="about-section">
+      <h2>문의</h2>
+      <div class="contact-box">
+        <p>
+          서비스 오류 신고, 데이터 오류 제보, 기능 제안 등은 아래 채널을 통해 연락해 주세요.
+          가능한 빠르게 확인하고 답변해 드리겠습니다.
+        </p>
+        <p>
+          📌 GitHub 이슈: <a href="https://github.com/bluepapa70/nocoding/issues" target="_blank" rel="noopener">github.com/bluepapa70/nocoding/issues</a>
+        </p>
+        <p style="margin-bottom:0;">
+          이 서비스는 개인이 운영하는 무료 서비스입니다. 응답에 다소 시간이 걸릴 수 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 관련 페이지 -->
+    <section class="about-section">
+      <h2>관련 페이지</h2>
+      <ul>
+        <li><a href="/" style="color:var(--accent2);">🏠 홈 — 번호 생성기로 바로 이동</a></li>
+        <li><a href="/lotto-guide.html" style="color:var(--accent2);">📖 로또 6/45 통계 완벽 가이드 — 통계와 확률 심층 분석</a></li>
+        <li><a href="/dream-numbers.html" style="color:var(--accent2);">🌙 꿈별 숫자 사전 — 꿈 풀이 번호 모음</a></li>
+        <li><a href="/privacy.html" style="color:var(--accent2);">🔒 개인정보처리방침</a></li>
+      </ul>
+    </section>
+
+    <footer class="site-footer" style="width:100%;">
+      <nav class="footer-nav">
+        <a href="/">홈</a>
+        <span class="footer-divider">·</span>
+        <a href="/about.html">서비스 소개</a>
+        <span class="footer-divider">·</span>
+        <a href="/lotto-guide.html">로또 가이드</a>
+        <span class="footer-divider">·</span>
+        <a href="/dream-numbers.html">꿈별 숫자 사전</a>
+        <span class="footer-divider">·</span>
+        <a href="/privacy.html">개인정보처리방침</a>
+      </nav>
+      <p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
+</body>
+</html>

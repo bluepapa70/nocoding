@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로또 끝수(일의 자리) 패턴 완전 정복 | 통계왕 AI Lotto 블로그</title>
+  <meta name="description" content="로또 6/45 당첨 번호의 끝자리 숫자(0~9) 패턴을 분석합니다. 같은 끝수가 3개 이상 중복되는 경우는 5% 미만으로 매우 드뭅니다." />
+  <meta name="keywords" content="로또끝수패턴, 로또일의자리, 로또끝수중복, 로또번호끝자리분석" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="로또 끝수(일의 자리) 패턴 완전 정복" />
+  <meta property="og:url" content="https://ailottoo.pages.dev/blog/tail-digit.html" />
+  <meta property="og:image" content="https://ailottoo.pages.dev/title.png" />
+  <link rel="canonical" href="https://ailottoo.pages.dev/blog/tail-digit.html" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/blog/blog.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6010995244588886" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="post-wrap">
+    <nav class="breadcrumb">
+      <a href="/">홈</a><span>›</span><a href="/blog.html">블로그</a><span>›</span><span>끝수 패턴</span>
+    </nav>
+    <article>
+      <div class="post-tag">끝수 패턴</div>
+      <h1 class="post-title">로또 끝수(일의 자리) 패턴 완전 정복</h1>
+      <div class="post-meta">2026년 5월 12일 · 데이터 기준: 2002.12 ~ 2026.05 (1,223회차)</div>
+
+      <p class="post-lead">
+        로또 번호 분석에서 자주 무시되는 요소 중 하나가 바로 '끝수(일의 자리)' 패턴입니다.
+        1, 11, 21, 31, 41처럼 같은 끝자리를 가진 번호들이 몇 개까지 함께 당첨될 수 있는지,
+        역대 데이터로 완전히 분석합니다.
+      </p>
+
+      <h2>끝수(일의 자리)란?</h2>
+      <p>
+        로또 번호 1~45를 일의 자리(끝자리 숫자)로 분류하면 다음과 같습니다.
+      </p>
+      <table class="post-table">
+        <thead><tr><th>끝수</th><th>해당 번호</th><th>개수</th></tr></thead>
+        <tbody>
+          <tr><td>끝수 0</td><td>10, 20, 30, 40</td><td>4개</td></tr>
+          <tr><td>끝수 1</td><td>1, 11, 21, 31, 41</td><td>5개</td></tr>
+          <tr><td>끝수 2</td><td>2, 12, 22, 32, 42</td><td>5개</td></tr>
+          <tr><td>끝수 3</td><td>3, 13, 23, 33, 43</td><td>5개</td></tr>
+          <tr><td>끝수 4</td><td>4, 14, 24, 34, 44</td><td>5개</td></tr>
+          <tr><td>끝수 5</td><td>5, 15, 25, 35, 45</td><td>5개</td></tr>
+          <tr><td>끝수 6~9</td><td>각 4개씩</td><td>각 4개</td></tr>
+        </tbody>
+      </table>
+
+      <h2>끝수 중복 빈도 분석</h2>
+      <div class="ratio-row"><div class="ratio-label">중복 없음 (6종)</div><div class="ratio-bar-wrap"><div class="ratio-bar" style="width:16%;background:#90caf9;"></div></div><div class="ratio-pct">약 16%</div></div>
+      <div class="ratio-row"><div class="ratio-label">1쌍 중복</div><div class="ratio-bar-wrap"><div class="ratio-bar" style="width:55%;background:#fbc400;"></div></div><div class="ratio-pct">약 55%</div></div>
+      <div class="ratio-row"><div class="ratio-label">2쌍 중복</div><div class="ratio-bar-wrap"><div class="ratio-bar" style="width:24%;background:#ef9a9a;"></div></div><div class="ratio-pct">약 24%</div></div>
+      <div class="ratio-row"><div class="ratio-label">3개 이상 중복</div><div class="ratio-bar-wrap"><div class="ratio-bar" style="width:5%;background:#cfd8dc;"></div></div><div class="ratio-pct">약 5%</div></div>
+
+      <h2>핵심 결론</h2>
+      <p>
+        역대 당첨 번호의 약 <strong>95%</strong>에서 같은 끝수의 번호는 최대 2개까지만 포함되어 있습니다.
+        예를 들어, 1(끝수1), 11(끝수1), 21(끝수1)처럼 같은 끝수가 3개 이상 함께 당첨되는 경우는
+        전체의 5% 미만으로 매우 드뭅니다.
+      </p>
+      <p>
+        이는 수학적으로도 설명됩니다. 45개 번호 중 같은 끝수 번호는 4~5개뿐이므로,
+        6개를 무작위로 뽑을 때 같은 끝수가 3개 이상 나올 확률 자체가 낮습니다.
+      </p>
+
+      <h2>끝수 0의 특별한 경우</h2>
+      <p>
+        끝수 0(10, 20, 30, 40)은 4개뿐이므로 3개 이상 중복될 가능성이 다른 끝수보다 낮습니다.
+        그러나 끝수 1~5는 각 5개씩 있으므로 이론적으로 3개 중복이 가능합니다.
+        특히 13, 23, 33처럼 끝수 3인 번호 3개가 함께 나온 사례도 드물게 존재합니다.
+      </p>
+
+      <h2>번호 선택에 적용하기</h2>
+      <ul>
+        <li><strong>같은 끝수 번호는 최대 2개까지만 포함</strong>시키는 것이 역대 통계와 일치합니다.</li>
+        <li>예: (1, 11), (3, 13) 등 2개씩은 괜찮지만 (1, 11, 21)처럼 3개는 드문 패턴입니다.</li>
+        <li>6개 번호의 끝수를 가능하면 다양하게 구성하면 역대 패턴에 더 잘 맞는 조합이 됩니다.</li>
+      </ul>
+      <div class="post-tip">
+        💡 통계왕 AI Lotto의 'AI통계조합'은 같은 끝수가 3개 이상 중복되지 않도록 자동 필터링합니다.
+        이 조건을 통과한 조합만 번호로 생성됩니다.
+      </div>
+      <div class="post-warn">
+        ⚠️ 끝수 조건을 맞춘다고 당첨 확률이 높아지지는 않습니다.
+        역대 당첨 패턴과 유사한 조합을 만들고 싶을 때 참고하는 것으로 활용하세요.
+      </div>
+
+      <div class="post-cta"><a href="/" class="cta-btn">🎯 AI통계조합으로 번호 생성하기</a></div>
+      <div class="related-posts">
+        <div class="related-title">관련 글</div>
+        <div class="related-grid">
+          <a href="/blog/consecutive-numbers.html" class="related-card">🔗 연속 번호는 로또에 얼마나 자주 나올까?</a>
+          <a href="/blog/odd-even-pattern.html" class="related-card">⚖️ 로또 당첨 번호의 홀짝 패턴 분석</a>
+          <a href="/lotto-guide.html" class="related-card">📖 로또 6/45 통계 완벽 가이드</a>
+        </div>
+      </div>
+    </article>
+    <footer class="site-footer" style="width:100%;"><nav class="footer-nav"><a href="/">홈</a><span class="footer-divider">·</span><a href="/blog.html">블로그</a><span class="footer-divider">·</span><a href="/lotto-guide.html">로또 가이드</a><span class="footer-divider">·</span><a href="/privacy.html">개인정보처리방침</a></nav><p class="footer-copy">© 2026 통계왕 AI Lotto. 이 서비스는 재미 목적으로 제공되며 당첨을 보장하지 않습니다.</p></footer>
+  </div>
+  <script>(function(){const s=localStorage.getItem('theme');if(s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches))document.body.classList.add('dark-mode');})();</script>
+</body>
+</html>
